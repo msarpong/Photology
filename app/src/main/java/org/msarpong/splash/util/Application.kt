@@ -9,6 +9,7 @@ import org.msarpong.splash.BuildConfig
 import org.msarpong.splash.di.androidComponents
 import org.msarpong.splash.di.appComponents
 import org.msarpong.splash.di.retrofitModule
+import org.msarpong.splash.di.viewModels
 
 class Application : Application() {
     companion object {
@@ -31,6 +32,7 @@ class Application : Application() {
                     appSetupModule,
                     androidComponents,
                     appComponents,
+                    viewModels,
                     retrofitModule
                 )
             )

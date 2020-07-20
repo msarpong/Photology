@@ -41,4 +41,15 @@ dependencies {
 
     implementation Dependencies.koin
     implementation Dependencies.koin_viewmodel
+
+    implementation Dependencies.viewmodel
+    implementation Dependencies.viewmodel_ktx
+    implementation Dependencies.lifeCycleExtensions
+
+    implementation Dependencies.retrofit
+    implementation Dependencies.retrofitConverter
+
+    implementation Dependencies.okttp3
+    implementation Dependencies.okttp3Interceptor
+    implementation Dependencies.okttp3Urlconnection
 }

@@ -3,6 +3,8 @@ object Versions {
     const val detekt = "1.4.0"
     const val koin = "2.1.3"
     const val gradle = "4.0.1"
+    const val lifecycle = "2.2.0"
+
 }
 
 object Dependencies {
@@ -16,6 +18,17 @@ object Dependencies {
 
     const val koin = "org.koin:koin-android:${Versions.koin}"
     const val koin_viewmodel = "org.koin:koin-android-viewmodel:${Versions.koin}"
+
+    const val viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+    const val viewmodel_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}"
+    const val lifeCycleExtensions = "androidx.lifecycle:lifecycle-extensions:2.1.0"
+
+    const val retrofit = "com.squareup.retrofit2:retrofit:2.8.1"
+    const val retrofitConverter = "com.squareup.retrofit2:converter-gson:2.8.1"
+
+    const val okttp3 = "com.squareup.okhttp3:okhttp:4.5.0"
+    const val okttp3Interceptor = "com.squareup.okhttp3:logging-interceptor:4.5.0"
+    const val okttp3Urlconnection = "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
 }
 
 object BuildLibs {

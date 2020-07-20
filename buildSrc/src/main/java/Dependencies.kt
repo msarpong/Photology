@@ -1,6 +1,8 @@
 object Versions {
     const val kotlin = "1.3.72"
+    const val detekt = "1.4.0"
     const val koin = "2.1.3"
+    const val gradle = "4.0.0"
 }
 
 object Dependencies {
@@ -14,4 +16,10 @@ object Dependencies {
 
     const val koin = "org.koin:koin-android:${Versions.koin}"
     const val koin_viewmodel = "org.koin:koin-android-viewmodel:${Versions.koin}"
+}
+
+object BuildLibs {
+    const val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detekt}"
+    const val kotlin_plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
+    const val gradle_android = "com.android.tools.build:gradle:${Versions.gradle}"
 }

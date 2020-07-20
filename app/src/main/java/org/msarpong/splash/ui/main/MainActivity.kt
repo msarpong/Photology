@@ -1,7 +1,8 @@
-package org.msarpong.splash
+package org.msarpong.splash.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import org.msarpong.splash.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

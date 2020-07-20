@@ -2,7 +2,7 @@ object Versions {
     const val kotlin = "1.3.72"
     const val detekt = "1.4.0"
     const val koin = "2.1.3"
-    const val gradle = "4.0.0"
+    const val gradle = "4.0.1"
 }
 
 object Dependencies {

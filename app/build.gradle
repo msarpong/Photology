@@ -34,7 +34,6 @@ dependencies {
     implementation Dependencies.androidXAppCompat
     implementation Dependencies.constraintLayout
     implementation Dependencies.jUnit
-    implementation Dependencies.androidJUnit
     implementation Dependencies.androidEspresso
 
     implementation Dependencies.koin

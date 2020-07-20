@@ -6,6 +6,12 @@ apply plugin: 'kotlin-kapt'
 apply from: '../scripts/detekt_setup.gradle'
 
 android {
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 

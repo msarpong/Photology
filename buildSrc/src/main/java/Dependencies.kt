@@ -1,5 +1,6 @@
 object Versions {
     const val kotlin = "1.3.72"
+    const val koin = "2.1.3"
 }
 
 object Dependencies {
@@ -10,4 +11,7 @@ object Dependencies {
     const val jUnit = "junit:junit:4.12"
     const val androidJUnit = "androidx.test.ext:junit:1.1.1"
     const val androidEspresso = "androidx.test.espresso:espresso-core:3.2.0"
+
+    const val koin = "org.koin:koin-android:${Versions.koin}"
+    const val koin_viewmodel = "org.koin:koin-android-viewmodel:${Versions.koin}"
 }

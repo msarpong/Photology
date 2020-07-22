@@ -29,6 +29,11 @@ object Dependencies {
     const val okttp3 = "com.squareup.okhttp3:okhttp:4.5.0"
     const val okttp3Interceptor = "com.squareup.okhttp3:logging-interceptor:4.5.0"
     const val okttp3Urlconnection = "com.squareup.okhttp3:okhttp-urlconnection:4.2.1"
+
+    const val glide = "com.github.bumptech.glide:glide:4.11.0"
+    const val glideAnnotation = "com.github.bumptech.glide:compiler:4.11.0"
+
+    const val imageRound = "de.hdodenhof:circleimageview:3.1.0"
 }
 
 object BuildLibs {

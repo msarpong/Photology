@@ -1,5 +1,6 @@
 package org.msarpong.splash.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +15,9 @@ import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.Unsplash
 import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.ui.collections.CollectionScreen
+import org.msarpong.splash.ui.search.SearchScreen
+import org.msarpong.splash.ui.setting.SettingScreen
 
 
 class MainScreen : AppCompatActivity() {
@@ -21,7 +25,6 @@ class MainScreen : AppCompatActivity() {
     private val viewModel: MainViewModel by inject()
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var homeBtn: Button
     private lateinit var collectionBtn: Button
     private lateinit var searchBtn: Button
     private lateinit var profileBtn: Button
@@ -38,7 +41,6 @@ class MainScreen : AppCompatActivity() {
     private fun setupViews() {
         progressBar = findViewById(R.id.progressBar)
 
-        homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
@@ -47,9 +49,17 @@ class MainScreen : AppCompatActivity() {
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
         imageRV.adapter = imageAdapter
-    }
 
-    
+        collectionBtn.setOnClickListener {
+            startActivity(Intent(this, CollectionScreen::class.java))
+        }
+        searchBtn.setOnClickListener {
+            startActivity(Intent(this, SearchScreen::class.java))
+        }
+        profileBtn.setOnClickListener {
+            startActivity(Intent(this, SettingScreen::class.java))
+        }
+    }
 
     override fun onStart() {
         super.onStart()

@@ -6,9 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
+import android.widget.*
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
@@ -26,8 +24,17 @@ class DetailPhotoScreen : AppCompatActivity() {
     private val viewModel: DetailPhotoViewModel by inject()
 
     private lateinit var progressBar: ProgressBar
+
     private lateinit var detailImage: ImageView
     private lateinit var detailId: String
+    private lateinit var detailUserImage: ImageView
+    private lateinit var detailUser: TextView
+    private lateinit var detailUserName: TextView
+
+    private lateinit var homeBtn: ImageButton
+    private lateinit var collectionBtn: ImageButton
+    private lateinit var searchBtn: ImageButton
+    private lateinit var profileBtn: ImageButton
 
     companion object {
         fun openDetailPhoto(startingActivity: Activity, detailId: String) {
@@ -47,8 +54,31 @@ class DetailPhotoScreen : AppCompatActivity() {
 
     private fun setupViews() {
         progressBar = findViewById(R.id.progressBar)
+
+        homeBtn = findViewById(R.id.home_btn)
+        collectionBtn = findViewById(R.id.collection_btn)
+        searchBtn = findViewById(R.id.search_btn)
+        profileBtn = findViewById(R.id.profile_btn)
         detailImage = findViewById(R.id.detail_image)
+        detailUserImage = findViewById(R.id.detail_image_user)
+        detailUser = findViewById(R.id.detail_text_name)
+        detailUserName = findViewById(R.id.detail_text_username)
+
         detailId = intent.getStringExtra(BUNDLE_ID)
+
+        homeBtn.setOnClickListener {
+            startActivity(Intent(this, MainScreen::class.java))
+        }
+        collectionBtn.setOnClickListener {
+            startActivity(Intent(this, CollectionScreen::class.java))
+        }
+        searchBtn.setOnClickListener {
+            startActivity(Intent(this, SearchScreen::class.java))
+        }
+        profileBtn.setOnClickListener {
+            startActivity(Intent(this, SettingScreen::class.java))
+        }
+
         Log.d("setupViews", "detailId: $detailId")
     }
 
@@ -77,6 +107,17 @@ class DetailPhotoScreen : AppCompatActivity() {
             .load(response.urls.regular)
             .fitCenter()
             .into(detailImage)
+
+        Glide
+            .with(detailUser.context)
+            .load(response.user.profileImage.medium)
+            .fitCenter()
+            .into(detailUserImage)
+
+        detailUser.text = response.user.name
+        detailUserName.text = response.user.username
+
+
         Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
     }
 

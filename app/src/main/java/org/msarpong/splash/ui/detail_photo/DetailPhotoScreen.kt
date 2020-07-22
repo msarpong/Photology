@@ -117,7 +117,6 @@ class DetailPhotoScreen : AppCompatActivity() {
         detailUser.text = response.user.name
         detailUserName.text = response.user.username
 
-
         Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
     }
 

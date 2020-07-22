@@ -2,6 +2,7 @@ package org.msarpong.splash.service
 
 import android.util.Log
 import org.msarpong.splash.di.retrofit
+import org.msarpong.splash.service.collection.Collection
 import org.msarpong.splash.service.mapping.Unsplash
 import org.msarpong.splash.service.mapping.UnsplashItem
 import org.msarpong.splash.util.ACCESS_KEY
@@ -15,8 +16,8 @@ import retrofit2.http.Query
 sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
     data class Success(val pictureList: Unsplash) : ServiceResult()
+    data class SuccessCollection(val collectionList: Collection) : ServiceResult()
     data class Detail(val pictureList: UnsplashItem) : ServiceResult()
-
 }
 
 interface ServiceReceiver {
@@ -51,6 +52,28 @@ class Service {
         })
     }
 
+    fun getCollection(receiver: ServiceReceiver) {
+        val collection = service.getPhotoCollections()
+        collection.enqueue(object : Callback<Collection> {
+            override fun onFailure(call: Call<Collection>, t: Throwable) {
+                Log.d("onFailure_getCollection", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
+                val success = response.body()
+                val error = response.errorBody()
+
+                if (success != null) {
+                    val pictureResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessCollection(pictureResult))
+                    Log.d("onResponse_getCol", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getCol", "showError: $error")
+                }
+            }
+        })
+    }
+
     fun getDetail(detailId: String, receiver: ServiceReceiver) {
         val detail = service.getDetailPhoto(detailId)
         detail.enqueue(object : Callback<UnsplashItem> {
@@ -71,6 +94,8 @@ class Service {
             }
         })
     }
+
+
 }
 
 interface SplashServiceApi {
@@ -82,6 +107,9 @@ interface SplashServiceApi {
         @Path("detailId") detailId: String,
         @Query("client_id") client_id: String = ACCESS_KEY
     ): Call<UnsplashItem>
+
+    @GET("collections/")
+    fun getPhotoCollections(@Query("client_id") client_id: String = ACCESS_KEY): Call<Collection>
 }
 
 

@@ -40,20 +40,13 @@ class MainViewModel(context: Context) : ViewModel() {
                 override fun receive(result: ServiceResult) {
 
                     when (result) {
-                        is ServiceResult.Success -> {
-                            Log.d("MainViewModel", "MainState.Success")
-                            Log.d("MainViewModel", "MainState.Success")
+                        is ServiceResult.Success -> state.value =
+                            MainState.Success(
+                                pictureList = result.pictureList
+                            )
 
-                            state.value =
-                                MainState.Success(
-                                    pictureList = result.pictureList
-                                )
-                        }
-                        is ServiceResult.Error -> {
-                            Log.d("MainViewModel", "MainState.Error")
-                            state.value =
-                                MainState.Error(error = result.error)
-                        }
+                        is ServiceResult.Error -> state.value =
+                            MainState.Error(error = result.error)
                     }
                 }
             })

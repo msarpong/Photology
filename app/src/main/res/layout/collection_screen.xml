@@ -37,41 +37,54 @@
             android:padding="20dp"
             android:weightSum="4">
 
-            <Button
+            <ImageButton
                 android:id="@+id/home_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_home" />
+                android:tint="#A8A8A8"
+                app:srcCompat="@drawable/ic_home" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/collection_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTint="#FF000000"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_collections" />
+                android:tint="#FF000000"
+                app:srcCompat="@drawable/ic_collections" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/search_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_search" />
+                android:tint="#A8A8A8"
+                app:srcCompat="@drawable/ic_search" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/profile_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
                 android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_user" />
+                android:tint="#A8A8A8"
+                app:srcCompat="@drawable/ic_user" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/collection_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center_horizontal"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="1"
+        tools:listitem="@layout/collection_recycler" />
 </androidx.constraintlayout.widget.ConstraintLayout>

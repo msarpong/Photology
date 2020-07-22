@@ -3,12 +3,10 @@ package org.msarpong.splash.service
 import android.util.Log
 import org.msarpong.splash.di.retrofit
 import org.msarpong.splash.service.mapping.Unsplash
-import org.msarpong.splash.util.ACCESS_KEY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Path
 
 sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
@@ -25,7 +23,6 @@ class Service {
     )
 
     fun getHome(receiver: ServiceReceiver) {
-        Log.d("onFailure_getImage", "Error")
 
         val photos = service.getPhoto()
         photos.enqueue(object : Callback<Unsplash> {
@@ -38,6 +35,7 @@ class Service {
                 val error = response.errorBody()
                 if (success != null) {
                     val pictureResult = response.body()!!
+                    receiver.receive(ServiceResult.Success(pictureResult))
                     Log.d("onResponse_getImage", "showSuccess_{}: $success")
                 } else {
                     Log.d("onResponse_getImage", "showError_{}: $error")

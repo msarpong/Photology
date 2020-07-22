@@ -36,7 +36,7 @@ class DetailPhotoViewModel(context: Context) : ViewModel() {
     }
 
     private fun loadContent(detailId: String) {
-        Log.d("loadContent", detailId.toString())
+        Log.d("loadContent", detailId)
 
         state.value = DetailState.InProgress
         try {

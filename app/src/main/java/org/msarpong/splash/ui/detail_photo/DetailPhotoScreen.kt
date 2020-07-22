@@ -49,7 +49,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         detailImage = findViewById(R.id.detail_image)
         detailId = intent.getStringExtra(BUNDLE_ID)
-
+        Log.d("setupViews", "detailId: $detailId")
     }
 
     override fun onStart() {
@@ -77,7 +77,7 @@ class DetailPhotoScreen : AppCompatActivity() {
             .load(response.urls.regular)
             .fitCenter()
             .into(detailImage)
-        Log.d("MainActivity", "showPhotos:$response")
+        Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
     }
 
     private fun showProgress() {

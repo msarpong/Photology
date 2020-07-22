@@ -4,10 +4,13 @@ import android.util.Log
 import org.msarpong.splash.di.retrofit
 import org.msarpong.splash.service.mapping.Unsplash
 import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.util.ACCESS_KEY
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
@@ -39,9 +42,9 @@ class Service {
                 if (success != null) {
                     val pictureResult = response.body()!!
                     receiver.receive(ServiceResult.Success(pictureResult))
-                    Log.d("onResponse_getImage", "showSuccess_{}: $success")
+                    Log.d("onResponse_getImage", "showSuccess: $success")
                 } else {
-                    Log.d("onResponse_getImage", "showError_{}: $error")
+                    Log.d("onResponse_getImage", "showError: $error")
                 }
             }
 
@@ -49,10 +52,10 @@ class Service {
     }
 
     fun getDetail(detailId: String, receiver: ServiceReceiver) {
-        val detail = service.getDetailPhoto()
+        val detail = service.getDetailPhoto(detailId)
         detail.enqueue(object : Callback<UnsplashItem> {
             override fun onFailure(call: Call<UnsplashItem>, t: Throwable) {
-                Log.d("onFailure_getImage", "showError: $t")
+                Log.d("onFailure_getDetail", "showError: $t")
             }
 
             override fun onResponse(call: Call<UnsplashItem>, response: Response<UnsplashItem>) {
@@ -61,9 +64,9 @@ class Service {
                 if (success != null) {
                     val pictureResult = response.body()!!
                     receiver.receive((ServiceResult.Detail(pictureResult)))
-                    Log.d("onResponse_getImage", "showSuccess_{}: $success")
+                    Log.d("onResponse_getDetail", "showSuccess: $success")
                 } else {
-                    Log.d("onResponse_getImage", "showError_{}: $error")
+                    Log.d("onResponse_getDetail", "showError: $error")
                 }
             }
         })
@@ -71,11 +74,14 @@ class Service {
 }
 
 interface SplashServiceApi {
-    @GET("https://api.unsplash.com/photos/?client_id=cf9190b65fe2f5ad324ce4507dacbf926e7d819e996e502e6e51b72b88f1472a")
-    fun getPhoto(): Call<Unsplash>
+    @GET("photos/")
+    fun getPhoto(@Query("client_id") client_id: String = ACCESS_KEY): Call<Unsplash>
 
-    @GET("https://api.unsplash.com/photos/KLbUohEjb04/?client_id=cf9190b65fe2f5ad324ce4507dacbf926e7d819e996e502e6e51b72b88f1472a")
-    fun getDetailPhoto(): Call<UnsplashItem>
+    @GET("/photos/{detailId}/")
+    fun getDetailPhoto(
+        @Path("detailId") detailId: String,
+        @Query("client_id") client_id: String = ACCESS_KEY
+    ): Call<UnsplashItem>
 }
 
 

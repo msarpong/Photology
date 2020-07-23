@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.detail_photo.DetailPhotoScreen"></activity>
+        <activity android:name=".ui.profile.ProfileScreen"></activity>
+        <activity android:name=".ui.detail_photo.DetailPhotoScreen" />
         <activity android:name=".ui.search.SearchScreen" />
         <activity android:name=".ui.collections.CollectionScreen" />
         <activity android:name=".ui.setting.SettingScreen" />

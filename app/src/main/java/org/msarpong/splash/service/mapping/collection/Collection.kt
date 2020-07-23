@@ -1,3 +1,3 @@
-package org.msarpong.splash.service.collection
+package org.msarpong.splash.service.mapping.collection
 
 class Collection : ArrayList<CollectionItem>()

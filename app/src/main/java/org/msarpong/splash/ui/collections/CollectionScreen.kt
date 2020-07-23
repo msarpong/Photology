@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.lifecycle.Observer
@@ -14,10 +13,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.collection.Collection
-import org.msarpong.splash.service.collection.CollectionItem
-import org.msarpong.splash.service.mapping.Unsplash
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.collection.Collection
+import org.msarpong.splash.service.mapping.collection.CollectionItem
 import org.msarpong.splash.ui.main.*
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.ui.setting.SettingScreen

@@ -7,6 +7,7 @@ import org.msarpong.splash.service.Service
 import org.msarpong.splash.ui.collections.CollectionViewModel
 import org.msarpong.splash.ui.detail_photo.DetailPhotoViewModel
 import org.msarpong.splash.ui.main.MainViewModel
+import org.msarpong.splash.ui.profile.ProfileViewModel
 
 val androidComponents = module {
     single { androidContext().resources }
@@ -20,5 +21,6 @@ val viewModels = module {
     viewModel { MainViewModel(get()) }
     viewModel { DetailPhotoViewModel(get()) }
     viewModel { CollectionViewModel(get()) }
+    viewModel { ProfileViewModel(get()) }
 }
 

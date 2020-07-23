@@ -2,9 +2,10 @@ package org.msarpong.splash.service
 
 import android.util.Log
 import org.msarpong.splash.di.retrofit
-import org.msarpong.splash.service.collection.Collection
+import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.Unsplash
 import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.util.ACCESS_KEY
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +18,7 @@ sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
     data class Success(val pictureList: Unsplash) : ServiceResult()
     data class SuccessCollection(val collectionList: Collection) : ServiceResult()
+    data class SuccessProfile(val profile: Profile) : ServiceResult()
     data class Detail(val pictureList: UnsplashItem) : ServiceResult()
 }
 
@@ -95,7 +97,27 @@ class Service {
         })
     }
 
+    fun getProfile(username: String, receiver: ServiceReceiver) {
+        val profile = service.getDetailUser(username)
+        profile.enqueue(object : Callback<Profile> {
+            override fun onFailure(call: Call<Profile>, t: Throwable) {
+                Log.d("onFailure_getProfile", "showError: $t")
+            }
 
+            override fun onResponse(call: Call<Profile>, response: Response<Profile>) {
+                val success = response.body()
+                val error = response.errorBody()
+
+                if (success != null) {
+                    val pictureResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessProfile(pictureResult))
+                    Log.d("onResponse_getProfile", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getProfile", "showError: $error")
+                }
+            }
+        })
+    }
 }
 
 interface SplashServiceApi {
@@ -110,6 +132,12 @@ interface SplashServiceApi {
 
     @GET("collections/")
     fun getPhotoCollections(@Query("client_id") client_id: String = ACCESS_KEY): Call<Collection>
+
+    @GET("/users/{username}/")
+    fun getDetailUser(
+        @Path("username") detailId: String,
+        @Query("client_id") client_id: String = ACCESS_KEY
+    ): Call<Profile>
 }
 
 

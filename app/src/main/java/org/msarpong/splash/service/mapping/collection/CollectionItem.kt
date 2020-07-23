@@ -1,4 +1,4 @@
-package org.msarpong.splash.service.collection
+package org.msarpong.splash.service.mapping.collection
 
 import com.google.gson.annotations.SerializedName
 

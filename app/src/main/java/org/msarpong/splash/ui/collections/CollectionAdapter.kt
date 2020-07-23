@@ -11,11 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.msarpong.splash.R
-import org.msarpong.splash.service.collection.CollectionItem
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.collection.CollectionItem
 import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
-import org.msarpong.splash.ui.main.UnsplashDiffUtil
-import org.msarpong.splash.ui.main.UnsplashViewHolder
 
 class CollectionAdapter : ListAdapter<CollectionItem, CollectionViewHolder>(CollectionDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionViewHolder {

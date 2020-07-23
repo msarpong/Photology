@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
-import org.msarpong.splash.service.collection.Collection
+import org.msarpong.splash.service.mapping.collection.Collection
 
 sealed class CollectionEvent {
     object Load : CollectionEvent()

@@ -83,7 +83,10 @@ class Service {
                 Log.d("onFailure_getDetail", "showError: $t")
             }
 
-            override fun onResponse(call: Call<DetailPhotoResponse>, response: Response<DetailPhotoResponse>) {
+            override fun onResponse(
+                call: Call<DetailPhotoResponse>,
+                response: Response<DetailPhotoResponse>
+            ) {
                 val success = response.body()
                 val error = response.errorBody()
                 if (success != null) {
@@ -118,6 +121,29 @@ class Service {
             }
         })
     }
+
+    fun getPhotoUser(username: String, receiver: ServiceReceiver) {
+
+        val photos = service.getDetailPhotoUser(username)
+        photos.enqueue(object : Callback<PhotoResponse> {
+            override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
+                Log.d("onFailure_getProfilePh", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<PhotoResponse>, response: Response<PhotoResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val pictureResult = response.body()!!
+                    receiver.receive(ServiceResult.Success(pictureResult))
+                    Log.d("onResponse_getProfilePh", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getProfilePh", "showError: $error")
+                }
+            }
+
+        })
+    }
 }
 
 interface SplashServiceApi {
@@ -138,6 +164,12 @@ interface SplashServiceApi {
         @Path("username") detailId: String,
         @Query("client_id") client_id: String = ACCESS_KEY
     ): Call<Profile>
+
+    @GET("/users/{username}/photos")
+    fun getDetailPhotoUser(
+        @Path("username") detailId: String,
+        @Query("client_id") client_id: String = ACCESS_KEY
+    ): Call<PhotoResponse>
 }
 
 

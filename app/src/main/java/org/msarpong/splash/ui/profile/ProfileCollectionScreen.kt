@@ -3,32 +3,25 @@ package org.msarpong.splash.ui.profile
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.photos.PhotoResponse
-import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
-import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.ui.main.UnsplashViewHolder
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.ui.setting.SettingScreen
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
-class ProfilePhotoScreen : AppCompatActivity() {
+class ProfileCollectionScreen : AppCompatActivity() {
 
     private val viewModel: ProfileViewModel by inject()
 
@@ -50,13 +43,10 @@ class ProfilePhotoScreen : AppCompatActivity() {
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
 
-    private lateinit var imageRV: RecyclerView
-    private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
-
     companion object {
-        fun openPhotoProfile(startingActivity: Activity, detailId: String) {
+        fun openCollectionProfile(startingActivity: Activity, detailId: String) {
             val intent =
-                Intent(startingActivity, ProfilePhotoScreen::class.java).putExtra(
+                Intent(startingActivity, ProfileCollectionScreen::class.java).putExtra(
                     BUNDLE_ID,
                     detailId
                 )
@@ -66,7 +56,7 @@ class ProfilePhotoScreen : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.profile_screen)
+        setContentView(R.layout.profile_collection_screen)
         setupViews()
     }
 
@@ -89,13 +79,8 @@ class ProfilePhotoScreen : AppCompatActivity() {
         profileLikeBtn = findViewById(R.id.profile_like)
         profileCollectionBtn = findViewById(R.id.profile_collection)
 
-        profilePhotoBtn.typeface = Typeface.DEFAULT_BOLD
-        profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
-
-        imageRV = findViewById(R.id.main_image)
-        imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        imageAdapter = MainAdapter()
-        imageRV.adapter = imageAdapter
+        profileCollectionBtn.typeface = Typeface.DEFAULT_BOLD
+        profileCollectionBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
 
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
@@ -111,18 +96,18 @@ class ProfilePhotoScreen : AppCompatActivity() {
         }
 
         profilePhotoBtn.setOnClickListener {
-            openPhotoProfile(this, username)
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
         profileLikeBtn.setOnClickListener {
             ProfileLikeScreen.openLikeProfile(this, username)
         }
         profileCollectionBtn.setOnClickListener {
-            ProfileCollectionScreen.openCollectionProfile(this, username)
+            openCollectionProfile(this, username)
         }
 
         Log.d("setupViews", "username: $username")
-
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -140,15 +125,12 @@ class ProfilePhotoScreen : AppCompatActivity() {
 
                 is ProfileState.SuccessPhoto -> {
                     hideProgress()
-                    showPhotos(state.pictureList)
                 }
             }
 
         })
         viewModel.send(ProfileEvent.Load(username))
-        viewModel.send(ProfileEvent.LoadPhoto(username))
-        Log.d("onStartProfile", username)
-
+        Log.d("onStartPhotoProfile", username)
     }
 
     private fun showProfile(response: Profile) {
@@ -169,11 +151,6 @@ class ProfilePhotoScreen : AppCompatActivity() {
 
     }
 
-    private fun showPhotos(response: PhotoResponse) {
-        imageAdapter.submitList(response)
-        Log.d("ProfileScreen", "showPhotos:$response")
-    }
-
     private fun showProgress() {
         progressBar.visibility = View.VISIBLE
     }
@@ -183,8 +160,7 @@ class ProfilePhotoScreen : AppCompatActivity() {
     }
 
     private fun showError(error: Throwable) {
-        Log.d("MainActivity", "showError: $error")
+        Log.d("ProfileCollectionScreen", "showError: $error")
     }
-
 
 }

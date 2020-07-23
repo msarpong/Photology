@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.profile.ProfileScreen"></activity>
+        <activity android:name=".ui.profile.ProfileCollectionScreen"></activity>
+        <activity android:name=".ui.profile.ProfileLikeScreen" />
+        <activity android:name=".ui.profile.ProfilePhotoScreen" />
         <activity android:name=".ui.detail_photo.DetailPhotoScreen" />
         <activity android:name=".ui.search.SearchScreen" />
         <activity android:name=".ui.collections.CollectionScreen" />

@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
-import org.msarpong.splash.ui.profile.ProfileScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 
 class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnsplashViewHolder {
@@ -28,7 +28,7 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
 
             holder.userName.text = picture.user.username
             holder.userName.setOnClickListener {
-                ProfileScreen.openProfile(holder.userName.context as Activity, picture.user.username)
+                ProfilePhotoScreen.openPhotoProfile(holder.userName.context as Activity, picture.user.username)
             }
 
             holder.image.setOnClickListener {

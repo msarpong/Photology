@@ -14,12 +14,8 @@ import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.UnsplashItem
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
-import org.msarpong.splash.ui.detail_photo.DetailEvent
-import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
-import org.msarpong.splash.ui.detail_photo.DetailPhotoViewModel
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.ui.setting.SettingScreen

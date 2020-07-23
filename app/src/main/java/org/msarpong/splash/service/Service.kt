@@ -3,8 +3,8 @@ package org.msarpong.splash.service
 import android.util.Log
 import org.msarpong.splash.di.retrofit
 import org.msarpong.splash.service.mapping.collection.Collection
-import org.msarpong.splash.service.mapping.Unsplash
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.util.ACCESS_KEY
 import retrofit2.Call
@@ -16,10 +16,10 @@ import retrofit2.http.Query
 
 sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
-    data class Success(val pictureList: Unsplash) : ServiceResult()
+    data class Success(val pictureList: PhotoResponse) : ServiceResult()
     data class SuccessCollection(val collectionList: Collection) : ServiceResult()
     data class SuccessProfile(val profile: Profile) : ServiceResult()
-    data class Detail(val pictureList: UnsplashItem) : ServiceResult()
+    data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
 
 interface ServiceReceiver {
@@ -34,12 +34,12 @@ class Service {
     fun getHome(receiver: ServiceReceiver) {
 
         val photos = service.getPhoto()
-        photos.enqueue(object : Callback<Unsplash> {
-            override fun onFailure(call: Call<Unsplash>, t: Throwable) {
+        photos.enqueue(object : Callback<PhotoResponse> {
+            override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
                 Log.d("onFailure_getImage", "showError: $t")
             }
 
-            override fun onResponse(call: Call<Unsplash>, response: Response<Unsplash>) {
+            override fun onResponse(call: Call<PhotoResponse>, response: Response<PhotoResponse>) {
                 val success = response.body()
                 val error = response.errorBody()
                 if (success != null) {
@@ -78,12 +78,12 @@ class Service {
 
     fun getDetail(detailId: String, receiver: ServiceReceiver) {
         val detail = service.getDetailPhoto(detailId)
-        detail.enqueue(object : Callback<UnsplashItem> {
-            override fun onFailure(call: Call<UnsplashItem>, t: Throwable) {
+        detail.enqueue(object : Callback<DetailPhotoResponse> {
+            override fun onFailure(call: Call<DetailPhotoResponse>, t: Throwable) {
                 Log.d("onFailure_getDetail", "showError: $t")
             }
 
-            override fun onResponse(call: Call<UnsplashItem>, response: Response<UnsplashItem>) {
+            override fun onResponse(call: Call<DetailPhotoResponse>, response: Response<DetailPhotoResponse>) {
                 val success = response.body()
                 val error = response.errorBody()
                 if (success != null) {
@@ -122,13 +122,13 @@ class Service {
 
 interface SplashServiceApi {
     @GET("photos/")
-    fun getPhoto(@Query("client_id") client_id: String = ACCESS_KEY): Call<Unsplash>
+    fun getPhoto(@Query("client_id") client_id: String = ACCESS_KEY): Call<PhotoResponse>
 
     @GET("/photos/{detailId}/")
     fun getDetailPhoto(
         @Path("detailId") detailId: String,
         @Query("client_id") client_id: String = ACCESS_KEY
-    ): Call<UnsplashItem>
+    ): Call<DetailPhotoResponse>
 
     @GET("collections/")
     fun getPhotoCollections(@Query("client_id") client_id: String = ACCESS_KEY): Call<Collection>

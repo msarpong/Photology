@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
 import org.msarpong.splash.ui.profile.ProfileScreen
 
-class MainAdapter : ListAdapter<UnsplashItem, UnsplashViewHolder>(UnsplashDiffUtil()) {
+class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnsplashViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val cellForRow = layoutInflater.inflate(R.layout.main_image_recycler, parent, false)
@@ -57,12 +57,12 @@ class UnsplashViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val userName: TextView = itemView.findViewById(R.id.text_username)
 }
 
-class UnsplashDiffUtil : DiffUtil.ItemCallback<UnsplashItem>() {
-    override fun areItemsTheSame(oldItem: UnsplashItem, newItem: UnsplashItem): Boolean {
+class UnsplashDiffUtil : DiffUtil.ItemCallback<PhotoResponseItem>() {
+    override fun areItemsTheSame(oldItem: PhotoResponseItem, newItem: PhotoResponseItem): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: UnsplashItem, newItem: UnsplashItem): Boolean {
+    override fun areContentsTheSame(oldItem: PhotoResponseItem, newItem: PhotoResponseItem): Boolean {
         return oldItem == newItem
     }
 }

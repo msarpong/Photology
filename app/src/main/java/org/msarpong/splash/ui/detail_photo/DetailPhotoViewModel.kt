@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 
 sealed class DetailEvent {
     data class Load(val detailId: String) : DetailEvent()
@@ -16,7 +16,7 @@ sealed class DetailEvent {
 sealed class DetailState {
     object InProgress : DetailState()
     data class Error(val error: Throwable) : DetailState()
-    data class Success(val pictureDetail: UnsplashItem) : DetailState()
+    data class Success(val pictureDetail: DetailPhotoResponse) : DetailState()
 }
 
 class DetailPhotoViewModel(context: Context) : ViewModel() {
@@ -51,7 +51,6 @@ class DetailPhotoViewModel(context: Context) : ViewModel() {
                     }
                 }
             })
-
 
         } catch (exception: Throwable) {
             state.value = DetailState.Error(exception)

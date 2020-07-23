@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
-import org.msarpong.splash.service.mapping.Unsplash
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
 
 sealed class MainEvent {
     object Load : MainEvent()
@@ -15,7 +15,7 @@ sealed class MainEvent {
 
 sealed class MainState {
     object InProgress : MainState()
-    data class Success(val pictureList: Unsplash) : MainState()
+    data class Success(val pictureList: PhotoResponse) : MainState()
     data class Error(val error: Throwable) : MainState()
 }
 

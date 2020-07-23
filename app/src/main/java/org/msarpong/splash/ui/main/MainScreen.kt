@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.Unsplash
-import org.msarpong.splash.service.mapping.UnsplashItem
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.ui.setting.SettingScreen
@@ -30,7 +30,7 @@ class MainScreen : AppCompatActivity() {
     private lateinit var profileBtn: Button
 
     private lateinit var imageRV: RecyclerView
-    private lateinit var imageAdapter: ListAdapter<UnsplashItem, UnsplashViewHolder>
+    private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +79,7 @@ class MainScreen : AppCompatActivity() {
         viewModel.send(MainEvent.Load)
     }
 
-    private fun showPhotos(response: Unsplash) {
+    private fun showPhotos(response: PhotoResponse) {
         imageAdapter.submitList(response)
         Log.d("MainActivity", "showPhotos:$response")
     }

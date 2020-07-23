@@ -23,4 +23,3 @@ val viewModels = module {
     viewModel { CollectionViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
 }
-

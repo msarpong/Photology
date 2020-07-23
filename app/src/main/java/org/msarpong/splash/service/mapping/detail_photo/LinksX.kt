@@ -1,9 +1,9 @@
-package org.msarpong.splash.service.mapping
+package org.msarpong.splash.service.mapping.detail_photo
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Links(
+data class LinksX(
     @SerializedName("download")
     val download: String,
     @SerializedName("download_location")

@@ -1,9 +1,9 @@
-package org.msarpong.splash.service.mapping
+package org.msarpong.splash.service.mapping.photos
 
 
 import com.google.gson.annotations.SerializedName
 
-data class ProfileImageX(
+data class ProfileImage(
     @SerializedName("large")
     val large: String,
     @SerializedName("medium")

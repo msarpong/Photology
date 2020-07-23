@@ -1,9 +1,9 @@
-package org.msarpong.splash.service.mapping
+package org.msarpong.splash.service.mapping.photos
 
 
 import com.google.gson.annotations.SerializedName
 
-data class UnsplashItem(
+data class PhotoResponseItem(
     @SerializedName("alt_description")
     val altDescription: String,
     @SerializedName("categories")

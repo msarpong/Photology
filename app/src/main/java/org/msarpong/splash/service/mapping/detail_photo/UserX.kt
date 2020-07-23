@@ -1,9 +1,9 @@
-package org.msarpong.splash.service.mapping
+package org.msarpong.splash.service.mapping.detail_photo
 
 
 import com.google.gson.annotations.SerializedName
 
-data class User(
+data class UserX(
     @SerializedName("accepted_tos")
     val acceptedTos: Boolean,
     @SerializedName("bio")
@@ -17,13 +17,13 @@ data class User(
     @SerializedName("last_name")
     val lastName: String,
     @SerializedName("links")
-    val links: LinksXX,
+    val links: LinksXXXXX,
     @SerializedName("location")
     val location: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("portfolio_url")
-    val portfolioUrl: Any,
+    val portfolioUrl: String,
     @SerializedName("profile_image")
     val profileImage: ProfileImageX,
     @SerializedName("total_collections")
@@ -33,7 +33,7 @@ data class User(
     @SerializedName("total_photos")
     val totalPhotos: Int,
     @SerializedName("twitter_username")
-    val twitterUsername: Any,
+    val twitterUsername: String,
     @SerializedName("updated_at")
     val updatedAt: String,
     @SerializedName("username")

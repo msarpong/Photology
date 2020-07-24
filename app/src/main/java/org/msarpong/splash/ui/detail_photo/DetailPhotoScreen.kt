@@ -1,15 +1,24 @@
 package org.msarpong.splash.ui.detail_photo
 
+import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
+import android.app.AlertDialog
+import android.app.DownloadManager
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
@@ -19,6 +28,8 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.util.DownloadPhoto
+import java.io.File
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
@@ -40,8 +51,9 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var profileBtn: ImageButton
 
     private lateinit var detailInfo: ImageButton
+    private lateinit var detailShareBtn: ImageButton
+    private lateinit var detailDownloadBtn: ImageButton
     private lateinit var detailInfoView: View
-
 
     private lateinit var infoDate: TextView
     private lateinit var infoView: TextView
@@ -53,8 +65,8 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var infoFocalLength: TextView
     private lateinit var infoIso: TextView
 
-
     companion object {
+
         fun openDetailPhoto(startingActivity: Activity, detailId: String) {
             val intent = Intent(startingActivity, DetailPhotoScreen::class.java)
                 .putExtra(BUNDLE_ID, detailId)
@@ -67,7 +79,6 @@ class DetailPhotoScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_photo_screen)
         setupViews()
-
     }
 
     private fun setupViews() {
@@ -84,7 +95,10 @@ class DetailPhotoScreen : AppCompatActivity() {
         detailUser = findViewById(R.id.detail_text_name)
         detailUserName = findViewById(R.id.detail_text_username)
         detailInfo = findViewById(R.id.detail_info_button)
+
         detailInfoView = findViewById(R.id.view_detail_info)
+        detailShareBtn = findViewById(R.id.detail_share_btn)
+        detailDownloadBtn = findViewById(R.id.detail_download_btn)
 
         infoDate = findViewById(R.id.info_date)
         infoView = findViewById(R.id.info_view)
@@ -114,6 +128,10 @@ class DetailPhotoScreen : AppCompatActivity() {
             } else {
                 detailInfoView.visibility = View.VISIBLE
             }
+        }
+
+        detailShareBtn.setOnClickListener {
+            Toast.makeText(this,"detailDownloadBtn",Toast.LENGTH_LONG).show()
         }
 
         Log.d("setupViews", "detailId: $detailId")
@@ -164,6 +182,15 @@ class DetailPhotoScreen : AppCompatActivity() {
         infoFocalLength.text = response.exif.focalLength
         infoIso.text = response.exif.iso.toString()
 
+        val downloadManager = DownloadPhoto(response.urls.regular)
+
+        detailDownloadBtn.setOnClickListener {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                downloadManager.askPermissions(this)
+            } else {
+                downloadManager.downloadImage(this,response.urls.regular)
+            }
+        }
         Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
     }
 

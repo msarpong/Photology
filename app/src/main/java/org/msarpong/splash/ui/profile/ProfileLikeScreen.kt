@@ -103,7 +103,7 @@ class ProfileLikeScreen : AppCompatActivity() {
             openLikeProfile(this, username)
         }
         profileCollectionBtn.setOnClickListener {
-//            ProfileCollectionScreen.openCollectionProfile(this, username)
+            ProfileCollectionScreen.openCollectionProfile(this, username)
         }
 
         Log.d("setupViews", "username: $username")

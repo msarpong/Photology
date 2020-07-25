@@ -24,7 +24,7 @@ import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.main.UnsplashViewHolder
 import org.msarpong.splash.ui.search.SearchScreen
-import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.ui.user.UserScreen
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
@@ -107,7 +107,7 @@ class ProfilePhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingScreen::class.java))
+            startActivity(Intent(this, UserScreen::class.java))
         }
 
         profilePhotoBtn.setOnClickListener {

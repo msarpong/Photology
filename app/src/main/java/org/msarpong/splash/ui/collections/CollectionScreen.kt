@@ -1,12 +1,13 @@
 package org.msarpong.splash.ui.collections
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -15,9 +16,9 @@ import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.collection.CollectionItem
-import org.msarpong.splash.ui.main.*
+import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchScreen
-import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.ui.user.UserScreen
 
 class CollectionScreen : AppCompatActivity() {
 
@@ -52,6 +53,8 @@ class CollectionScreen : AppCompatActivity() {
         collectionsAdapter = CollectionAdapter()
         collectionsRV.adapter = collectionsAdapter
 
+        collectionBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
         }
@@ -62,7 +65,7 @@ class CollectionScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingScreen::class.java))
+            startActivity(Intent(this, UserScreen::class.java))
         }
     }
 

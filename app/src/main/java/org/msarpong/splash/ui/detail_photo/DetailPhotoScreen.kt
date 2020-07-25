@@ -1,24 +1,13 @@
 package org.msarpong.splash.ui.detail_photo
 
-import android.Manifest
-import android.annotation.TargetApi
 import android.app.Activity
-import android.app.AlertDialog
-import android.app.DownloadManager
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
@@ -26,10 +15,10 @@ import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchScreen
-import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.DownloadPhoto
-import java.io.File
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
@@ -120,7 +109,7 @@ class DetailPhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingScreen::class.java))
+            startActivity(Intent(this, UserScreen::class.java))
         }
         detailInfo.setOnClickListener {
             if (detailInfoView.visibility == View.VISIBLE) {
@@ -181,6 +170,16 @@ class DetailPhotoScreen : AppCompatActivity() {
         infoAperture.text = response.exif.aperture
         infoFocalLength.text = response.exif.focalLength
         infoIso.text = response.exif.iso.toString()
+
+        detailUser.setOnClickListener {
+            ProfilePhotoScreen.openPhotoProfile(this,response.user.username)
+        }
+
+        detailUserImage.setOnClickListener {
+            ProfilePhotoScreen.openPhotoProfile(this,response.user.username)
+        }
+
+
 
         val downloadManager = DownloadPhoto(response.urls.regular)
 

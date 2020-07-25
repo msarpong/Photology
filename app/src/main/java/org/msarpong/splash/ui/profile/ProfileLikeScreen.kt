@@ -17,7 +17,7 @@ import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchScreen
-import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.ui.user.UserScreen
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
@@ -93,7 +93,7 @@ class ProfileLikeScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingScreen::class.java))
+            startActivity(Intent(this, UserScreen::class.java))
         }
 
         profilePhotoBtn.setOnClickListener {

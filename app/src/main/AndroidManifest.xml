@@ -18,7 +18,7 @@
         <activity android:name=".ui.detail_photo.DetailPhotoScreen" />
         <activity android:name=".ui.search.SearchScreen" />
         <activity android:name=".ui.collections.CollectionScreen" />
-        <activity android:name=".ui.setting.SettingScreen" />
+        <activity android:name=".ui.user.UserScreen" />
         <activity android:name=".ui.welcome.WelcomeScreen" />
         <activity android:name=".ui.splash.SplashScreen">
             <intent-filter>

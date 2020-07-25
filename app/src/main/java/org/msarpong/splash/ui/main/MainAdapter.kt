@@ -1,6 +1,7 @@
 package org.msarpong.splash.ui.main
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,28 +24,42 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
     }
 
     override fun onBindViewHolder(holder: UnsplashViewHolder, position: Int) {
-        val picture = getItem(position)
-        picture.let {
-            holder.userName.text = picture.user.username
-            holder.userName.setOnClickListener {
-                ProfilePhotoScreen.openPhotoProfile(holder.userName.context as Activity, picture.user.username)
+        if (position == 0) {
+            holder.itemView.visibility = View.GONE
+            holder.image.visibility = View.GONE
+            holder.userName.visibility = View.GONE
+            holder.userImage.visibility = View.GONE
+            holder.userView.visibility = View.GONE
+        } else {
+
+            val picture = getItem(position)
+            Log.d("PositionRec", position.toString())
+            picture.let {
+
+                holder.userName.text = picture.user.username
+                holder.userName.setOnClickListener {
+                    ProfilePhotoScreen.openPhotoProfile(
+                        holder.userName.context as Activity,
+                        picture.user.username
+                    )
+                }
+
+                holder.image.setOnClickListener {
+                    DetailPhotoScreen.openDetailPhoto(holder.image.context as Activity, picture.id)
+                }
+
+                Glide
+                    .with(holder.userImage.context)
+                    .load(picture.user.profileImage.small)
+                    .fitCenter()
+                    .into(holder.userImage)
+
+                Glide
+                    .with(holder.image.context)
+                    .load(picture.urls.small)
+                    .fitCenter()
+                    .into(holder.image)
             }
-
-            holder.image.setOnClickListener {
-                DetailPhotoScreen.openDetailPhoto(holder.image.context as Activity, picture.id)
-            }
-
-            Glide
-                .with(holder.userImage.context)
-                .load(picture.user.profileImage.small)
-                .fitCenter()
-                .into(holder.userImage)
-
-            Glide
-                .with(holder.image.context)
-                .load(picture.urls.small)
-                .fitCenter()
-                .into(holder.image)
         }
     }
 
@@ -54,6 +69,7 @@ class UnsplashViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val image: ImageView = itemView.findViewById(R.id.image_cover)
     val userImage: ImageView = itemView.findViewById(R.id.image_user)
     val userName: TextView = itemView.findViewById(R.id.text_username)
+    val userView: View = itemView.findViewById(R.id.view)
 }
 
 class UnsplashDiffUtil : DiffUtil.ItemCallback<PhotoResponseItem>() {
@@ -61,7 +77,10 @@ class UnsplashDiffUtil : DiffUtil.ItemCallback<PhotoResponseItem>() {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: PhotoResponseItem, newItem: PhotoResponseItem): Boolean {
+    override fun areContentsTheSame(
+        oldItem: PhotoResponseItem,
+        newItem: PhotoResponseItem
+    ): Boolean {
         return oldItem == newItem
     }
 }

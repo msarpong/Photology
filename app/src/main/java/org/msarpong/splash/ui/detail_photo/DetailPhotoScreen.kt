@@ -54,8 +54,9 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var infoFocalLength: TextView
     private lateinit var infoIso: TextView
 
-    companion object {
+    private lateinit var downloadManager: DownloadPhoto
 
+    companion object {
         fun openDetailPhoto(startingActivity: Activity, detailId: String) {
             val intent = Intent(startingActivity, DetailPhotoScreen::class.java)
                 .putExtra(BUNDLE_ID, detailId)
@@ -120,7 +121,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         }
 
         detailShareBtn.setOnClickListener {
-            Toast.makeText(this,"detailDownloadBtn",Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "detailDownloadBtn", Toast.LENGTH_LONG).show()
         }
 
         Log.d("setupViews", "detailId: $detailId")
@@ -137,7 +138,7 @@ class DetailPhotoScreen : AppCompatActivity() {
                 }
                 is DetailState.Success -> {
                     hideProgress()
-                    showPhoto(state.pictureDetail)
+                    showPhotos(state.pictureDetail)
                 }
             }
         })
@@ -145,7 +146,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         Log.d("onStart", detailId)
     }
 
-    private fun showPhoto(response: DetailPhotoResponse) {
+    private fun showPhotos(response: DetailPhotoResponse) {
         Glide
             .with(detailImage.context)
             .load(response.urls.small)
@@ -161,7 +162,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         detailUser.text = response.user.name
         detailUserName.text = response.user.username
 
-        infoDate.text = "Published on "+response.createdAt
+        infoDate.text = "Published on " + response.createdAt
         infoView.text = response.views.toString()
         infoDownload.text = response.downloads.toString()
         infoCamera.text = response.exif.make
@@ -171,26 +172,29 @@ class DetailPhotoScreen : AppCompatActivity() {
         infoFocalLength.text = response.exif.focalLength
         infoIso.text = response.exif.iso.toString()
 
+        buttonListener(response)
+
+        Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
+    }
+
+    private fun buttonListener(response: DetailPhotoResponse) {
+
+        downloadManager = DownloadPhoto(response.urls.small)
         detailUser.setOnClickListener {
-            ProfilePhotoScreen.openPhotoProfile(this,response.user.username)
+            ProfilePhotoScreen.openPhotoProfile(this, response.user.username)
         }
 
         detailUserImage.setOnClickListener {
-            ProfilePhotoScreen.openPhotoProfile(this,response.user.username)
+            ProfilePhotoScreen.openPhotoProfile(this, response.user.username)
         }
-
-
-
-        val downloadManager = DownloadPhoto(response.urls.regular)
 
         detailDownloadBtn.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                 downloadManager.askPermissions(this)
             } else {
-                downloadManager.downloadImage(this,response.urls.regular)
+                downloadManager.downloadImage(this, response.urls.regular)
             }
         }
-        Log.d("DetailPhotoScreen", "showDetailPhoto:$response")
     }
 
     private fun showProgress() {

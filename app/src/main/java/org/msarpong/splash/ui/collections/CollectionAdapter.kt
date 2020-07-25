@@ -22,49 +22,78 @@ class CollectionAdapter : ListAdapter<CollectionItem, CollectionViewHolder>(Coll
     }
 
     override fun onBindViewHolder(holder: CollectionViewHolder, position: Int) {
-        val picture = getItem(position)
+        val picture: CollectionItem = getItem(position)
         picture.let {
 
             holder.collectionTitle.text = picture.title
             holder.collectionTotal.text = picture.totalPhotos.toString()
 
             holder.collectionMain.setOnClickListener {
-                DetailPhotoScreen.openDetailPhoto( holder.collectionMain.context as Activity, picture.previewPhotos[0].id)
+                DetailPhotoScreen.openDetailPhoto(
+                    holder.collectionMain.context as Activity,
+                    picture.previewPhotos[0].id
+                )
             }
             holder.collectionTop.setOnClickListener {
-                DetailPhotoScreen.openDetailPhoto( holder.collectionMain.context as Activity, picture.previewPhotos[1].id)
+                DetailPhotoScreen.openDetailPhoto(
+                    holder.collectionMain.context as Activity,
+                    picture.previewPhotos[1].id
+                )
             }
 
             holder.collectionBottom.setOnClickListener {
-                DetailPhotoScreen.openDetailPhoto( holder.collectionMain.context as Activity, picture.previewPhotos[2].id)
+                DetailPhotoScreen.openDetailPhoto(
+                    holder.collectionMain.context as Activity,
+                    picture.previewPhotos[2].id
+                )
             }
-
-            holder.collectionTitle.setOnClickListener {
-
-            }
-
-
-            Glide
-                .with(holder.collectionMain.context)
-                .load(picture.previewPhotos[0].urls.regular)
-                .fitCenter()
-                .into(holder.collectionMain)
-
-            Glide
-                .with(holder.collectionTop.context)
-                .load(picture.previewPhotos[1].urls.regular)
-                .fitCenter()
-                .into(holder.collectionTop)
-
-            Glide
-                .with(holder.collectionBottom.context)
-                .load(picture.previewPhotos[2].urls.regular)
-                .fitCenter()
-                .into(holder.collectionBottom)
+            showImage(picture, holder)
+            buttonListener(picture, holder)
         }
 
     }
 
+    private fun buttonListener(picture: CollectionItem, holder: CollectionViewHolder) {
+        holder.collectionMain.setOnClickListener {
+            DetailPhotoScreen.openDetailPhoto(
+                holder.collectionMain.context as Activity,
+                picture.previewPhotos[0].id
+            )
+        }
+        holder.collectionTop.setOnClickListener {
+            DetailPhotoScreen.openDetailPhoto(
+                holder.collectionMain.context as Activity,
+                picture.previewPhotos[1].id
+            )
+        }
+
+        holder.collectionBottom.setOnClickListener {
+            DetailPhotoScreen.openDetailPhoto(
+                holder.collectionMain.context as Activity,
+                picture.previewPhotos[2].id
+            )
+        }
+    }
+
+    private fun showImage(picture: CollectionItem, holder: CollectionViewHolder) {
+        Glide
+            .with(holder.collectionMain.context)
+            .load(picture.previewPhotos[0].urls.regular)
+            .fitCenter()
+            .into(holder.collectionMain)
+
+        Glide
+            .with(holder.collectionTop.context)
+            .load(picture.previewPhotos[1].urls.regular)
+            .fitCenter()
+            .into(holder.collectionTop)
+
+        Glide
+            .with(holder.collectionBottom.context)
+            .load(picture.previewPhotos[2].urls.regular)
+            .fitCenter()
+            .into(holder.collectionBottom)
+    }
 }
 
 class CollectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -73,7 +102,7 @@ class CollectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val collectionBottom: ImageView = itemView.findViewById(R.id.collection_bottom)
     val collectionTitle: TextView = itemView.findViewById(R.id.collection_text_title)
     val collectionTotal: TextView = itemView.findViewById(R.id.collection_text_total)
-    }
+}
 
 class CollectionDiffUtil : DiffUtil.ItemCallback<CollectionItem>() {
     override fun areItemsTheSame(oldItem: CollectionItem, newItem: CollectionItem): Boolean {

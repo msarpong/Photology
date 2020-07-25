@@ -25,7 +25,6 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
     override fun onBindViewHolder(holder: UnsplashViewHolder, position: Int) {
         val picture = getItem(position)
         picture.let {
-
             holder.userName.text = picture.user.username
             holder.userName.setOnClickListener {
                 ProfilePhotoScreen.openPhotoProfile(holder.userName.context as Activity, picture.user.username)

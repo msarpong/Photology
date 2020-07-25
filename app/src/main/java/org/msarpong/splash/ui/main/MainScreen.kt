@@ -4,9 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -17,7 +18,7 @@ import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.search.SearchScreen
-import org.msarpong.splash.ui.setting.SettingScreen
+import org.msarpong.splash.ui.user.UserScreen
 
 
 class MainScreen : AppCompatActivity() {
@@ -25,9 +26,11 @@ class MainScreen : AppCompatActivity() {
     private val viewModel: MainViewModel by inject()
 
     private lateinit var progressBar: ProgressBar
-    private lateinit var collectionBtn: Button
-    private lateinit var searchBtn: Button
-    private lateinit var profileBtn: Button
+
+    private lateinit var homeBtn: ImageButton
+    private lateinit var collectionBtn: ImageButton
+    private lateinit var searchBtn: ImageButton
+    private lateinit var profileBtn: ImageButton
 
     private lateinit var imageRV: RecyclerView
     private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
@@ -41,6 +44,7 @@ class MainScreen : AppCompatActivity() {
     private fun setupViews() {
         progressBar = findViewById(R.id.progressBar)
 
+        homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
@@ -50,6 +54,7 @@ class MainScreen : AppCompatActivity() {
         imageAdapter = MainAdapter()
         imageRV.adapter = imageAdapter
 
+        homeBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
         collectionBtn.setOnClickListener {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
@@ -57,7 +62,7 @@ class MainScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingScreen::class.java))
+            startActivity(Intent(this, UserScreen::class.java))
         }
     }
 

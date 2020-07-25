@@ -57,32 +57,29 @@ class ProfileLikeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_like_screen)
+        initViews()
         setupViews()
     }
 
-    private fun setupViews() {
-
+    private fun initViews() {
         username = intent.getStringExtra(BUNDLE_ID)
-
         progressBar = findViewById(R.id.progressBar)
-
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
-
         profileImage = findViewById(R.id.profile_image)
         profileUsername = findViewById(R.id.profile_text_username)
         profileFullName = findViewById(R.id.profile_text_fullname)
         profileBio = findViewById(R.id.profile_text_bio)
-
         profilePhotoBtn = findViewById(R.id.profile_photo)
         profileLikeBtn = findViewById(R.id.profile_like)
         profileLikeBtn.typeface = Typeface.DEFAULT_BOLD
         profileLikeBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
-
         profileCollectionBtn = findViewById(R.id.profile_collection)
+    }
 
+    private fun setupViews() {
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
         }

@@ -3,12 +3,12 @@ package org.msarpong.splash.ui.profile
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
@@ -57,31 +57,30 @@ class ProfileCollectionScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_collection_screen)
+        initView()
         setupViews()
+
     }
 
-    private fun setupViews() {
+    private fun initView() {
         username = intent.getStringExtra(BUNDLE_ID)
-
         progressBar = findViewById(R.id.progressBar)
-
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
-
         profileImage = findViewById(R.id.profile_image)
         profileUsername = findViewById(R.id.profile_text_username)
         profileFullName = findViewById(R.id.profile_text_fullname)
         profileBio = findViewById(R.id.profile_text_bio)
-
         profilePhotoBtn = findViewById(R.id.profile_photo)
         profileLikeBtn = findViewById(R.id.profile_like)
         profileCollectionBtn = findViewById(R.id.profile_collection)
-
         profileCollectionBtn.typeface = Typeface.DEFAULT_BOLD
         profileCollectionBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+    }
 
+    private fun setupViews() {
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
         }

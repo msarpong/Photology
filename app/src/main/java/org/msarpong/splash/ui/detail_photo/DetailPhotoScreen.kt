@@ -68,14 +68,14 @@ class DetailPhotoScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_photo_screen)
+        initView()
         setupViews()
     }
 
-    private fun setupViews() {
+    private fun initView() {
         detailId = intent.getStringExtra(BUNDLE_ID)
 
         progressBar = findViewById(R.id.progressBar)
-
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
@@ -85,11 +85,9 @@ class DetailPhotoScreen : AppCompatActivity() {
         detailUser = findViewById(R.id.detail_text_name)
         detailUserName = findViewById(R.id.detail_text_username)
         detailInfo = findViewById(R.id.detail_info_button)
-
         detailInfoView = findViewById(R.id.view_detail_info)
         detailShareBtn = findViewById(R.id.detail_share_btn)
         detailDownloadBtn = findViewById(R.id.detail_download_btn)
-
         infoDate = findViewById(R.id.info_date)
         infoView = findViewById(R.id.info_view)
         infoDownload = findViewById(R.id.info_download)
@@ -99,6 +97,9 @@ class DetailPhotoScreen : AppCompatActivity() {
         infoAperture = findViewById(R.id.info_exif_aperture)
         infoFocalLength = findViewById(R.id.info_exif_focal_length)
         infoIso = findViewById(R.id.info_exif_iso)
+    }
+
+    private fun setupViews() {
 
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))

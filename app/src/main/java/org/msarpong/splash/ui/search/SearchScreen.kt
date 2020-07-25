@@ -40,25 +40,29 @@ class SearchScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_screen)
+        initViews()
+        initRecyclerView()
         setupViews()
     }
 
-    private fun setupViews() {
-        progressBar = findViewById(R.id.progressBar)
+    private fun initRecyclerView() {
+        imageRV.layoutManager = GridLayoutManager(this, 3)
+        imageAdapter = SearchAdapter()
+        imageRV.adapter = imageAdapter
+    }
 
+    private fun initViews() {
+        progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
         submitQuery = findViewById(R.id.search_submit_btn)
-
         searchTerm = findViewById(R.id.search_edit_text)
-
         imageRV = findViewById(R.id.recycler_search)
-        imageRV.layoutManager = GridLayoutManager(this, 3)
-//        imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        imageAdapter = SearchAdapter()
-        imageRV.adapter = imageAdapter
+    }
+
+    private fun setupViews() {
 
         searchBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
 
@@ -102,11 +106,6 @@ class SearchScreen : AppCompatActivity() {
     private fun showResult(response: SearchResponse) {
         imageAdapter.submitList(response.results)
         Log.d("SearchScreen", "showSearchScreen:$response")
-
-    }
-
-    private fun showProgress() {
-        progressBar.visibility = View.VISIBLE
     }
 
     private fun hideProgress() {

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.setting.SettingScreen">
+    tools:context=".ui.user.UserScreen">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -20,58 +20,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView2"
+    <View
+        android:id="@+id/drop_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="?actionBarSize"
+        android:background="@drawable/drop_shadow"
+        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <include
+        android:id="@+id/include_menu_bar"
+        layout="@layout/include_menu_bar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center_vertical"
-            android:padding="20dp"
-            android:weightSum="4">
-
-            <Button
-                android:id="@+id/home_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_home" />
-
-            <Button
-                android:id="@+id/collection_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_collections" />
-
-            <Button
-                android:id="@+id/search_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTint="#A8A8A8"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_search" />
-
-            <Button
-                android:id="@+id/profile_btn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableTint="#FF000000"
-                android:background="@android:color/transparent"
-                android:drawableTop="@drawable/ic_user" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

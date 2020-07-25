@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.welcome.WelcomeScreen">
 
-
     <Button
         android:id="@+id/skip_button"
         android:layout_width="wrap_content"

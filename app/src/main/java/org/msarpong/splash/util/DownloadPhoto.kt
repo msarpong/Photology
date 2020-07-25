@@ -17,7 +17,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
 import java.io.File
 
 class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
@@ -40,22 +39,18 @@ class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
     }
 
     @TargetApi(Build.VERSION_CODES.M)
+    @Suppress("TooManyFunctions")
     fun askPermissions(downloadContext: Context) {
         if (ContextCompat.checkSelfPermission(
                 downloadContext,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Permission is not granted
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     downloadContext as Activity,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 )
             ) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
                 AlertDialog.Builder(downloadContext)
                     .setTitle("Permission required")
                     .setMessage("Permission required to save photos from the Web.")
@@ -70,23 +65,18 @@ class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
                     .setNegativeButton("Deny") { dialog, id -> dialog.cancel() }
                     .show()
             } else {
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(
                     downloadContext,
                     arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
                 )
-                // MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-
             }
         } else {
-            // Permission has already been granted
             downloadImage(downloadContext, imageUrl)
         }
     }
 
+    @Suppress("LargeClass","TooManyFunctions")
     fun downloadImage(downloadContext: Context, url: String) {
         val directory = File(Environment.DIRECTORY_PICTURES)
 
@@ -141,9 +131,6 @@ class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
             DownloadManager.STATUS_PENDING -> "Pending"
             DownloadManager.STATUS_RUNNING -> "Downloading..."
             DownloadManager.STATUS_SUCCESSFUL -> "Image downloaded successfully in $directory"
-//            DownloadManager.STATUS_SUCCESSFUL -> "Image downloaded successfully in $directory" + File.separator + url.substring(
-//                url.lastIndexOf("/") + 1
-//            )
             else -> "There's nothing to download"
         }
         return msg
@@ -156,25 +143,18 @@ class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
     ) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE -> {
-                // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay!
-                    // Download the Image
-
-                    downloadImage(Companion.getIntent(this) as Context, imageUrl)
+                                     downloadImage(Companion.getIntent(this) as Context, imageUrl)
                 } else {
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-
                 }
                 return
             }
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
+
             else -> {
                 // Ignore all other requests.
             }
         }
     }
 }
-

@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -33,6 +34,9 @@ class SearchScreen : AppCompatActivity() {
     private lateinit var profileBtn: ImageButton
     private lateinit var searchTerm: EditText
     private lateinit var submitQuery: ImageButton
+    private lateinit var totalResult: TextView
+    private lateinit var searchBar: View
+
 
     private lateinit var imageRV: RecyclerView
     private lateinit var imageAdapter: ListAdapter<SearchResponse.Result, SearchViewHolder>
@@ -58,6 +62,8 @@ class SearchScreen : AppCompatActivity() {
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
         submitQuery = findViewById(R.id.search_submit_btn)
+        totalResult = findViewById(R.id.search_result_nr)
+        searchBar = findViewById(R.id.search_bar)
         searchTerm = findViewById(R.id.search_edit_text)
         imageRV = findViewById(R.id.recycler_search)
     }
@@ -78,6 +84,7 @@ class SearchScreen : AppCompatActivity() {
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
         }
+
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
@@ -104,6 +111,11 @@ class SearchScreen : AppCompatActivity() {
     }
 
     private fun showResult(response: SearchResponse) {
+        val total = response.total.toString()
+        val query = searchTerm.text.toString()
+        totalResult.visibility = View.VISIBLE
+        searchBar.visibility = View.VISIBLE
+        totalResult.text = "$total result found for $query"
         imageAdapter.submitList(response.results)
         Log.d("SearchScreen", "showSearchScreen:$response")
     }

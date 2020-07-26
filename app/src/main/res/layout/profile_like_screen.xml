@@ -7,7 +7,7 @@
     tools:context=".ui.profile.ProfilePhotoScreen">
 
     <include
-        android:id="@+id/linearLayout2"
+        android:id="@+id/search_bar"
         layout="@layout/profile_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
         android:orientation="vertical"
         android:paddingTop="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/search_bar"
         tools:itemCount="3"
         tools:listitem="@layout/main_image_recycler" />
 

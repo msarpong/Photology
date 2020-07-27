@@ -7,7 +7,7 @@ import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
-import org.msarpong.splash.util.ACCESS_KEY
+import org.msarpong.splash.util.CLIENT_ID
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -176,34 +176,34 @@ class Service {
 
 interface SplashServiceApi {
     @GET("photos/")
-    fun getPhoto(@Query("client_id") client_id: String = ACCESS_KEY): Call<PhotoResponse>
+    fun getPhoto(@Query("client_id") client_id: String = CLIENT_ID): Call<PhotoResponse>
 
     @GET("/photos/{detailId}/")
     fun getDetailPhoto(
         @Path("detailId") detailId: String,
-        @Query("client_id") client_id: String = ACCESS_KEY
+        @Query("client_id") client_id: String = CLIENT_ID
     ): Call<DetailPhotoResponse>
 
     @GET("collections/")
-    fun getPhotoCollections(@Query("client_id") client_id: String = ACCESS_KEY): Call<Collection>
+    fun getPhotoCollections(@Query("client_id") client_id: String = CLIENT_ID): Call<Collection>
 
     @GET("/users/{username}/")
     fun getDetailUser(
         @Path("username") detailId: String,
-        @Query("client_id") client_id: String = ACCESS_KEY
+        @Query("client_id") client_id: String = CLIENT_ID
     ): Call<Profile>
 
     @GET("/users/{username}/photos")
     fun getDetailPhotoUser(
         @Path("username") detailId: String,
-        @Query("client_id") client_id: String = ACCESS_KEY
+        @Query("client_id") client_id: String = CLIENT_ID
     ): Call<PhotoResponse>
 
     @GET("/search/{search_type}")
     fun getSearch(
         @Path("search_type") search_type: String,
         @Query("query") query: String,
-        @Query("client_id") client_id: String = ACCESS_KEY
+        @Query("client_id") client_id: String = CLIENT_ID
     ): Call<SearchResponse>
 }
 

@@ -10,9 +10,12 @@ import org.msarpong.splash.ui.main.MainViewModel
 import org.msarpong.splash.ui.profile.ProfileViewModel
 import org.msarpong.splash.ui.search.SearchViewModel
 import org.msarpong.splash.ui.user.UserViewModel
+import org.msarpong.splash.ui.welcome.WelcomeViewModel
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorageFactory
 
 val androidComponents = module {
     single { androidContext().resources }
+    single { KeyValueStorageFactory.build(context = androidContext(), name = "splash_prefs") }
 }
 
 val appComponents = module {
@@ -26,4 +29,5 @@ val viewModels = module {
     viewModel { ProfileViewModel(get()) }
     viewModel { UserViewModel(get()) }
     viewModel { SearchViewModel(get()) }
+    viewModel { WelcomeViewModel(get()) }
 }

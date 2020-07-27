@@ -2,6 +2,7 @@ package org.msarpong.splash.service
 
 import android.util.Log
 import org.msarpong.splash.di.retrofit
+import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
@@ -12,6 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -20,6 +22,7 @@ sealed class ServiceResult {
     data class Success(val pictureList: PhotoResponse) : ServiceResult()
     data class SuccessCollection(val collectionList: Collection) : ServiceResult()
     data class SuccessProfile(val profile: Profile) : ServiceResult()
+    data class SuccessUser(val user: UserResponse) : ServiceResult()
     data class SuccessSearch(val search: SearchResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
@@ -29,6 +32,7 @@ interface ServiceReceiver {
 }
 
 class Service {
+
     private val service: SplashServiceApi = retrofit.create(
         SplashServiceApi::class.java
     )
@@ -172,6 +176,29 @@ class Service {
 
         }))
     }
+
+    fun getCurrentUser(authToken: String, receiver: ServiceReceiver) {
+        val userResult = service.getMe(authToken)
+        userResult.enqueue(object : Callback<UserResponse> {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Log.d("onFailure_getCurUser", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val userInfo = response.body()!!
+                    receiver.receive(ServiceResult.SuccessUser(userInfo))
+                    Log.d("onResponse_getCurUser", "showSuccess: $success")
+
+                } else {
+                    Log.d("onResponse_getCurUser", "showError: $error")
+
+                }
+            }
+        })
+    }
 }
 
 interface SplashServiceApi {
@@ -205,6 +232,12 @@ interface SplashServiceApi {
         @Query("query") query: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<SearchResponse>
+
+    @GET("/me")
+    fun getMe(
+        @Header("Authorization") authorization: String
+    ): Call<UserResponse>
+
 }
 
 

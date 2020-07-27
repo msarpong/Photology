@@ -44,6 +44,8 @@ class WelcomeScreen : AppCompatActivity() {
 
     private fun checkUser() {
         if (prefs.getString(ACCESS_TOKEN) != null) {
+            val token: String = prefs.getString(ACCESS_TOKEN)!!
+            Log.d("checkUser", token)
             val main = Intent(this, MainScreen::class.java)
             startActivity(main)
             finish()
@@ -65,7 +67,13 @@ class WelcomeScreen : AppCompatActivity() {
         }
 
         signInEmailButton.setOnClickListener {
-            setupWebViewDialog(url)
+            if (prefs.getString(ACCESS_TOKEN) != null) {
+                val main = Intent(this, MainScreen::class.java)
+                startActivity(main)
+                finish()
+            } else {
+                setupWebViewDialog(url)
+            }
         }
     }
 
@@ -118,9 +126,7 @@ class WelcomeScreen : AppCompatActivity() {
 
     private fun showError(error: Throwable) {
         Log.d("WelcomeScreen", "showError: $error")
-
     }
-
 
 }
 

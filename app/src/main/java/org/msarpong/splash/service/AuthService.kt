@@ -10,8 +10,7 @@ import org.msarpong.splash.util.REDIRECT_URI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.POST
-import retrofit2.http.Query
+import retrofit2.http.*
 
 sealed class AuthServiceResult {
     data class Error(val error: Throwable) : AuthServiceResult()
@@ -30,7 +29,7 @@ class AuthService {
     fun authUser(code: String, receiver: AuthServiceReceiver) {
         Log.d("authUser", code)
 
-        val result = service.getAuthUser(code)
+        val result = service.getAuthUser(code, code)
         result.enqueue(object : Callback<AuthResponse> {
             override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
                 Log.d("onFailure_authUser", "showError: $t")
@@ -55,8 +54,10 @@ class AuthService {
 }
 
 interface AuthServiceApi {
+
     @POST("token/")
     fun getAuthUser(
+        @Header("Authorization: Bearer") authorization: String,
         @Query("code") code: String,
         @Query("client_id") client_id: String = CLIENT_ID,
         @Query("client_secret") client_secret: String = CLIENT_SECRET,

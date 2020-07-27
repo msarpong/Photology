@@ -36,7 +36,6 @@ class WelcomeViewModel(context: Context) : ViewModel() {
     private fun loadContent(code: String) {
         try {
             Log.d("WelcomeViewModel", "loadContent: $code")
-
             service.authUser(code, object : AuthServiceReceiver {
                 override fun receive(result: AuthServiceResult) {
                     when (result) {
@@ -53,4 +52,6 @@ class WelcomeViewModel(context: Context) : ViewModel() {
         }
 
     }
+
+
 }

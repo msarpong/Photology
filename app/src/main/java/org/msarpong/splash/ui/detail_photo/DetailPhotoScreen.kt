@@ -16,7 +16,7 @@ import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
-import org.msarpong.splash.ui.search.SearchScreen
+import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.DownloadPhoto
 
@@ -108,7 +108,7 @@ class DetailPhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
         searchBtn.setOnClickListener {
-            startActivity(Intent(this, SearchScreen::class.java))
+            startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))

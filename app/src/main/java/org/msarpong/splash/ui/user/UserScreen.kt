@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.service.mapping.profile.Profile
@@ -24,7 +23,7 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.main.UnsplashViewHolder
-import org.msarpong.splash.ui.search.SearchScreen
+import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
@@ -91,7 +90,7 @@ class UserScreen : AppCompatActivity() {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
         searchBtn.setOnClickListener {
-            startActivity(Intent(this, SearchScreen::class.java))
+            startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))

@@ -1,13 +1,13 @@
 package org.msarpong.splash.ui.search
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.view.WindowManager
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -20,14 +20,16 @@ import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.SEARCH_TYPE_PHOTOS
 import org.msarpong.splash.util.hideKeyboard
 
-class SearchScreen : AppCompatActivity() {
+class SearchPhotoScreen : AppCompatActivity() {
 
     private val viewModel: SearchViewModel by inject()
 
-    private lateinit var progressBar: ProgressBar
+    private lateinit var term: String
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
@@ -36,7 +38,9 @@ class SearchScreen : AppCompatActivity() {
     private lateinit var submitQuery: ImageButton
     private lateinit var totalResult: TextView
     private lateinit var searchBar: View
-
+    private lateinit var searchPhoto: Button
+    private lateinit var searchUser: Button
+    private lateinit var searchCollection: Button
 
     private lateinit var imageRV: RecyclerView
     private lateinit var imageAdapter: ListAdapter<SearchResponse.Result, SearchViewHolder>
@@ -44,6 +48,7 @@ class SearchScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_screen)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         initViews()
         initRecyclerView()
         setupViews()
@@ -65,7 +70,13 @@ class SearchScreen : AppCompatActivity() {
         totalResult = findViewById(R.id.search_result_nr)
         searchBar = findViewById(R.id.search_bar)
         searchTerm = findViewById(R.id.search_edit_text)
+        searchPhoto = findViewById(R.id.search_bar_photo)
+        searchUser = findViewById(R.id.search_bar_user)
+        searchCollection = findViewById(R.id.search_bar_collection)
+
         imageRV = findViewById(R.id.recycler_search)
+
+
     }
 
     private fun setupViews() {
@@ -79,16 +90,31 @@ class SearchScreen : AppCompatActivity() {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
         searchBtn.setOnClickListener {
-            startActivity(Intent(this, SearchScreen::class.java))
+            startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
         }
 
+        searchUser.setOnClickListener {
+            startActivity(Intent(this, SearchUserScreen::class.java))
+            SearchUserScreen.openSearchUser(this, term)
+            Log.d("searchUser", "Query:$term")
+
+        }
+
+        searchCollection.setOnClickListener {
+            startActivity(Intent(this, SearchCollectionScreen::class.java))
+        }
+
+        searchPhoto.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+        searchPhoto.setTypeface(searchUser.typeface, Typeface.BOLD)
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            viewModel.send(SearchEvent.Load(query))
+            term = searchTerm.text.toString()
+
+            viewModel.send(SearchEvent.Load(SEARCH_TYPE_PHOTOS, query))
             this.hideKeyboard()
         }
     }
@@ -112,10 +138,9 @@ class SearchScreen : AppCompatActivity() {
 
     private fun showResult(response: SearchResponse) {
         val total = response.total.toString()
-        val query = searchTerm.text.toString()
         totalResult.visibility = View.VISIBLE
         searchBar.visibility = View.VISIBLE
-        totalResult.text = "$total result found for $query"
+        totalResult.text = "$total result found for $term"
         imageAdapter.submitList(response.results)
         Log.d("SearchScreen", "showSearchScreen:$response")
     }

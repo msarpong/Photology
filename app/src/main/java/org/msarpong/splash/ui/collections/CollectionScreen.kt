@@ -17,7 +17,7 @@ import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.collection.CollectionItem
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.ui.search.SearchScreen
+import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
 
 class CollectionScreen : AppCompatActivity() {
@@ -62,7 +62,7 @@ class CollectionScreen : AppCompatActivity() {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
         searchBtn.setOnClickListener {
-            startActivity(Intent(this, SearchScreen::class.java))
+            startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))

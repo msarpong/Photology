@@ -23,7 +23,7 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.main.UnsplashViewHolder
-import org.msarpong.splash.ui.search.SearchScreen
+import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
@@ -86,10 +86,12 @@ class ProfilePhotoScreen : AppCompatActivity() {
         profileLikeBtn = findViewById(R.id.profile_like)
         profileCollectionBtn = findViewById(R.id.profile_collection)
         profilePhotoBtn.typeface = Typeface.DEFAULT_BOLD
-        profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
     }
 
     private fun setupViews() {
+
+        profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+
         imageRV = findViewById(R.id.main_image)
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
@@ -102,7 +104,7 @@ class ProfilePhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
         searchBtn.setOnClickListener {
-            startActivity(Intent(this, SearchScreen::class.java))
+            startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
@@ -135,7 +137,6 @@ class ProfilePhotoScreen : AppCompatActivity() {
                     hideProgress()
                     showProfile(state.pictureList)
                 }
-
                 is ProfileState.SuccessPhoto -> {
                     hideProgress()
                     showPhotos(state.pictureList)
@@ -183,6 +184,4 @@ class ProfilePhotoScreen : AppCompatActivity() {
     private fun showError(error: Throwable) {
         Log.d("MainActivity", "showError: $error")
     }
-
-
 }

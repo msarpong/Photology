@@ -10,7 +10,7 @@ import org.msarpong.splash.service.ServiceResult
 import org.msarpong.splash.service.mapping.search.SearchResponse
 
 sealed class SearchEvent {
-    data class Load(val term: String) : SearchEvent()
+    data class Load(val type: String, val term: String) : SearchEvent()
 }
 
 sealed class SearchState {
@@ -29,7 +29,7 @@ class SearchViewModel(context: Context) : ViewModel() {
 
     fun send(event: SearchEvent) {
         when (event) {
-            is SearchEvent.Load -> loadContent("photos", event.term)
+            is SearchEvent.Load -> loadContent(event.type, event.term)
         }
     }
 

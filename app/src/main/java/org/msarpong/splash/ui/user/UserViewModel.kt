@@ -8,17 +8,22 @@ import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
 import org.msarpong.splash.service.mapping.auth.user.UserResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 
 sealed class UserEvent {
     data class Load(val code: String) : UserEvent()
     data class LoadProfile(val username: String) : UserEvent()
+    data class LoadPhoto(val username: String) : UserEvent()
+    data class LoadLike(val username: String) : UserEvent()
+    data class LoadCollection(val username: String) : UserEvent()
 }
 
 sealed class UserState {
     object InProgress : UserState()
     data class Success(val user: UserResponse) : UserState()
     data class SuccessProfile(val profile: Profile) : UserState()
+    data class SuccessPhoto(val photoList: PhotoResponse) : UserState()
     data class Error(val error: Throwable) : UserState()
 }
 
@@ -34,6 +39,29 @@ class UserViewModel(context: Context) : ViewModel() {
         when (event) {
             is UserEvent.Load -> loadContent(event.code)
             is UserEvent.LoadProfile -> loadProfile(event.username)
+            is UserEvent.LoadPhoto -> loadPhoto(event.username)
+        }
+    }
+
+    private fun loadPhoto(username: String) {
+        Log.d("UserViewModel", "loadUserPhotos")
+        try {
+            service.getPhotoUser(username, object : ServiceReceiver {
+                override fun receive(result: ServiceResult) {
+                    when (result) {
+                        is ServiceResult.Success -> state.value =
+                            UserState.SuccessPhoto(
+                                photoList = result.pictureList
+                            )
+
+                        is ServiceResult.Error -> state.value =
+                            UserState.Error(error = result.error)
+                    }
+                }
+
+            })
+        } catch (exception: Throwable) {
+            state.value = UserState.Error(exception)
         }
     }
 
@@ -72,8 +100,5 @@ class UserViewModel(context: Context) : ViewModel() {
         } catch (exception: Throwable) {
             state.value = UserState.Error(exception)
         }
-
-
     }
-
 }

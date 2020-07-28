@@ -10,13 +10,20 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.auth.user.UserResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
+import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
+import org.msarpong.splash.ui.main.UnsplashViewHolder
 import org.msarpong.splash.ui.search.SearchScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
@@ -41,6 +48,9 @@ class UserScreen : AppCompatActivity() {
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
+
+    private lateinit var imageRV: RecyclerView
+    private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +77,11 @@ class UserScreen : AppCompatActivity() {
     }
 
     private fun setupViews() {
+        imageRV = findViewById(R.id.main_image)
+        imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        imageAdapter = MainAdapter()
+        imageRV.adapter = imageAdapter
+
         profileBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
 
         homeBtn.setOnClickListener {
@@ -96,11 +111,15 @@ class UserScreen : AppCompatActivity() {
                 is UserState.Success -> {
                     hideProgress()
                     viewModel.send(UserEvent.LoadProfile(state.user.username))
-
+                    viewModel.send((UserEvent.LoadPhoto(state.user.username)))
                 }
                 is UserState.SuccessProfile -> {
                     hideProgress()
                     showProfile(state.profile)
+                }
+                is UserState.SuccessPhoto -> {
+                    hideProgress()
+                    showPhotos(state.photoList)
                 }
             }
         })
@@ -108,6 +127,11 @@ class UserScreen : AppCompatActivity() {
         Log.d("showToken", "token: $token")
 
         viewModel.send(UserEvent.Load(token.toString()))
+    }
+
+    private fun showPhotos(photoList: PhotoResponse) {
+        imageAdapter.submitList(photoList)
+        Log.d("UserScreenR", "showPhotos:$photoList")
     }
 
     private fun showProfile(profile: Profile) {
@@ -120,10 +144,7 @@ class UserScreen : AppCompatActivity() {
 
         profileUsername.text = profile.username
         profileFullName.text = profile.name
-    }
-
-    private fun showUser(user: UserResponse) {
-        Log.d("showUserScreen", "showError: ${user.username}")
+        profileBio.text = profile.bio
     }
 
     private fun showError(error: Throwable) {

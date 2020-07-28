@@ -10,9 +10,11 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.auth.user.UserResponse
+import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchScreen
@@ -93,13 +95,31 @@ class UserScreen : AppCompatActivity() {
                 }
                 is UserState.Success -> {
                     hideProgress()
-                    showUser(state.user)
+                    viewModel.send(UserEvent.LoadProfile(state.user.username))
+
+                }
+                is UserState.SuccessProfile -> {
+                    hideProgress()
+                    showProfile(state.profile)
                 }
             }
         })
         val token = prefs.getString(ACCESS_TOKEN)
         Log.d("showToken", "token: $token")
-        viewModel.send(UserEvent.Load(token.toString().trim()))
+
+        viewModel.send(UserEvent.Load(token.toString()))
+    }
+
+    private fun showProfile(profile: Profile) {
+//        Log.d("showProfile", "showError: ${profile.}")
+        Glide
+            .with(profileImage.context)
+            .load(profile.profileImage.large)
+            .fitCenter()
+            .into(profileImage)
+
+        profileUsername.text = profile.username
+        profileFullName.text = profile.name
     }
 
     private fun showUser(user: UserResponse) {

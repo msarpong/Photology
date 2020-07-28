@@ -11,12 +11,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.search.SearchResponse
+import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.user.UserScreen
@@ -44,8 +45,8 @@ class SearchUserScreen : AppCompatActivity() {
     private lateinit var searchUser: Button
     private lateinit var searchCollection: Button
 
-    private lateinit var imageRV: RecyclerView
-    private lateinit var imageAdapter: ListAdapter<SearchResponse.Result, SearchViewHolder>
+    private lateinit var usersRV: RecyclerView
+    private lateinit var usersAdapter: ListAdapter<SearchUserResponse.Result, SearchUserViewHolder>
 
     companion object {
         fun openSearchUser(startingActivity: Activity, queryTerm: String) {
@@ -67,9 +68,9 @@ class SearchUserScreen : AppCompatActivity() {
     }
 
     private fun initRecyclerView() {
-        imageRV.layoutManager = GridLayoutManager(this, 3)
-        imageAdapter = SearchAdapter()
-        imageRV.adapter = imageAdapter
+        usersRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        usersAdapter = SearchUserAdapter()
+        usersRV.adapter = usersAdapter
     }
 
     private fun initViews() {
@@ -89,7 +90,7 @@ class SearchUserScreen : AppCompatActivity() {
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
 
-        imageRV = findViewById(R.id.recycler_search)
+        usersRV = findViewById(R.id.recycler_search_user)
     }
 
     private fun setupViews() {
@@ -124,7 +125,7 @@ class SearchUserScreen : AppCompatActivity() {
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            viewModel.send(SearchEvent.Load(SEARCH_TYPE_USERS, query))
+            viewModel.send(SearchEvent.Load(query))
             this.hideKeyboard()
         }
     }
@@ -137,23 +138,23 @@ class SearchUserScreen : AppCompatActivity() {
                     hideProgress()
                     showError(state.error)
                 }
-                is SearchState.Success -> {
+                is SearchState.SuccessUser -> {
                     hideProgress()
                     showResult(state.result)
                 }
             }
         })
-        viewModel.send(SearchEvent.Load(SEARCH_TYPE_USERS, term))
+        viewModel.send(SearchEvent.Load(term))
         Log.d("onStart", "Query:$term")
 
     }
 
-    private fun showResult(response: SearchResponse) {
+    private fun showResult(response: SearchUserResponse) {
         val total = response.total.toString()
         totalResult.visibility = View.VISIBLE
         searchBar.visibility = View.VISIBLE
         totalResult.text = "$total result found for $term"
-        imageAdapter.submitList(response.results)
+        usersAdapter.submitList(response.results)
         Log.d("SearchUser", "showSearchUser:$response")
     }
 

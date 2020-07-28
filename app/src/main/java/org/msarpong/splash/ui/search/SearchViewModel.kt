@@ -8,14 +8,17 @@ import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
 import org.msarpong.splash.service.mapping.search.SearchResponse
+import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
 
 sealed class SearchEvent {
-    data class Load(val type: String, val term: String) : SearchEvent()
+    data class Load(val term: String) : SearchEvent()
+    data class LoadUser(val term: String) : SearchEvent()
 }
 
 sealed class SearchState {
     object InProgress : SearchState()
     data class Success(val result: SearchResponse) : SearchState()
+    data class SuccessUser(val result: SearchUserResponse) : SearchState()
     data class Error(val error: Throwable) : SearchState()
 }
 
@@ -29,14 +32,35 @@ class SearchViewModel(context: Context) : ViewModel() {
 
     fun send(event: SearchEvent) {
         when (event) {
-            is SearchEvent.Load -> loadContent(event.type, event.term)
+            is SearchEvent.Load -> loadContent(event.term)
+            is SearchEvent.LoadUser -> loadResultUser(event.term)
         }
     }
 
-    private fun loadContent(search_type: String, query: String) {
-        Log.d("SearchViewModel", "loadContent")
+    private fun loadResultUser(term: String) {
+        Log.d("SearchViewModel", "loadResultUser")
         try {
-            service.getSearchQuery(search_type, query, object : ServiceReceiver {
+            service.searchUsers(term, object : ServiceReceiver {
+                override fun receive(result: ServiceResult) {
+                    when (result) {
+                        is ServiceResult.SuccessResultUser ->  state.value =
+                            SearchState.SuccessUser(result = result.search)
+                        is ServiceResult.Error -> state.value =
+                        SearchState.Error(error = result.error)
+                    }
+                }
+
+            })
+        } catch (exception: Throwable) {
+            state.value = SearchState.Error(exception)
+        }
+    }
+
+
+    private fun loadContent(query: String) {
+        Log.d("SearchViewModel", "loadContent: $query")
+        try {
+            service.searchPhotos(query, object : ServiceReceiver {
                 override fun receive(result: ServiceResult) {
                     when (result) {
                         is ServiceResult.SuccessSearch -> state.value =

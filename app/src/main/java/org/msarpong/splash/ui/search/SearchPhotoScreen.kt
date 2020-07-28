@@ -20,7 +20,6 @@ import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.user.UserScreen
-import org.msarpong.splash.util.SEARCH_TYPE_PHOTOS
 import org.msarpong.splash.util.hideKeyboard
 
 class SearchPhotoScreen : AppCompatActivity() {
@@ -73,10 +72,7 @@ class SearchPhotoScreen : AppCompatActivity() {
         searchPhoto = findViewById(R.id.search_bar_photo)
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
-
-        imageRV = findViewById(R.id.recycler_search)
-
-
+        imageRV = findViewById(R.id.recycler_search_user)
     }
 
     private fun setupViews() {
@@ -99,7 +95,7 @@ class SearchPhotoScreen : AppCompatActivity() {
         searchUser.setOnClickListener {
             startActivity(Intent(this, SearchUserScreen::class.java))
             SearchUserScreen.openSearchUser(this, term)
-            Log.d("searchUser", "Query:$term")
+            Log.d("searchUser_by_phoyo", "Query:$term")
 
         }
 
@@ -113,8 +109,9 @@ class SearchPhotoScreen : AppCompatActivity() {
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
             term = searchTerm.text.toString()
+            Log.d("submitQuery", "Query:$query")
 
-            viewModel.send(SearchEvent.Load(SEARCH_TYPE_PHOTOS, query))
+            viewModel.send(SearchEvent.Load(query))
             this.hideKeyboard()
         }
     }

@@ -69,7 +69,7 @@ class SearchCollectionScreen : AppCompatActivity() {
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
 
-        imageRV = findViewById(R.id.recycler_search)
+        imageRV = findViewById(R.id.recycler_search_user)
     }
 
     private fun setupViews() {
@@ -102,7 +102,7 @@ class SearchCollectionScreen : AppCompatActivity() {
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            viewModel.send(SearchEvent.Load(SEARCH_TYPE_COLLECTIONS, query))
+            viewModel.send(SearchEvent.Load(query))
             this.hideKeyboard()
         }
     }

@@ -101,7 +101,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_search"
+        android:id="@+id/recycler_search_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -110,7 +110,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/search_result_nr"
         tools:itemCount="3"
-        tools:listitem="@layout/recycler_search_grid_photo" />
+        tools:listitem="@layout/recycler_search_user" />
 
     <View
         android:id="@+id/drop_shadow"

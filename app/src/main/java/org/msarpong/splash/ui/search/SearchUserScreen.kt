@@ -144,7 +144,7 @@ class SearchUserScreen : AppCompatActivity() {
                 }
             }
         })
-        viewModel.send(SearchEvent.Load(term))
+        viewModel.send(SearchEvent.LoadUser(term))
         Log.d("onStart", "Query:$term")
 
     }

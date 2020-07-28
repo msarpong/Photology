@@ -7,13 +7,23 @@
     tools:context=".ui.profile.ProfilePhotoScreen">
 
     <include
+        android:id="@+id/include_header"
+        layout="@layout/include_header_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
         android:id="@+id/search_bar"
         layout="@layout/profile_data"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/include_header" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -32,7 +42,7 @@
     <View
         android:id="@+id/drop_shadow"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:layout_marginTop="?actionBarSize"
         android:background="@drawable/drop_shadow"
         app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"

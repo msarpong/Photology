@@ -1,5 +1,6 @@
 package org.msarpong.splash.service
 
+import android.util.Base64
 import android.util.Log
 import org.msarpong.splash.di.retrofit
 import org.msarpong.splash.service.mapping.auth.user.UserResponse
@@ -173,12 +174,15 @@ class Service {
                     Log.d("onResponse_getSearch", "showError: $error")
                 }
             }
-
         }))
     }
 
     fun getCurrentUser(authToken: String, receiver: ServiceReceiver) {
-        val userResult = service.getMe(authToken)
+        val key = "Bearer "
+
+        val token = key + authToken
+
+        val userResult = service.getMe(token)
         userResult.enqueue(object : Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Log.d("onFailure_getCurUser", "showError: $t")

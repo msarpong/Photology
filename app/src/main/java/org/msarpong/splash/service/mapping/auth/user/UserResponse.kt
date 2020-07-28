@@ -1,6 +1,5 @@
 package org.msarpong.splash.service.mapping.auth.user
 
-
 import com.google.gson.annotations.SerializedName
 
 data class UserResponse(

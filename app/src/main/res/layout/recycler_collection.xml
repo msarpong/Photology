@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/collection_photo"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true">
+
+    <ImageView
+        android:id="@+id/collection_main"
+        android:layout_width="200dp"
+        android:layout_height="360dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/alessiolin" />
+
+    <ImageView
+        android:id="@+id/collection_top"
+        android:layout_width="200dp"
+        android:layout_height="176dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toEndOf="@+id/collection_main"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/cactus" />
+
+    <ImageView
+        android:id="@+id/collection_bottom"
+        android:layout_width="200dp"
+        android:layout_height="176dp"
+        android:layout_below="@id/collection_top"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@+id/collection_main"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/ambrosanio" />
+
+    <LinearLayout
+        android:id="@+id/collection_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/collection_main"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:paddingTop="8dp"
+        android:weightSum="3">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/collection_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica_bold"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                tools:text="--BASKETBALL" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Title"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/collection_text_total"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/helvetica_bold"
+                android:text="35"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Photos"
+
+                android:textSize="12sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

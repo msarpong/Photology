@@ -107,10 +107,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:clipToPadding="false"
         android:orientation="vertical"
+        android:paddingBottom="300dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/search_result_nr"
-        tools:itemCount="3"
+        tools:itemCount="10"
         tools:listitem="@layout/recycler_search_user" />
 
     <View

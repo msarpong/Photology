@@ -116,7 +116,7 @@ class SearchUserScreen : AppCompatActivity() {
         }
 
         searchCollection.setOnClickListener {
-            startActivity(Intent(this, SearchCollectionScreen::class.java))
+            SearchCollectionScreen.openSearchCollection(this, term)
         }
 
         searchTerm.setText(term)

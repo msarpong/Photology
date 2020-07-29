@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
@@ -39,11 +38,9 @@ class SearchCollectionScreen : AppCompatActivity() {
     private lateinit var submitQuery: ImageButton
     private lateinit var totalResult: TextView
     private lateinit var searchBar: View
-
     private lateinit var searchPhoto: Button
     private lateinit var searchUser: Button
     private lateinit var searchCollection: Button
-
     private lateinit var collectionRV: RecyclerView
     private lateinit var collectionAdapter: ListAdapter<SearchCollectionResponse.Result, SearchCollectionViewHolder>
 
@@ -92,6 +89,8 @@ class SearchCollectionScreen : AppCompatActivity() {
             term = intent.getStringExtra(BUNDLE_QUERY)
             viewModel.send(SearchEvent.LoadUser(term))
             viewModel.send(SearchEvent.Load(term)).toString()
+            viewModel.send(SearchEvent.LoadCollection(term))
+
             searchTerm.setText(term)
         } else {
             searchTerm.text.toString()
@@ -115,15 +114,11 @@ class SearchCollectionScreen : AppCompatActivity() {
         }
 
         searchUser.setOnClickListener {
-            startActivity(Intent(this, SearchUserScreen::class.java))
+            SearchUserScreen.openSearchUser(this, term)
         }
 
         searchPhoto.setOnClickListener {
-            startActivity(Intent(this, SearchPhotoScreen::class.java))
-        }
-
-        searchCollection.setOnClickListener {
-            startActivity(Intent(this, SearchCollectionScreen::class.java))
+            SearchPhotoScreen.openSearchPhoto(this, term)
         }
 
         searchCollection.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
@@ -147,7 +142,7 @@ class SearchCollectionScreen : AppCompatActivity() {
                     hideProgress()
                     showError(state.error)
                 }
-                is SearchState.SuccessCollection ->{
+                is SearchState.SuccessCollection -> {
                     hideProgress()
                     showResult(state.result)
                 }

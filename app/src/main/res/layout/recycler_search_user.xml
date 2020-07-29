@@ -9,7 +9,6 @@
     android:paddingBottom="12dp"
     android:focusable="true">
 
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/result_profile_image"
         android:layout_width="80dp"

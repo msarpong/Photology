@@ -93,6 +93,7 @@ class SearchPhotoScreen : AppCompatActivity() {
             term = intent.getStringExtra(BUNDLE_QUERY)
             viewModel.send(SearchEvent.LoadUser(term))
             viewModel.send(SearchEvent.Load(term)).toString()
+            viewModel.send(SearchEvent.LoadCollection(term))
             searchTerm.setText(term)
         } else {
             searchTerm.text.toString()
@@ -117,14 +118,11 @@ class SearchPhotoScreen : AppCompatActivity() {
         }
 
         searchUser.setOnClickListener {
-            startActivity(Intent(this, SearchUserScreen::class.java))
             SearchUserScreen.openSearchUser(this, term)
-            Log.d("searchUser_by_phoyo", "Query:$term")
-
         }
 
         searchCollection.setOnClickListener {
-            startActivity(Intent(this, SearchCollectionScreen::class.java))
+            SearchCollectionScreen.openSearchCollection(this, term)
         }
 
         searchPhoto.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)

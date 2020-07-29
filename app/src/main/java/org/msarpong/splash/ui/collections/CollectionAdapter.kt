@@ -17,7 +17,7 @@ import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
 class CollectionAdapter : ListAdapter<CollectionItem, CollectionViewHolder>(CollectionDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CollectionViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val cellForRow = layoutInflater.inflate(R.layout.collection_recycler, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.recycler_collection, parent, false)
         return CollectionViewHolder(cellForRow)
     }
 

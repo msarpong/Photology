@@ -16,12 +16,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.user.UserScreen
-import org.msarpong.splash.util.SEARCH_TYPE_USERS
 import org.msarpong.splash.util.hideKeyboard
 
 private const val BUNDLE_QUERY: String = "BUNDLE_QUERY"
@@ -114,7 +112,7 @@ class SearchUserScreen : AppCompatActivity() {
         searchUser.setTypeface(searchUser.typeface, Typeface.BOLD)
 
         searchPhoto.setOnClickListener {
-            startActivity(Intent(this, SearchPhotoScreen::class.java))
+            SearchPhotoScreen.openSearchPhoto(this, term)
         }
 
         searchCollection.setOnClickListener {
@@ -125,7 +123,7 @@ class SearchUserScreen : AppCompatActivity() {
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            viewModel.send(SearchEvent.Load(query))
+            viewModel.send(SearchEvent.LoadUser(query))
             this.hideKeyboard()
         }
     }

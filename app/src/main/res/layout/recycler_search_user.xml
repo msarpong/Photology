@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/result_container"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    android:clickable="true"
     android:paddingBottom="12dp"
-    android:layout_height="wrap_content">
+    android:focusable="true">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/result_profile_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:elevation="8dp"
         android:scaleType="centerCrop"
         tools:srcCompat="@drawable/cactus" />
 
@@ -22,9 +25,9 @@
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/result_profile_image"
         android:fontFamily="@font/helvetica"
-        tools:text="Name"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:text="Name" />
 
     <TextView
         android:id="@+id/result_username"
@@ -35,7 +38,7 @@
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/result_profile_image"
         android:fontFamily="@font/helvetica"
-        tools:text="UserName"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        tools:text="UserName" />
 
 </RelativeLayout>

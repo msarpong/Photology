@@ -1,5 +1,6 @@
 package org.msarpong.splash.ui.search
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -21,6 +22,8 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.hideKeyboard
+
+private const val BUNDLE_QUERY: String = "BUNDLE_QUERY"
 
 class SearchPhotoScreen : AppCompatActivity() {
 
@@ -44,6 +47,17 @@ class SearchPhotoScreen : AppCompatActivity() {
     private lateinit var imageRV: RecyclerView
     private lateinit var imageAdapter: ListAdapter<SearchResponse.Result, SearchViewHolder>
 
+    companion object {
+        fun openSearchPhoto(startingActivity: Activity, queryTerm: String) {
+            val intent =
+                Intent(startingActivity, SearchPhotoScreen::class.java).putExtra(
+                    BUNDLE_QUERY,
+                    queryTerm
+                )
+            startingActivity.startActivity(intent)
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_screen)
@@ -60,6 +74,7 @@ class SearchPhotoScreen : AppCompatActivity() {
     }
 
     private fun initViews() {
+
         progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
@@ -73,6 +88,15 @@ class SearchPhotoScreen : AppCompatActivity() {
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
         imageRV = findViewById(R.id.recycler_search_user)
+
+        if (intent.hasExtra(BUNDLE_QUERY)) {
+            term = intent.getStringExtra(BUNDLE_QUERY)
+            viewModel.send(SearchEvent.LoadUser(term))
+            viewModel.send(SearchEvent.Load(term)).toString()
+            searchTerm.setText(term)
+        } else {
+            searchTerm.text.toString()
+        }
     }
 
     private fun setupViews() {
@@ -117,7 +141,6 @@ class SearchPhotoScreen : AppCompatActivity() {
     }
 
     override fun onStart() {
-
         super.onStart()
         viewModel.state.observe(this, Observer { state ->
             when (state) {

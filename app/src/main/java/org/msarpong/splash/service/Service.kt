@@ -8,6 +8,7 @@ import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
+import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
 import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
 import org.msarpong.splash.util.CLIENT_ID
 import retrofit2.Call
@@ -26,6 +27,7 @@ sealed class ServiceResult {
     data class SuccessUser(val user: UserResponse) : ServiceResult()
     data class SuccessSearch(val search: SearchResponse) : ServiceResult()
     data class SuccessResultUser(val search: SearchUserResponse) : ServiceResult()
+    data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
 
@@ -200,16 +202,38 @@ class Service {
                     Log.d("onResponse_getUserS", "showError: $error")
                 }
             }
-
         })
     }
 
+    fun searchCollections(query: String, receiver: ServiceReceiver) {
+        val queryResult = service.getSearchCollection(query)
+        queryResult.enqueue(object : Callback<SearchCollectionResponse> {
+            override fun onFailure(call: Call<SearchCollectionResponse>, t: Throwable) {
+                Log.d("onFailure_searchC", "showError: $t")
+            }
+
+            override fun onResponse(
+                call: Call<SearchCollectionResponse>,
+                response: Response<SearchCollectionResponse>
+            ) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val collectionResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultCollection(collectionResult))
+
+                    Log.d("onResponse_searchC", "showSuccess: $success")
+
+                } else {
+                    Log.d("onResponse_searchC", "showError: $error")
+                }
+            }
+        })
+    }
 
     fun getCurrentUser(authToken: String, receiver: ServiceReceiver) {
         val key = "Bearer "
-
         val token = key + authToken
-
         val userResult = service.getMe(token)
         userResult.enqueue(object : Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
@@ -223,10 +247,8 @@ class Service {
                     val userInfo = response.body()!!
                     receiver.receive(ServiceResult.SuccessUser(userInfo))
                     Log.d("onResponse_getCurUser", "showSuccess: $success")
-
                 } else {
                     Log.d("onResponse_getCurUser", "showError: $error")
-
                 }
             }
         })
@@ -269,6 +291,12 @@ interface SplashServiceApi {
         @Query("query") query: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<SearchUserResponse>
+
+    @GET("/search/collections")
+    fun getSearchCollection(
+        @Query("query") query: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<SearchCollectionResponse>
 
     @GET("/me")
     fun getMe(

@@ -86,6 +86,10 @@ class MainScreen : AppCompatActivity() {
 
     private fun showPhotos(response: PhotoResponse) {
         imageAdapter.submitList(response)
+        val newList = response.toList()
+
+        imageAdapter.submitList(newList.sortedBy { it.id })
+
         Log.d("MainActivity", "showPhotos:$response")
     }
 

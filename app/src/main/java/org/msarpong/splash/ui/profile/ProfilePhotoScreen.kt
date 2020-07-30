@@ -35,17 +35,14 @@ class ProfilePhotoScreen : AppCompatActivity() {
     private lateinit var username: String
 
     private lateinit var progressBar: ProgressBar
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
     private lateinit var profileFullName: TextView
     private lateinit var profileBio: TextView
-
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button

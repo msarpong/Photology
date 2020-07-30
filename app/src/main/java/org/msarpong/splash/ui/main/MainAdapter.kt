@@ -24,18 +24,15 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
     }
 
     override fun onBindViewHolder(holder: UnsplashViewHolder, position: Int) {
-        if (position == 0) {
-            holder.itemView.visibility = View.GONE
-            holder.image.visibility = View.GONE
-            holder.userName.visibility = View.GONE
-            holder.userImage.visibility = View.GONE
-            holder.userView.visibility = View.GONE
-        } else {
+        val picture = getItem(position)
+        Log.d("PositionRec", position.toString())
+        val array = arrayOf(picture.sponsorship)[0]
+//        Log.d("Sponsor_SIZE", array.size.toString())
 
-            val picture = getItem(position)
-            Log.d("PositionRec", position.toString())
-            picture.let {
 
+        if (array?.impressionUrls.isNullOrEmpty()){
+            Log.d("Sponsor_ELSE", "${position} is  NOT a sponsor photo")
+            picture.sponsorship.let {
                 holder.userName.text = picture.user.username
                 holder.userName.setOnClickListener {
                     ProfilePhotoScreen.openPhotoProfile(
@@ -60,8 +57,18 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
                     .fitCenter()
                     .into(holder.image)
             }
+        }else{
+            Log.d("Sponsor_IF", "${position} is a sponsor photo ")
+            holder.image.visibility = View.GONE
+            holder.userImage.visibility = View.GONE
+            holder.userName.visibility = View.GONE
+            holder.userView.visibility = View.GONE
         }
+
+
+
     }
+
 
 }
 

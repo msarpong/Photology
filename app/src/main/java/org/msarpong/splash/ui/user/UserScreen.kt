@@ -32,18 +32,17 @@ class UserScreen : AppCompatActivity() {
     private val viewModel: UserViewModel by inject()
     private val prefs: KeyValueStorage by inject()
 
-    private lateinit var progressBar: ProgressBar
+    private lateinit var username: String
 
+    private lateinit var progressBar: ProgressBar
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
     private lateinit var profileFullName: TextView
     private lateinit var profileBio: TextView
-
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
@@ -59,6 +58,7 @@ class UserScreen : AppCompatActivity() {
     }
 
     private fun initViews() {
+        username = prefs.getString("username").toString()
         progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
@@ -109,8 +109,7 @@ class UserScreen : AppCompatActivity() {
                 }
                 is UserState.Success -> {
                     hideProgress()
-                    viewModel.send(UserEvent.LoadProfile(state.user.username))
-                    viewModel.send((UserEvent.LoadPhoto(state.user.username)))
+
                 }
                 is UserState.SuccessProfile -> {
                     hideProgress()
@@ -123,9 +122,12 @@ class UserScreen : AppCompatActivity() {
             }
         })
         val token = prefs.getString(ACCESS_TOKEN)
+        prefs.putString("username", "msarpong")
         Log.d("showToken", "token: $token")
 
         viewModel.send(UserEvent.Load(token.toString()))
+        viewModel.send(UserEvent.LoadPhoto(username))
+        viewModel.send(UserEvent.LoadProfile(username))
     }
 
     private fun showPhotos(photoList: PhotoResponse) {

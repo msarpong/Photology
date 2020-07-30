@@ -265,7 +265,7 @@ interface SplashServiceApi {
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<DetailPhotoResponse>
 
-    @GET("collections/")
+    @GET("collections/featured")
     fun getPhotoCollections(@Query("client_id") client_id: String = CLIENT_ID): Call<Collection>
 
     @GET("/users/{username}/")

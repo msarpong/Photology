@@ -58,7 +58,6 @@ class UserViewModel(context: Context) : ViewModel() {
                             UserState.Error(error = result.error)
                     }
                 }
-
             })
         } catch (exception: Throwable) {
             state.value = UserState.Error(exception)

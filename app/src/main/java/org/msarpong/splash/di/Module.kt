@@ -6,6 +6,7 @@ import org.koin.dsl.module
 import org.msarpong.splash.service.Service
 import org.msarpong.splash.ui.collections.CollectionViewModel
 import org.msarpong.splash.ui.detail_photo.DetailPhotoViewModel
+import org.msarpong.splash.ui.following.FollowingViewModel
 import org.msarpong.splash.ui.main.MainViewModel
 import org.msarpong.splash.ui.profile.ProfileViewModel
 import org.msarpong.splash.ui.search.SearchViewModel
@@ -30,4 +31,5 @@ val viewModels = module {
     viewModel { UserViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { WelcomeViewModel(get()) }
+    viewModel { FollowingViewModel(get()) }
 }

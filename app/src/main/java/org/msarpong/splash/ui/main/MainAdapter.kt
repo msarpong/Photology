@@ -19,7 +19,7 @@ import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashDiffUtil()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UnsplashViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val cellForRow = layoutInflater.inflate(R.layout.main_image_recycler, parent, false)
+        val cellForRow = layoutInflater.inflate(R.layout.recycler_photo, parent, false)
         return UnsplashViewHolder(cellForRow)
     }
 

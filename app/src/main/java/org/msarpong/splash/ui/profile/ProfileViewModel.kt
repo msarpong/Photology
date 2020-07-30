@@ -76,7 +76,6 @@ class ProfileViewModel(context: Context) : ViewModel() {
                             ProfileState.Error(error = result.error)
                     }
                 }
-
             })
         } catch (exception: Throwable) {
             state.value = ProfileState.Error(exception)

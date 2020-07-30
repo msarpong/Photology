@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfilePhotoScreen">
-
+    tools:context=".ui.following.FollowingScreen">
 
     <include
         android:id="@+id/include_header"
@@ -18,13 +17,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <include
-        android:id="@+id/search_bar"
-        layout="@layout/profile_data"
+        android:id="@+id/include_top_bar"
+        layout="@layout/include_top_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_header" />
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/include_header"
+        tools:layout_editor_absoluteX="-16dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -39,17 +38,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_image"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="4dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@+id/search_bar"
-        tools:itemCount="3"
-        tools:listitem="@layout/recycler_photo" />
 
     <View
         android:id="@+id/drop_shadow"
@@ -71,4 +59,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_image"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingBottom="180dp"
+        android:clipToPadding="false"
+        android:paddingTop="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_top_bar"
+        tools:itemCount="3"
+        tools:listitem="@layout/recycler_following_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>

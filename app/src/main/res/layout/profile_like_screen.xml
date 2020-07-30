@@ -48,7 +48,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         tools:itemCount="3"
-        tools:listitem="@layout/main_image_recycler" />
+        tools:listitem="@layout/recycler_photo" />
 
     <View
         android:id="@+id/drop_shadow"

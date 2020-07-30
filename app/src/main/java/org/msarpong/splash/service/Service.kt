@@ -5,6 +5,8 @@ import org.msarpong.splash.di.retrofit
 import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
+import org.msarpong.splash.service.mapping.following.FollowingResponse
+import org.msarpong.splash.service.mapping.following.FollowingResponseItem
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
@@ -28,6 +30,7 @@ sealed class ServiceResult {
     data class SuccessSearch(val search: SearchResponse) : ServiceResult()
     data class SuccessResultUser(val search: SearchUserResponse) : ServiceResult()
     data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
+    data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
 
@@ -253,6 +256,31 @@ class Service {
             }
         })
     }
+
+    fun getFollowing(username: String, receiver: ServiceReceiver) {
+
+        val following = service.getUserFollowing(username)
+        following.enqueue(object : Callback<FollowingResponse> {
+            override fun onFailure(call: Call<FollowingResponse>, t: Throwable) {
+                Log.d("onFailure_getFollowing", "showError: $t")
+            }
+
+            override fun onResponse(
+                call: Call<FollowingResponse>,
+                response: Response<FollowingResponse>
+            ) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val followingInfo = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultFollowing(followingInfo))
+                    Log.d("onResponse_getFollowing", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getFollowing", "showError: $error")
+                }
+            }
+        })
+    }
 }
 
 interface SplashServiceApi {
@@ -303,6 +331,11 @@ interface SplashServiceApi {
         @Header("Authorization") authorization: String
     ): Call<UserResponse>
 
+    @GET("/users/{username}/following/")
+    fun getUserFollowing(
+        @Path("username") username: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<FollowingResponse>
 }
 
 

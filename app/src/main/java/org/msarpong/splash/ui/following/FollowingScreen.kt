@@ -1,4 +1,4 @@
-package org.msarpong.splash.ui.main
+package org.msarpong.splash.ui.following
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,18 +15,22 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
-import org.msarpong.splash.service.mapping.photos.PhotoResponse
-import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
+import org.msarpong.splash.service.mapping.following.FollowingResponse
+import org.msarpong.splash.service.mapping.following.FollowingResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
-import org.msarpong.splash.ui.following.FollowingScreen
+import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
-class MainScreen : AppCompatActivity() {
 
-    private val viewModel: MainViewModel by inject()
+class FollowingScreen : AppCompatActivity() {
+
+    private val viewModel: FollowingViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var username: String
 
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
@@ -34,32 +38,41 @@ class MainScreen : AppCompatActivity() {
     private lateinit var profileBtn: ImageButton
     private lateinit var editorialBtn: Button
     private lateinit var followingBtn: Button
-    private lateinit var imageRV: RecyclerView
-    private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
+
+    private lateinit var followingRV: RecyclerView
+    private lateinit var followingAdapter: ListAdapter<FollowingResponseItem, FollowingViewHolder>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.following_screen)
+        initViews()
         setupViews()
+        initRecycler()
     }
 
-    private fun setupViews() {
-        progressBar = findViewById(R.id.progressBar)
+    private fun initRecycler() {
+        followingRV = findViewById(R.id.main_image)
+        followingRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        followingAdapter = FollowingAdapter()
+        followingRV.adapter = followingAdapter
+    }
 
+    private fun initViews() {
+        username = prefs.getString("username").toString()
+
+        progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
         editorialBtn = findViewById(R.id.editorial_btn)
         followingBtn = findViewById(R.id.following_btn)
-        imageRV = findViewById(R.id.main_image)
-        imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        imageAdapter = MainAdapter()
-        imageRV.adapter = imageAdapter
+        followingRV = findViewById(R.id.main_image)
+    }
 
-        followingBtn.setCompoundDrawables(null, null, null, null)
-
+    private fun setupViews() {
         homeBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+        editorialBtn.setCompoundDrawables(null, null, null, null)
         collectionBtn.setOnClickListener {
             startActivity(Intent(this, CollectionScreen::class.java))
         }
@@ -69,8 +82,8 @@ class MainScreen : AppCompatActivity() {
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
         }
-        followingBtn.setOnClickListener {
-            startActivity(Intent(this, FollowingScreen::class.java))
+        editorialBtn.setOnClickListener {
+            startActivity(Intent(this, MainScreen::class.java))
         }
     }
 
@@ -78,27 +91,34 @@ class MainScreen : AppCompatActivity() {
         super.onStart()
         viewModel.state.observe(this, Observer { state ->
             when (state) {
-                is MainState.InProgress -> showProgress()
-                is MainState.Error -> {
+                is FollowingState.InProgress -> showProgress()
+
+                is FollowingState.SuccessUser -> {
+                    hideProgress()
+                    showUser(state.userList)
+                }
+
+                is FollowingState.SuccessPhoto -> {
+                    hideProgress()
+//                    showUser(state.userList)
+                }
+                is FollowingState.Error -> {
                     hideProgress()
                     showError(state.error)
                 }
-                is MainState.Success -> {
-                    hideProgress()
-                    showPhotos(state.pictureList)
-                }
             }
         })
-        viewModel.send(MainEvent.Load)
+        viewModel.send(FollowingEvent.LoadUser(username))
+        Log.d("onStartFollow", username)
+
     }
 
-    private fun showPhotos(response: PhotoResponse) {
-//        val newList = response.toList()
-//        imageAdapter.submitList(newList.sortedBy { it.id })
-        imageAdapter.submitList(response)
+    private fun showUser(userList: FollowingResponse) {
+        followingAdapter.submitList(userList)
 
-        Log.d("MainActivity", "showPhotos:$response")
+        Log.d("FollowingScreen_user", "${userList}")
     }
+
 
     private fun showProgress() {
         progressBar.visibility = View.VISIBLE

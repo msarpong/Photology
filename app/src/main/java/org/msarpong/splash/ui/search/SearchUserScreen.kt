@@ -2,6 +2,7 @@ package org.msarpong.splash.ui.search
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.Log
@@ -123,8 +124,15 @@ class SearchUserScreen : AppCompatActivity() {
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            viewModel.send(SearchEvent.LoadUser(query))
-            this.hideKeyboard()
+            if(query.isNotEmpty()){
+                term = searchTerm.text.toString()
+                Log.d("submitQuery_User", "Query:$query")
+
+                viewModel.send(SearchEvent.LoadUser(query))
+                this.hideKeyboard()
+            }else{
+                searchTerm.setHintTextColor(Color.RED)
+            }
         }
     }
 

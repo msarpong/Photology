@@ -2,7 +2,10 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="100dp"
+    android:layout_margin="8dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

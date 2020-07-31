@@ -1,5 +1,6 @@
 package org.msarpong.splash.ui.following
 
+import android.app.Activity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.following.FollowingResponseItem
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 
 class FollowingAdapter :
     ListAdapter<FollowingResponseItem, FollowingViewHolder>(FollowingDiffUtil()) {
@@ -24,9 +26,16 @@ class FollowingAdapter :
         val user = getItem(position)
         user.let {
             holder.usernameUser.text = user.username
+            holder.itemView.setOnClickListener {
+                ProfilePhotoScreen.openPhotoProfile(
+                    holder.imageUser.context as Activity,
+                    user.username
+                )
+            }
+
             Glide
                 .with(holder.imageUser.context)
-                .load(user.profileImage.small)
+                .load(user.profileImage.large)
                 .fitCenter()
                 .into(holder.imageUser)
         }
@@ -43,14 +52,14 @@ class FollowingDiffUtil : DiffUtil.ItemCallback<FollowingResponseItem>() {
         oldItem: FollowingResponseItem,
         newItem: FollowingResponseItem
     ): Boolean {
-        TODO("Not yet implemented")
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
         oldItem: FollowingResponseItem,
         newItem: FollowingResponseItem
     ): Boolean {
-        TODO("Not yet implemented")
+        return oldItem == newItem
     }
 
 }

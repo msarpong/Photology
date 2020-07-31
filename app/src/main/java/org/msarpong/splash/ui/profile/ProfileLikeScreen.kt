@@ -10,12 +10,20 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
+import org.msarpong.splash.service.mapping.liked.LikesResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponse
+import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.ui.collections.CollectionScreen
+import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
+import org.msarpong.splash.ui.main.UnsplashViewHolder
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
 
@@ -28,20 +36,21 @@ class ProfileLikeScreen : AppCompatActivity() {
     private lateinit var username: String
 
     private lateinit var progressBar: ProgressBar
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
     private lateinit var profileFullName: TextView
     private lateinit var profileBio: TextView
-
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
+    private lateinit var noDataLabel: TextView
+
+    private lateinit var imageRV: RecyclerView
+    private lateinit var imageAdapter: ListAdapter<PhotoResponseItem, UnsplashViewHolder>
 
     companion object {
         fun openLikeProfile(startingActivity: Activity, detailId: String) {
@@ -76,6 +85,13 @@ class ProfileLikeScreen : AppCompatActivity() {
         profileLikeBtn = findViewById(R.id.profile_like)
         profileLikeBtn.typeface = Typeface.DEFAULT_BOLD
         profileCollectionBtn = findViewById(R.id.profile_collection)
+        noDataLabel = findViewById(R.id.no_data_text)
+
+        imageRV = findViewById(R.id.main_image)
+        imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        imageAdapter = MainAdapter()
+        imageRV.adapter = imageAdapter
+
     }
 
     private fun setupViews() {
@@ -125,11 +141,25 @@ class ProfileLikeScreen : AppCompatActivity() {
                 is ProfileState.SuccessPhoto -> {
                     hideProgress()
                 }
+                is ProfileState.SuccessLikePhoto ->{
+                    showLikedPhoto(state.pictureList)
+                }
             }
 
         })
         viewModel.send(ProfileEvent.Load(username))
+        viewModel.send(ProfileEvent.LoadLikePhoto(username))
         Log.d("onStartPhotoProfile", username)
+    }
+
+    private fun showLikedPhoto(response: PhotoResponse) {
+        imageAdapter.submitList(response)
+        if (response.isEmpty()) {
+            Log.d("ProfileCollectionIf", "empty")
+            noDataLabel.visibility = View.VISIBLE
+            noDataLabel.text = "$username non ha ancora collection"
+        }
+        Log.d("ProfileCollectionScreen", "showCollections:$response")
     }
 
     private fun showProfile(response: Profile) {

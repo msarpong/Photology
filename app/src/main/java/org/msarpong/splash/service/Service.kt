@@ -6,7 +6,7 @@ import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.following.FollowingResponse
-import org.msarpong.splash.service.mapping.following.FollowingResponseItem
+import org.msarpong.splash.service.mapping.liked.LikesResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
@@ -29,6 +29,7 @@ sealed class ServiceResult {
     data class SuccessUser(val user: UserResponse) : ServiceResult()
     data class SuccessSearch(val search: SearchResponse) : ServiceResult()
     data class SuccessResultUser(val search: SearchUserResponse) : ServiceResult()
+    data class SuccessResultLikePhoto(val likedPhoto: PhotoResponse) : ServiceResult()
     data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
     data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
@@ -281,6 +282,50 @@ class Service {
             }
         })
     }
+
+    fun getLikePhoto(username: String, receiver: ServiceReceiver) {
+        val liked = service.getUserLikedPhoto(username)
+        liked.enqueue(object : Callback<PhotoResponse> {
+            override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
+                Log.d("onFailure_getLikePhoto", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<PhotoResponse>, response: Response<PhotoResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val likedPhoto = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultLikePhoto(likedPhoto))
+                    Log.d("onResponse_getLikePhoto", "showSuccess: $success")
+                }else{
+                    Log.d("onResponse_getLikePhoto", "showError: $error")
+                }
+            }
+       })
+    }
+
+    fun getUserCollection(username: String,receiver: ServiceReceiver) {
+        val collection = service.getUserCollection(username)
+        collection.enqueue(object : Callback<Collection> {
+            override fun onFailure(call: Call<Collection>, t: Throwable) {
+                Log.d("onFailure_getUserCol", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<Collection>, response: Response<Collection>) {
+                val success = response.body()
+                val error = response.errorBody()
+
+                if (success != null) {
+                    val pictureResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessCollection(pictureResult))
+                    Log.d("onResponse_getUserCol", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getUserCol", "showError: $error")
+                }
+            }
+        })
+    }
+
 }
 
 interface SplashServiceApi {
@@ -294,7 +339,9 @@ interface SplashServiceApi {
     ): Call<DetailPhotoResponse>
 
     @GET("collections/featured")
-    fun getPhotoCollections(@Query("client_id") client_id: String = CLIENT_ID): Call<Collection>
+    fun getPhotoCollections(
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<Collection>
 
     @GET("/users/{username}/")
     fun getDetailUser(
@@ -336,6 +383,18 @@ interface SplashServiceApi {
         @Path("username") username: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<FollowingResponse>
+
+    @GET("/users/{username}/likes/")
+    fun getUserLikedPhoto(
+        @Path("username") username: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<PhotoResponse>
+
+    @GET("/users/{username}/collections/")
+    fun getUserCollection(
+        @Path("username") username: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<Collection>
 }
 
 

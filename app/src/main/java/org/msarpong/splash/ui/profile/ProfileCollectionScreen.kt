@@ -10,11 +10,18 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
+import org.msarpong.splash.service.mapping.collection.Collection
+import org.msarpong.splash.service.mapping.collection.CollectionItem
 import org.msarpong.splash.service.mapping.profile.Profile
+import org.msarpong.splash.ui.collections.CollectionAdapter
 import org.msarpong.splash.ui.collections.CollectionScreen
+import org.msarpong.splash.ui.collections.CollectionViewHolder
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
@@ -28,20 +35,21 @@ class ProfileCollectionScreen : AppCompatActivity() {
     private lateinit var username: String
 
     private lateinit var progressBar: ProgressBar
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
     private lateinit var profileFullName: TextView
     private lateinit var profileBio: TextView
-
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
+    private lateinit var noDataLabel: TextView
+
+    private lateinit var collectionsRV: RecyclerView
+    private lateinit var collectionsAdapter: ListAdapter<CollectionItem, CollectionViewHolder>
 
     companion object {
         fun openCollectionProfile(startingActivity: Activity, detailId: String) {
@@ -78,6 +86,13 @@ class ProfileCollectionScreen : AppCompatActivity() {
         profileCollectionBtn = findViewById(R.id.profile_collection)
         profileCollectionBtn.typeface = Typeface.DEFAULT_BOLD
         profileCollectionBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+        noDataLabel = findViewById(R.id.no_data_text)
+
+        collectionsRV = findViewById(R.id.collection_image)
+        collectionsRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        collectionsAdapter = CollectionAdapter()
+        collectionsRV.adapter = collectionsAdapter
+
     }
 
     private fun setupViews() {
@@ -121,14 +136,18 @@ class ProfileCollectionScreen : AppCompatActivity() {
                     hideProgress()
                     showProfile(state.pictureList)
                 }
-
                 is ProfileState.SuccessPhoto -> {
                     hideProgress()
+                }
+                is ProfileState.SuccessCollection -> {
+                    hideProgress()
+                    showCollections(state.collection)
                 }
             }
 
         })
         viewModel.send(ProfileEvent.Load(username))
+        viewModel.send(ProfileEvent.LoadCollection(username))
         Log.d("onStartPhotoProfile", username)
     }
 
@@ -148,6 +167,16 @@ class ProfileCollectionScreen : AppCompatActivity() {
         profileUsername.text = response.username
         profileFullName.text = response.name
 
+    }
+
+    private fun showCollections(response: Collection) {
+        collectionsAdapter.submitList(response)
+        if (response.isEmpty()) {
+            Log.d("ProfileCollectionIf", "empty")
+            noDataLabel.visibility = View.VISIBLE
+            noDataLabel.text = "$username non ha ancora collection"
+        }
+        Log.d("ProfileCollectionScreen", "showCollections:$response")
     }
 
     private fun showProgress() {

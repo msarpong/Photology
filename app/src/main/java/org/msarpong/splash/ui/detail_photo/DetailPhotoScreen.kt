@@ -150,7 +150,7 @@ class DetailPhotoScreen : AppCompatActivity() {
     private fun showPhotos(response: DetailPhotoResponse) {
         Glide
             .with(detailImage.context)
-            .load(response.urls.small)
+            .load(response.urls.regular)
             .fitCenter()
             .into(detailImage)
 

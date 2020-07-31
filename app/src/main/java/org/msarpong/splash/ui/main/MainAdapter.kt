@@ -47,13 +47,13 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
 
                 Glide
                     .with(holder.userImage.context)
-                    .load(picture.user.profileImage.small)
+                    .load(picture.user.profileImage.medium)
                     .fitCenter()
                     .into(holder.userImage)
 
                 Glide
                     .with(holder.image.context)
-                    .load(picture.urls.small)
+                    .load(picture.urls.regular)
                     .fitCenter()
                     .into(holder.image)
             }
@@ -64,12 +64,7 @@ class MainAdapter : ListAdapter<PhotoResponseItem, UnsplashViewHolder>(UnsplashD
             holder.userName.visibility = View.GONE
             holder.userView.visibility = View.GONE
         }
-
-
-
     }
-
-
 }
 
 class UnsplashViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

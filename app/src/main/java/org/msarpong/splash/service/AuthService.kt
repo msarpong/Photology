@@ -41,9 +41,7 @@ class AuthService {
 
                 if (success != null) {
                     val authResult = response.body()!!
-
                     receiver.receive(AuthServiceResult.Success(authResult))
-
                     Log.d("onResponse_authUser", "showSuccess: $success")
                 } else {
                     Log.d("onResponse_authUser", "showError: $error")
@@ -57,7 +55,6 @@ interface AuthServiceApi {
 
     @POST("token/")
     fun getAuthUser(
-        @Header("Authorization: Bearer") authorization: String,
         @Query("code") code: String,
         @Query("client_id") client_id: String = CLIENT_ID,
         @Query("client_secret") client_secret: String = CLIENT_SECRET,

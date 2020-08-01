@@ -21,6 +21,7 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.following.FollowingScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
+import org.msarpong.splash.ui.settings.SettingsScreen
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class MainScreen : AppCompatActivity() {
@@ -34,6 +35,7 @@ class MainScreen : AppCompatActivity() {
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
+    private lateinit var settingBtn: ImageButton
     private lateinit var editorialBtn: Button
     private lateinit var followingBtn: Button
     private lateinit var imageRV: RecyclerView
@@ -53,6 +55,7 @@ class MainScreen : AppCompatActivity() {
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
+        settingBtn = findViewById(R.id.setting_btn)
         editorialBtn = findViewById(R.id.editorial_btn)
         followingBtn = findViewById(R.id.following_btn)
         imageRV = findViewById(R.id.main_image)
@@ -77,6 +80,9 @@ class MainScreen : AppCompatActivity() {
         }
         followingBtn.setOnClickListener {
             startActivity(Intent(this, FollowingScreen::class.java))
+        }
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
         }
     }
 

@@ -16,12 +16,10 @@ import androidx.lifecycle.Observer
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.auth.AuthResponse
+import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.util.ACCESS_TOKEN
-import org.msarpong.splash.util.AUTH_URL
-import org.msarpong.splash.util.handleUrl
+import org.msarpong.splash.util.*
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
-import org.msarpong.splash.util.url
 
 
 class WelcomeScreen : AppCompatActivity() {
@@ -39,18 +37,18 @@ class WelcomeScreen : AppCompatActivity() {
         initViews()
         setupViews()
         setupObserver()
-        checkUser()
     }
 
     private fun checkUser() {
-        if (prefs.getString(ACCESS_TOKEN) != null) {
-            val token: String = prefs.getString(ACCESS_TOKEN)!!
-            Log.d("checkUser", token)
+        val token: String? = prefs.getString(ACCESS_TOKEN)
+        if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            Log.d("checkUserIf", token.toString())
+            setupWebViewDialog(url)
+        } else {
+            Log.d("checkUserElse", token)
             val main = Intent(this, MainScreen::class.java)
             startActivity(main)
             finish()
-        } else {
-            setupWebViewDialog(url)
         }
     }
 
@@ -65,16 +63,37 @@ class WelcomeScreen : AppCompatActivity() {
             startActivity(main)
             finish()
         }
-
         signInEmailButton.setOnClickListener {
-            if (prefs.getString(ACCESS_TOKEN) != null) {
-                val main = Intent(this, MainScreen::class.java)
-                startActivity(main)
-                finish()
-            } else {
-                setupWebViewDialog(url)
-            }
+            checkUser()
         }
+    }
+
+    private fun setupObserver() {
+        viewModel.state.observe(this, Observer { state ->
+            when (state) {
+                is WelcomeState.Error -> showError(state.error)
+                is WelcomeState.Success -> saveAuth(state.authResult)
+                is WelcomeState.SuccessUser -> saveUser(state.userResult)
+            }
+        })
+    }
+
+    private fun saveAuth(authResult: AuthResponse) {
+        signInDialog.dismiss()
+        Log.d("saveUser", authResult.accessToken)
+        prefs.putString(ACCESS_TOKEN, authResult.accessToken)
+        prefs.putString(ACCESS_SCOPE, authResult.scope)
+        startActivity(Intent(this, MainScreen::class.java))
+        finish()
+    }
+
+    private fun saveUser(userResult: UserResponse) {
+        prefs.putString(USERNAME, userResult.username)
+        prefs.putString(ID_USER, userResult.id)
+    }
+
+    private fun showError(error: Throwable) {
+        Log.d("WelcomeScreen", "showError: $error")
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -86,6 +105,7 @@ class WelcomeScreen : AppCompatActivity() {
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = SignInWebViewClient()
         webView.loadUrl(url)
+        signInDialog?.window?.setBackgroundDrawableResource(R.drawable.background_dialog)
         signInDialog.setContentView(webView)
         signInDialog.show()
     }
@@ -102,32 +122,11 @@ class WelcomeScreen : AppCompatActivity() {
                 if (request.url.toString().contains("code=")) {
                     Log.d("SignInWebViewClient", code)
                     viewModel.send(WelcomeEvent.Load(code))
-                    signInDialog.dismiss()
+                    viewModel.send(WelcomeEvent.LoadMe(code))
                 }
                 return true
             }
             return false
         }
     }
-
-    private fun setupObserver() {
-        viewModel.state.observe(this, Observer { state ->
-            when (state) {
-                is WelcomeState.Error -> showError(state.error)
-                is WelcomeState.Success -> saveUser(state.authResult)
-            }
-        })
-    }
-
-    private fun saveUser(authResult: AuthResponse) {
-        Log.d("saveUser", authResult.accessToken)
-        prefs.putString(ACCESS_TOKEN, authResult.accessToken)
-    }
-
-    private fun showError(error: Throwable) {
-        Log.d("WelcomeScreen", "showError: $error")
-    }
-
 }
-
-

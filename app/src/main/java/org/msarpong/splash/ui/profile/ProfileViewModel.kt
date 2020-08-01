@@ -8,10 +8,8 @@ import org.msarpong.splash.service.Service
 import org.msarpong.splash.service.ServiceReceiver
 import org.msarpong.splash.service.ServiceResult
 import org.msarpong.splash.service.mapping.collection.Collection
-import org.msarpong.splash.service.mapping.liked.LikesResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
-import org.msarpong.splash.ui.collections.CollectionState
 
 sealed class ProfileEvent {
     data class Load(val username: String) : ProfileEvent()
@@ -116,7 +114,8 @@ class ProfileViewModel(context: Context) : ViewModel() {
                 override fun receive(result: ServiceResult) {
                     when (result) {
                         is ServiceResult.SuccessCollection ->
-                            state.value = ProfileState.SuccessCollection(collection = result.collectionList)
+                            state.value =
+                                ProfileState.SuccessCollection(collection = result.collectionList)
                         is ServiceResult.Error ->
                             state.value = ProfileState.Error(error = result.error)
                     }

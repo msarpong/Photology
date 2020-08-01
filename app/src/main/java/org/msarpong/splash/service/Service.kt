@@ -6,7 +6,6 @@ import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.following.FollowingResponse
-import org.msarpong.splash.service.mapping.liked.LikesResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse

@@ -46,6 +46,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="4dp"
+        android:paddingBottom="180dp"
+        android:clipToPadding="false"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintTop_toBottomOf="@+id/search_bar"
         tools:itemCount="3"
@@ -54,7 +56,7 @@
     <View
         android:id="@+id/drop_shadow"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="1dp"
         android:layout_marginTop="?actionBarSize"
         android:background="@drawable/drop_shadow"
         app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"

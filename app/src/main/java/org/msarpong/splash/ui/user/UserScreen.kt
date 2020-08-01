@@ -23,6 +23,9 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.main.UnsplashViewHolder
+import org.msarpong.splash.ui.profile.ProfileCollectionScreen
+import org.msarpong.splash.ui.profile.ProfileLikeScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
@@ -71,17 +74,17 @@ class UserScreen : AppCompatActivity() {
         profilePhotoBtn = findViewById(R.id.profile_photo)
         profileLikeBtn = findViewById(R.id.profile_like)
         profileCollectionBtn = findViewById(R.id.profile_collection)
-        profilePhotoBtn.typeface = Typeface.DEFAULT_BOLD
-        profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+        imageRV = findViewById(R.id.main_image)
     }
 
     private fun setupViews() {
-        imageRV = findViewById(R.id.main_image)
+        profilePhotoBtn.typeface = Typeface.DEFAULT_BOLD
+        profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
+        profileBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
         imageRV.adapter = imageAdapter
-
-        profileBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
 
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
@@ -94,6 +97,15 @@ class UserScreen : AppCompatActivity() {
         }
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
+        }
+        profilePhotoBtn.setOnClickListener {
+            ProfilePhotoScreen.openPhotoProfile(this, username)
+        }
+        profileLikeBtn.setOnClickListener {
+            ProfileLikeScreen.openLikeProfile(this, username)
+        }
+        profileCollectionBtn.setOnClickListener {
+            ProfileCollectionScreen.openCollectionProfile(this, username)
         }
     }
 

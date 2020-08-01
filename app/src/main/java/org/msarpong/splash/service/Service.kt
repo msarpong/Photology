@@ -395,5 +395,3 @@ interface SplashServiceApi {
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<Collection>
 }
-
-

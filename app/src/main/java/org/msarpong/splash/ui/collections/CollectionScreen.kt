@@ -17,20 +17,22 @@ import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.collection.CollectionItem
 import org.msarpong.splash.ui.main.MainScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class CollectionScreen : AppCompatActivity() {
 
     private val viewModel: CollectionViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
+
+    private lateinit var username: String
 
     private lateinit var progressBar: ProgressBar
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var collectionsRV: RecyclerView
     private lateinit var collectionsAdapter: ListAdapter<CollectionItem, CollectionViewHolder>
 
@@ -41,13 +43,13 @@ class CollectionScreen : AppCompatActivity() {
     }
 
     private fun setupViews() {
-        progressBar = findViewById(R.id.progressBar)
+        username = prefs.getString("username").toString()
 
+        progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
-
         collectionsRV = findViewById(R.id.collection_image)
         collectionsRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         collectionsAdapter = CollectionAdapter()
@@ -65,7 +67,7 @@ class CollectionScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
     }
 

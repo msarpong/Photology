@@ -304,6 +304,7 @@ class Service {
     }
 
     fun getUserCollection(username: String,receiver: ServiceReceiver) {
+
         val collection = service.getUserCollection(username)
         collection.enqueue(object : Callback<Collection> {
             override fun onFailure(call: Call<Collection>, t: Throwable) {
@@ -386,12 +387,16 @@ interface SplashServiceApi {
     @GET("/users/{username}/likes/")
     fun getUserLikedPhoto(
         @Path("username") username: String,
-        @Query("client_id") client_id: String = CLIENT_ID
+        @Query("client_id") client_id: String = CLIENT_ID,
+        @Header("Authorization") authorization: String = "token"
+
     ): Call<PhotoResponse>
 
     @GET("/users/{username}/collections/")
     fun getUserCollection(
         @Path("username") username: String,
-        @Query("client_id") client_id: String = CLIENT_ID
+        @Query("client_id") client_id: String = CLIENT_ID,
+        @Header("Authorization") authorization: String = "token"
+
     ): Call<Collection>
 }

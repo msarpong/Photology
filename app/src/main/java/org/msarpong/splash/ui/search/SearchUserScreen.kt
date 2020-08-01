@@ -20,17 +20,18 @@ import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.util.hideKeyboard
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 private const val BUNDLE_QUERY: String = "BUNDLE_QUERY"
 
 class SearchUserScreen : AppCompatActivity() {
-
     private val viewModel: SearchViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
+    private lateinit var username: String
     private lateinit var term: String
-
     private lateinit var progressBar: ProgressBar
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
@@ -43,7 +44,6 @@ class SearchUserScreen : AppCompatActivity() {
     private lateinit var searchPhoto: Button
     private lateinit var searchUser: Button
     private lateinit var searchCollection: Button
-
     private lateinit var usersRV: RecyclerView
     private lateinit var usersAdapter: ListAdapter<SearchUserResponse.Result, SearchUserViewHolder>
 
@@ -74,6 +74,7 @@ class SearchUserScreen : AppCompatActivity() {
 
     private fun initViews() {
         term = intent.getStringExtra(BUNDLE_QUERY)
+        username = prefs.getString("username").toString()
 
         progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
@@ -84,11 +85,9 @@ class SearchUserScreen : AppCompatActivity() {
         totalResult = findViewById(R.id.search_result_nr)
         searchBar = findViewById(R.id.search_bar)
         searchTerm = findViewById(R.id.search_edit_text)
-
         searchPhoto = findViewById(R.id.search_bar_photo)
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
-
         usersRV = findViewById(R.id.recycler_search_user)
     }
 
@@ -106,31 +105,27 @@ class SearchUserScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
-
         searchUser.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
         searchUser.setTypeface(searchUser.typeface, Typeface.BOLD)
 
         searchPhoto.setOnClickListener {
             SearchPhotoScreen.openSearchPhoto(this, term)
         }
-
         searchCollection.setOnClickListener {
             SearchCollectionScreen.openSearchCollection(this, term)
         }
-
         searchTerm.setText(term)
-
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            if(query.isNotEmpty()){
+            if (query.isNotEmpty()) {
                 term = searchTerm.text.toString()
                 Log.d("submitQuery_User", "Query:$query")
 
                 viewModel.send(SearchEvent.LoadUser(query))
                 this.hideKeyboard()
-            }else{
+            } else {
                 searchTerm.setHintTextColor(Color.RED)
             }
         }
@@ -171,5 +166,4 @@ class SearchUserScreen : AppCompatActivity() {
     private fun showError(error: Throwable) {
         Log.d("SearchScreenError", "showError: $error")
     }
-
 }

@@ -19,15 +19,17 @@ import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.following.FollowingScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class MainScreen : AppCompatActivity() {
 
     private val viewModel: MainViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
+    private lateinit var username: String
     private lateinit var progressBar: ProgressBar
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
@@ -40,12 +42,13 @@ class MainScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initViews()
         setupViews()
     }
 
-    private fun setupViews() {
+    private fun initViews() {
+        username = prefs.getString("username").toString()
         progressBar = findViewById(R.id.progressBar)
-
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
@@ -56,6 +59,9 @@ class MainScreen : AppCompatActivity() {
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
         imageRV.adapter = imageAdapter
+    }
+
+    private fun setupViews() {
 
         followingBtn.setCompoundDrawables(null, null, null, null)
 
@@ -67,7 +73,7 @@ class MainScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
         followingBtn.setOnClickListener {
             startActivity(Intent(this, FollowingScreen::class.java))

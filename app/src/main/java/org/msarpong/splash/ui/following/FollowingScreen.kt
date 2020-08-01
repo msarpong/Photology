@@ -19,8 +19,8 @@ import org.msarpong.splash.service.mapping.following.FollowingResponse
 import org.msarpong.splash.service.mapping.following.FollowingResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 
@@ -80,7 +80,7 @@ class FollowingScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
         editorialBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))

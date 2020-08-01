@@ -24,7 +24,6 @@ import org.msarpong.splash.ui.main.MainAdapter
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.main.UnsplashViewHolder
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.UserScreen
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
@@ -104,9 +103,8 @@ class ProfilePhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            openPhotoProfile(this, username)
         }
-
         profilePhotoBtn.setOnClickListener {
             openPhotoProfile(this, username)
         }

@@ -21,14 +21,17 @@ import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.util.hideKeyboard
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 private const val BUNDLE_QUERY: String = "BUNDLE_QUERY"
 
 class SearchCollectionScreen : AppCompatActivity() {
     private val viewModel: SearchViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
+    private lateinit var username: String
     private lateinit var term: String
     private lateinit var progressBar: ProgressBar
     private lateinit var homeBtn: ImageButton
@@ -72,6 +75,7 @@ class SearchCollectionScreen : AppCompatActivity() {
     }
 
     private fun initViews() {
+        username = prefs.getString("username").toString()
         progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
@@ -85,7 +89,9 @@ class SearchCollectionScreen : AppCompatActivity() {
         searchUser = findViewById(R.id.search_bar_user)
         searchCollection = findViewById(R.id.search_bar_collection)
         collectionRV = findViewById(R.id.search_collection_screen)
+    }
 
+    private fun setupViews() {
         if (intent.hasExtra(BUNDLE_QUERY)) {
             term = intent.getStringExtra(BUNDLE_QUERY)
             viewModel.send(SearchEvent.LoadUser(term))
@@ -96,9 +102,6 @@ class SearchCollectionScreen : AppCompatActivity() {
         } else {
             searchTerm.text.toString()
         }
-    }
-
-    private fun setupViews() {
         searchBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
 
         homeBtn.setOnClickListener {
@@ -110,8 +113,9 @@ class SearchCollectionScreen : AppCompatActivity() {
         searchBtn.setOnClickListener {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
+
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
 
         searchUser.setOnClickListener {
@@ -127,13 +131,13 @@ class SearchCollectionScreen : AppCompatActivity() {
 
         submitQuery.setOnClickListener {
             val query = searchTerm.text.toString()
-            if(query.isNotEmpty()){
+            if (query.isNotEmpty()) {
                 term = searchTerm.text.toString()
                 Log.d("submitQuery_Col", "Query:$query")
 
                 viewModel.send(SearchEvent.LoadCollection(query))
                 this.hideKeyboard()
-            }else{
+            } else {
                 searchTerm.setHintTextColor(Color.RED)
             }
         }

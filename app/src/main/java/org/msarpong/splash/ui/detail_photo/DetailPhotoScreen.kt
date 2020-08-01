@@ -17,33 +17,31 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.DownloadPhoto
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
 class DetailPhotoScreen : AppCompatActivity() {
 
     private val viewModel: DetailPhotoViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
+    private lateinit var username: String
     private lateinit var progressBar: ProgressBar
-
     private lateinit var detailImage: ImageView
     private lateinit var detailId: String
     private lateinit var detailUserImage: ImageView
     private lateinit var detailUser: TextView
     private lateinit var detailUserName: TextView
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var detailInfo: ImageButton
     private lateinit var detailShareBtn: ImageButton
     private lateinit var detailDownloadBtn: ImageButton
     private lateinit var detailInfoView: View
-
     private lateinit var infoDate: TextView
     private lateinit var infoView: TextView
     private lateinit var infoDownload: TextView
@@ -53,7 +51,6 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var infoAperture: TextView
     private lateinit var infoFocalLength: TextView
     private lateinit var infoIso: TextView
-
     private lateinit var downloadManager: DownloadPhoto
 
     companion object {
@@ -74,6 +71,7 @@ class DetailPhotoScreen : AppCompatActivity() {
 
     private fun initView() {
         detailId = intent.getStringExtra(BUNDLE_ID)
+        username = prefs.getString("username").toString()
 
         progressBar = findViewById(R.id.progressBar)
         homeBtn = findViewById(R.id.home_btn)
@@ -111,7 +109,7 @@ class DetailPhotoScreen : AppCompatActivity() {
             startActivity(Intent(this, SearchPhotoScreen::class.java))
         }
         profileBtn.setOnClickListener {
-            startActivity(Intent(this, UserScreen::class.java))
+            ProfilePhotoScreen.openPhotoProfile(this, username)
         }
         detailInfo.setOnClickListener {
             if (detailInfoView.visibility == View.VISIBLE) {

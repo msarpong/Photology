@@ -10,7 +10,6 @@ import org.msarpong.splash.ui.following.FollowingViewModel
 import org.msarpong.splash.ui.main.MainViewModel
 import org.msarpong.splash.ui.profile.ProfileViewModel
 import org.msarpong.splash.ui.search.SearchViewModel
-import org.msarpong.splash.ui.user.UserViewModel
 import org.msarpong.splash.ui.welcome.WelcomeViewModel
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorageFactory
 
@@ -28,7 +27,6 @@ val viewModels = module {
     viewModel { DetailPhotoViewModel(get()) }
     viewModel { CollectionViewModel(get()) }
     viewModel { ProfileViewModel(get()) }
-    viewModel { UserViewModel(get()) }
     viewModel { SearchViewModel(get()) }
     viewModel { WelcomeViewModel(get()) }
     viewModel { FollowingViewModel(get()) }

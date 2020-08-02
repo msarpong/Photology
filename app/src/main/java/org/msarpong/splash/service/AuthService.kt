@@ -29,7 +29,7 @@ class AuthService {
     fun authUser(code: String, receiver: AuthServiceReceiver) {
         Log.d("authUser", code)
 
-        val result = service.getAuthUser(code, code)
+        val result = service.getAuthUser(code)
         result.enqueue(object : Callback<AuthResponse> {
             override fun onFailure(call: Call<AuthResponse>, t: Throwable) {
                 Log.d("onFailure_authUser", "showError: $t")
@@ -57,7 +57,6 @@ interface AuthServiceApi {
 
     @POST("token/")
     fun getAuthUser(
-        @Header("Authorization: Bearer") authorization: String,
         @Query("code") code: String,
         @Query("client_id") client_id: String = CLIENT_ID,
         @Query("client_secret") client_secret: String = CLIENT_SECRET,

@@ -238,6 +238,8 @@ class Service {
         val key = "Bearer "
         val token = key + authToken
         val userResult = service.getMe(token)
+        Log.d("getCurrentUser", "Authorization: $token")
+
         userResult.enqueue(object : Callback<UserResponse> {
             override fun onFailure(call: Call<UserResponse>, t: Throwable) {
                 Log.d("onFailure_getCurUser", "showError: $t")

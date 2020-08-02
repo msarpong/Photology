@@ -16,13 +16,10 @@ import androidx.lifecycle.Observer
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.auth.AuthResponse
+import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.ui.main.MainScreen
-import org.msarpong.splash.util.ACCESS_TOKEN
-import org.msarpong.splash.util.AUTH_URL
-import org.msarpong.splash.util.handleUrl
+import org.msarpong.splash.util.*
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
-import org.msarpong.splash.util.url
-
 
 class WelcomeScreen : AppCompatActivity() {
 
@@ -32,6 +29,7 @@ class WelcomeScreen : AppCompatActivity() {
     private lateinit var skipButton: Button
     private lateinit var signInEmailButton: Button
     private lateinit var signInDialog: Dialog
+    private lateinit var tokenAccess: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,41 +37,32 @@ class WelcomeScreen : AppCompatActivity() {
         initViews()
         setupViews()
         setupObserver()
-        checkUser()
-    }
-
-    private fun checkUser() {
-        if (prefs.getString(ACCESS_TOKEN) != null) {
-            val token: String = prefs.getString(ACCESS_TOKEN)!!
-            Log.d("checkUser", token)
-            val main = Intent(this, MainScreen::class.java)
-            startActivity(main)
-            finish()
-        } else {
-            setupWebViewDialog(url)
-        }
     }
 
     private fun initViews() {
         skipButton = findViewById(R.id.skip_button)
         signInEmailButton = findViewById(R.id.welcome_sign_in_email)
+        tokenAccess = prefs.getString(ACCESS_TOKEN).toString()
     }
 
     private fun setupViews() {
         skipButton.setOnClickListener {
-            val main = Intent(this, MainScreen::class.java)
-            startActivity(main)
+            startActivity(Intent(this, MainScreen::class.java))
             finish()
         }
 
         signInEmailButton.setOnClickListener {
-            if (prefs.getString(ACCESS_TOKEN) != null) {
-                val main = Intent(this, MainScreen::class.java)
-                startActivity(main)
-                finish()
-            } else {
-                setupWebViewDialog(url)
-            }
+            checkUser()
+        }
+    }
+
+    private fun checkUser() {
+        if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            setupWebViewDialog(url)
+        } else {
+            Log.d("checkUser", tokenAccess)
+            startActivity(Intent(this, MainScreen::class.java))
+            finish()
         }
     }
 
@@ -102,7 +91,6 @@ class WelcomeScreen : AppCompatActivity() {
                 if (request.url.toString().contains("code=")) {
                     Log.d("SignInWebViewClient", code)
                     viewModel.send(WelcomeEvent.Load(code))
-                    signInDialog.dismiss()
                 }
                 return true
             }
@@ -114,20 +102,29 @@ class WelcomeScreen : AppCompatActivity() {
         viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is WelcomeState.Error -> showError(state.error)
-                is WelcomeState.Success -> saveUser(state.authResult)
+                is WelcomeState.Success -> saveAuth(state.authResult)
+                is WelcomeState.SuccessUser -> saveUser(state.user)
             }
         })
     }
 
-    private fun saveUser(authResult: AuthResponse) {
-        Log.d("saveUser", authResult.accessToken)
+    private fun saveAuth(authResult: AuthResponse) {
+        Log.d("saveAuth", authResult.accessToken)
         prefs.putString(ACCESS_TOKEN, authResult.accessToken)
+        viewModel.send(WelcomeEvent.LoadUser(authResult.accessToken))
+
+    }
+
+    private fun saveUser(user: UserResponse) {
+        Log.d("saveUser", user.toString())
+        prefs.putString(USERNAME, user.username)
+        prefs.putString(ID_USER, user.id)
+        prefs.putBoolean(IS_LOGGED, true)
+        startActivity(Intent(this, MainScreen::class.java))
+        finish()
     }
 
     private fun showError(error: Throwable) {
         Log.d("WelcomeScreen", "showError: $error")
     }
-
 }
-
-

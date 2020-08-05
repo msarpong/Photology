@@ -13,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.following.FollowingScreen"></activity>
+        <activity android:name=".ui.settings.SettingsScreen"></activity>
+        <activity android:name=".ui.user.NoUserScreen" />
+        <activity android:name=".ui.following.FollowingScreen" />
         <activity android:name=".ui.search.SearchCollectionScreen" />
         <activity android:name=".ui.search.SearchUserScreen" />
         <activity android:name=".ui.profile.ProfileCollectionScreen" />

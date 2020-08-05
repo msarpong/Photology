@@ -27,7 +27,9 @@ import org.msarpong.splash.ui.profile.ProfileCollectionScreen
 import org.msarpong.splash.ui.profile.ProfileLikeScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
+import org.msarpong.splash.ui.settings.SettingsScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
+import org.msarpong.splash.util.USERNAME
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class UserScreen : AppCompatActivity() {
@@ -36,11 +38,12 @@ class UserScreen : AppCompatActivity() {
     private val prefs: KeyValueStorage by inject()
 
     private lateinit var username: String
-
+    private lateinit var token: String
     private lateinit var progressBar: ProgressBar
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
+    private lateinit var settingBtn: ImageButton
     private lateinit var profileBtn: ImageButton
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
@@ -56,13 +59,20 @@ class UserScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_screen)
+        if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            startActivity(Intent(this, NoUserScreen::class.java))
+            finish()
+        } else {
+            token = prefs.getString(ACCESS_TOKEN).toString()
+        }
         initViews()
         setupViews()
     }
 
     private fun initViews() {
-        username = prefs.getString("username").toString()
+        username = prefs.getString(USERNAME).toString()
         progressBar = findViewById(R.id.progressBar)
+        settingBtn = findViewById(R.id.setting_btn)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
@@ -81,6 +91,7 @@ class UserScreen : AppCompatActivity() {
         profilePhotoBtn.typeface = Typeface.DEFAULT_BOLD
         profilePhotoBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16F)
         profileBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+        settingBtn.visibility = View.VISIBLE
 
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
@@ -106,6 +117,9 @@ class UserScreen : AppCompatActivity() {
         }
         profileCollectionBtn.setOnClickListener {
             ProfileCollectionScreen.openCollectionProfile(this, username)
+        }
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
         }
     }
 
@@ -133,11 +147,9 @@ class UserScreen : AppCompatActivity() {
                 }
             }
         })
-        val token = prefs.getString(ACCESS_TOKEN)
-        prefs.putString("username", "msarpong")
-        Log.d("showToken", "token: $token")
 
-        viewModel.send(UserEvent.Load(token.toString()))
+
+        viewModel.send(UserEvent.Load(token))
         viewModel.send(UserEvent.LoadPhoto(username))
         viewModel.send(UserEvent.LoadProfile(username))
     }
@@ -171,6 +183,4 @@ class UserScreen : AppCompatActivity() {
     private fun hideProgress() {
         progressBar.visibility = View.GONE
     }
-
-
 }

@@ -20,14 +20,19 @@ import org.msarpong.splash.service.mapping.photos.PhotoResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.following.FollowingScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
+import org.msarpong.splash.ui.settings.SettingsScreen
 import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.ACCESS_TOKEN
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class MainScreen : AppCompatActivity() {
 
     private val viewModel: MainViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
     private lateinit var progressBar: ProgressBar
 
+    private lateinit var settingBtn: ImageButton
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
@@ -40,12 +45,13 @@ class MainScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initViews()
         setupViews()
     }
 
-    private fun setupViews() {
+    private fun initViews() {
         progressBar = findViewById(R.id.progressBar)
-
+        settingBtn = findViewById(R.id.setting_btn)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
@@ -56,6 +62,13 @@ class MainScreen : AppCompatActivity() {
         imageRV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         imageAdapter = MainAdapter()
         imageRV.adapter = imageAdapter
+    }
+
+    private fun setupViews() {
+
+        if (!prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            settingBtn.visibility = View.VISIBLE
+        }
 
         followingBtn.setCompoundDrawables(null, null, null, null)
 
@@ -71,6 +84,9 @@ class MainScreen : AppCompatActivity() {
         }
         followingBtn.setOnClickListener {
             startActivity(Intent(this, FollowingScreen::class.java))
+        }
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
         }
     }
 

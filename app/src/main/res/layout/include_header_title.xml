@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -10,25 +11,38 @@
         android:layout_height="68dp"
         android:background="@android:color/white">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_vertical"
-            android:padding="20dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/title_page"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
                 android:fontFamily="@font/helvetica_bold"
                 android:text="@string/app_name"
-                android:textStyle="bold"
                 android:textAlignment="center"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 tools:ignore="ButtonStyle" />
-        </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/setting_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:visibility="invisible"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:tint="#A8A8A8"
+                app:srcCompat="@drawable/ic_settings" />
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

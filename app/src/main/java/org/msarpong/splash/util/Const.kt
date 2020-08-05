@@ -18,12 +18,6 @@ const val url =
     "$AUTH_URL?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=$SCOPE&response_type=$RESPONSE_TYPE"
 const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
 
-const val SEARCH_TYPE_USERS = "users"
-const val SEARCH_TYPE_COLLECTIONS = "collections"
-const val SEARCH_TYPE_PHOTOS = "photos"
-
 const val IS_LOGGED = "is_logged"
 const val USERNAME = "username"
 const val ID_USER = "id_user"
-
-

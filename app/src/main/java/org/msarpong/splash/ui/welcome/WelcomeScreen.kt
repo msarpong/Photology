@@ -30,6 +30,7 @@ class WelcomeScreen : AppCompatActivity() {
     private lateinit var signInEmailButton: Button
     private lateinit var signInDialog: Dialog
     private lateinit var tokenAccess: String
+    private lateinit var webView: WebView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,6 @@ class WelcomeScreen : AppCompatActivity() {
             startActivity(Intent(this, MainScreen::class.java))
             finish()
         }
-
         signInEmailButton.setOnClickListener {
             checkUser()
         }
@@ -69,15 +69,23 @@ class WelcomeScreen : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     fun setupWebViewDialog(url: String) {
         signInDialog = Dialog(this)
-        val webView = WebView(this)
+        webView = WebView(this)
         webView.isVerticalScrollBarEnabled = false
         webView.isHorizontalScrollBarEnabled = false
         webView.settings.javaScriptEnabled = true
+        webView.clearFormData()
+        webView.clearHistory()
+        webView.clearCache(true)
+        webView.clearMatches()
+        webView.clearSslPreferences()
+        webView.loadUrl("about:blank")
         webView.webViewClient = SignInWebViewClient()
         webView.loadUrl(url)
         signInDialog.setContentView(webView)
         signInDialog.show()
+
     }
+
 
     inner class SignInWebViewClient : WebViewClient() {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -93,9 +101,11 @@ class WelcomeScreen : AppCompatActivity() {
                     viewModel.send(WelcomeEvent.Load(code))
                 }
                 return true
+
             }
             return false
         }
+
     }
 
     private fun setupObserver() {
@@ -120,6 +130,9 @@ class WelcomeScreen : AppCompatActivity() {
         prefs.putString(USERNAME, user.username)
         prefs.putString(ID_USER, user.id)
         prefs.putBoolean(IS_LOGGED, true)
+        webView.clearFormData()
+        webView.clearHistory()
+        webView.clearCache(true)
         startActivity(Intent(this, MainScreen::class.java))
         finish()
     }

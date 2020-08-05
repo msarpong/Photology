@@ -12,7 +12,7 @@ interface KeyValueStorage {
     fun getBoolean(key: String, default: Boolean): Boolean
     fun getLong(key: String, default: Long): Long
     fun getFloat(key: String, default: Float): Float
-    fun putString(key: String, value: String)
+    fun putString(key: String, value: String?)
     fun putStringSet(key: String, value: Set<String>)
     fun putInt(key: String, value: Int)
     fun putBoolean(key: String, value: Boolean)
@@ -54,7 +54,7 @@ class Preferences(private val sharedPreferences: SharedPreferences) : KeyValueSt
     override fun getFloat(key: String, default: Float) =
         sharedPreferences.getFloat(key, default)
 
-    override fun putString(key: String, value: String) {
+    override fun putString(key: String, value: String?) {
         sharedPreferences.edit().putString(key, value).apply()
     }
 

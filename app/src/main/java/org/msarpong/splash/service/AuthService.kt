@@ -10,7 +10,8 @@ import org.msarpong.splash.util.REDIRECT_URI
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 sealed class AuthServiceResult {
     data class Error(val error: Throwable) : AuthServiceResult()

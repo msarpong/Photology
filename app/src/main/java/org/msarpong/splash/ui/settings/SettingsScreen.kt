@@ -71,7 +71,9 @@ class SettingsScreen : AppCompatActivity() {
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
         }
-
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
+        }
         settingProfileBtn.setOnClickListener {
             startActivity(Intent(this, SettingProfile::class.java))
         }

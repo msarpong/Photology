@@ -95,6 +95,9 @@ class SettingProfile : AppCompatActivity() {
         profileBtn.setOnClickListener {
             startActivity(Intent(this, UserScreen::class.java))
         }
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
+        }
 
         editSaveBtn.setOnClickListener {
             username = editUsername.text.toString()

@@ -57,6 +57,8 @@ class WelcomeScreen : AppCompatActivity() {
     }
 
     private fun checkUser() {
+        Log.d("printUrl", url)
+
         if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
             setupWebViewDialog(url)
         } else {
@@ -73,19 +75,11 @@ class WelcomeScreen : AppCompatActivity() {
         webView.isVerticalScrollBarEnabled = false
         webView.isHorizontalScrollBarEnabled = false
         webView.settings.javaScriptEnabled = true
-        webView.clearFormData()
-        webView.clearHistory()
-        webView.clearCache(true)
-        webView.clearMatches()
-        webView.clearSslPreferences()
-        webView.loadUrl("about:blank")
         webView.webViewClient = SignInWebViewClient()
         webView.loadUrl(url)
         signInDialog.setContentView(webView)
         signInDialog.show()
-
     }
-
 
     inner class SignInWebViewClient : WebViewClient() {
         @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -122,7 +116,6 @@ class WelcomeScreen : AppCompatActivity() {
         Log.d("saveAuth", authResult.accessToken)
         prefs.putString(ACCESS_TOKEN, authResult.accessToken)
         viewModel.send(WelcomeEvent.LoadUser(authResult.accessToken))
-
     }
 
     private fun saveUser(user: UserResponse) {

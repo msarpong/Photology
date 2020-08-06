@@ -1,65 +1,76 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    tools:showIn="@layout/profile_screen"
-    android:paddingTop="36dp"
-    android:layout_height="wrap_content">
+    android:layout_height="180dp"
+    android:paddingTop="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:showIn="@layout/profile_screen">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/search_bar"
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:foregroundGravity="center_horizontal"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:weightSum="9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:elevation="8dp"
-                app:layout_constraintBottom_toBottomOf="@+id/view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/image_cover"
-                tools:srcCompat="@drawable/cactus" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:foregroundGravity="center_vertical"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:gravity="center|center_vertical|end"
+                tools:ignore="RtlHardcoded">
 
-            <TextView
-                android:id="@+id/profile_text_fullname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/helvetica_bold"
-                android:paddingTop="12dp"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:text="Ramiro Pianarosa" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/image_cover"
+                    tools:srcCompat="@drawable/cactus" />
 
-            <TextView
-                android:id="@+id/profile_text_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/helvetica"
-                android:textAlignment="center"
-                android:textSize="14sp"
-                tools:text="rapiana" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/profile_text_bio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/helvetica"
-                android:textAlignment="center"
-                android:textSize="16sp"
-                tools:text="-" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginStart="16dp"
+                android:layout_weight="8"
+                android:gravity="center|center_vertical|end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/profile_text_full_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica_bold"
+                    android:textAlignment="textStart"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="Ramiro Pianarosa" />
+
+                <TextView
+                    android:id="@+id/profile_text_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/helvetica"
+                    android:textAlignment="textStart"
+                    android:textSize="14sp"
+                    tools:text="rapiana" />
+
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -69,9 +80,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:weightSum="3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_bar">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
             <Button
                 android:id="@+id/profile_photo"
@@ -83,7 +92,7 @@
                 android:text="Photos"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <Button
                 android:id="@+id/profile_like"
@@ -118,6 +127,4 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </FrameLayout>

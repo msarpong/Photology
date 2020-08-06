@@ -48,7 +48,6 @@ class UserScreen : AppCompatActivity() {
     private lateinit var profileImage: ImageView
     private lateinit var profileUsername: TextView
     private lateinit var profileFullName: TextView
-    private lateinit var profileBio: TextView
     private lateinit var profilePhotoBtn: Button
     private lateinit var profileLikeBtn: Button
     private lateinit var profileCollectionBtn: Button
@@ -79,8 +78,7 @@ class UserScreen : AppCompatActivity() {
         profileBtn = findViewById(R.id.profile_btn)
         profileImage = findViewById(R.id.profile_image)
         profileUsername = findViewById(R.id.profile_text_username)
-        profileFullName = findViewById(R.id.profile_text_fullname)
-        profileBio = findViewById(R.id.profile_text_bio)
+        profileFullName = findViewById(R.id.profile_text_full_name)
         profilePhotoBtn = findViewById(R.id.profile_photo)
         profileLikeBtn = findViewById(R.id.profile_like)
         profileCollectionBtn = findViewById(R.id.profile_collection)
@@ -169,7 +167,6 @@ class UserScreen : AppCompatActivity() {
 
         profileUsername.text = profile.username
         profileFullName.text = profile.name
-        profileBio.text = profile.bio
     }
 
     private fun showError(error: Throwable) {

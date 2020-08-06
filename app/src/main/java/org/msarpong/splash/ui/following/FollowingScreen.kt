@@ -115,7 +115,6 @@ class FollowingScreen : AppCompatActivity() {
 
     private fun showUser(userList: FollowingResponse) {
         followingAdapter.submitList(userList)
-
         Log.d("FollowingScreen_user", "${userList}")
     }
 

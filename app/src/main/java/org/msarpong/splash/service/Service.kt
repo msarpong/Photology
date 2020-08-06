@@ -11,14 +11,12 @@ import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
 import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
+import org.msarpong.splash.ui.settings.EditUser
 import org.msarpong.splash.util.CLIENT_ID
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 sealed class ServiceResult {
     data class Error(val error: Throwable) : ServiceResult()
@@ -259,6 +257,43 @@ class Service {
         })
     }
 
+    fun editCurrentUser(
+        authToken: String,saveData: EditUser,receiver: ServiceReceiver
+    ) {
+        val key = "Bearer "
+        val token = key + authToken
+        val userResult = service.editMe(
+            token,
+            saveData.username,
+            saveData.firstName,
+            saveData.lastName,
+            saveData.eMail,
+            saveData.bio,
+            saveData.instagram
+        )
+
+        Log.d("editCurrentUser", "Authorization: $token")
+
+        userResult.enqueue(object : Callback<UserResponse> {
+            override fun onFailure(call: Call<UserResponse>, t: Throwable) {
+                Log.d("onFailure_editUser", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<UserResponse>, response: Response<UserResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val userInfo = response.body()!!
+                    receiver.receive(ServiceResult.SuccessUser(userInfo))
+                    Log.d("onResponse_editUser", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_editUser", "showError: $error")
+                }
+            }
+
+        })
+    }
+
     fun getFollowing(username: String, receiver: ServiceReceiver) {
 
         val following = service.getUserFollowing(username)
@@ -298,14 +333,14 @@ class Service {
                     val likedPhoto = response.body()!!
                     receiver.receive(ServiceResult.SuccessResultLikePhoto(likedPhoto))
                     Log.d("onResponse_getLikePhoto", "showSuccess: $success")
-                }else{
+                } else {
                     Log.d("onResponse_getLikePhoto", "showError: $error")
                 }
             }
-       })
+        })
     }
 
-    fun getUserCollection(username: String,receiver: ServiceReceiver) {
+    fun getUserCollection(username: String, receiver: ServiceReceiver) {
         val collection = service.getUserCollection(username)
         collection.enqueue(object : Callback<Collection> {
             override fun onFailure(call: Call<Collection>, t: Throwable) {
@@ -377,6 +412,18 @@ interface SplashServiceApi {
     @GET("/me")
     fun getMe(
         @Header("Authorization") authorization: String
+    ): Call<UserResponse>
+
+    @PUT("/me")
+    fun editMe(
+        @Header("Authorization") authorization: String,
+        @Query("username") username: String,
+        @Query("first_name") first_name: String,
+        @Query("last_name") last_name: String,
+        @Query("email") email: String,
+        @Query("bio") bio: String,
+        @Query("instagram_username") instagram_username: String
+
     ): Call<UserResponse>
 
     @GET("/users/{username}/following/")

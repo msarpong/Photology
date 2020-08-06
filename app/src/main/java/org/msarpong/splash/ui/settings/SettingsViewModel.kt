@@ -11,11 +11,13 @@ import org.msarpong.splash.service.mapping.auth.user.UserResponse
 
 sealed class SettingEvent {
     data class Load(val code: String) : SettingEvent()
+    data class Edit(val code: String, val saveData: EditUser) : SettingEvent()
 }
 
 sealed class SettingState {
     object InProgress : SettingState()
     data class Success(val user: UserResponse) : SettingState()
+    data class SuccessEdit(val user: UserResponse) : SettingState()
     data class Error(val error: Throwable) : SettingState()
 }
 
@@ -30,6 +32,25 @@ class SettingsViewModel(context: Context) : ViewModel() {
     fun send(event: SettingEvent) {
         when (event) {
             is SettingEvent.Load -> loadContent(event.code)
+            is SettingEvent.Edit -> editContent(event.code, event.saveData)
+        }
+    }
+
+    private fun editContent(code: String, saveData: EditUser) {
+        Log.d("SettingsViewModel", "editContent")
+        try {
+            service.editCurrentUser(code, saveData, object : ServiceReceiver{
+                override fun receive(result: ServiceResult) {
+                    when (result) {
+                        is ServiceResult.SuccessUser -> state.value =
+                            SettingState.SuccessEdit(user = result.user)
+                        is ServiceResult.Error -> state.value =
+                            SettingState.Error(error = result.error)
+                    }
+                }
+            })
+        } catch (exception: Throwable) {
+            state.value = SettingState.Error(exception)
         }
     }
 

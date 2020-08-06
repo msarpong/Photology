@@ -3,10 +3,7 @@ package org.msarpong.splash.service
 import android.util.Log
 import org.msarpong.splash.di.authRetrofit
 import org.msarpong.splash.service.mapping.auth.AuthResponse
-import org.msarpong.splash.util.CLIENT_ID
-import org.msarpong.splash.util.CLIENT_SECRET
-import org.msarpong.splash.util.GRANT_TYPE
-import org.msarpong.splash.util.REDIRECT_URI
+import org.msarpong.splash.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,6 +59,7 @@ interface AuthServiceApi {
         @Query("client_id") client_id: String = CLIENT_ID,
         @Query("client_secret") client_secret: String = CLIENT_SECRET,
         @Query("redirect_uri") redirect_uri: String = REDIRECT_URI,
+        @Query("scope") scope: String = SCOPE,
         @Query("grant_type") grant_type: String = GRANT_TYPE
     ): Call<AuthResponse>
 }

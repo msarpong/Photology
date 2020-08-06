@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -25,6 +26,8 @@ class SettingProfile : AppCompatActivity() {
     private val prefs: KeyValueStorage by inject()
     private val viewModel: SettingsViewModel by inject()
 
+    private lateinit var saveData: EditUser
+
     private lateinit var editUsername: EditText
     private lateinit var editFirstName: EditText
     private lateinit var editLastName: EditText
@@ -32,6 +35,13 @@ class SettingProfile : AppCompatActivity() {
     private lateinit var editBio: EditText
     private lateinit var editInstagram: EditText
     private lateinit var editSaveBtn: Button
+
+    private lateinit var username: String
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var eMail: String
+    private lateinit var bio: String
+    private lateinit var instagram: String
 
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
@@ -87,7 +97,18 @@ class SettingProfile : AppCompatActivity() {
         }
 
         editSaveBtn.setOnClickListener {
-            TODO()
+            username = editUsername.text.toString()
+            firstName = editFirstName.text.toString()
+            lastName = editLastName.text.toString()
+            eMail = editEmail.text.toString()
+            bio = editBio.text.toString()
+            instagram = editInstagram.text.toString()
+
+            saveData = EditUser(username, firstName, lastName, eMail, bio, instagram)
+            Log.d("SettingsProfile", "Response: $saveData")
+            Log.d("SettingsProfileActivity", "editSaveBtn: ${saveData.bio}")
+
+            viewModel.send(SettingEvent.Edit(authToken, saveData))
         }
     }
 
@@ -97,20 +118,26 @@ class SettingProfile : AppCompatActivity() {
             when (state) {
                 is SettingState.Error -> showError(state.error)
                 is SettingState.Success -> showResult(state.user)
+                is SettingState.SuccessEdit -> successEdit(state.user)
             }
         })
         viewModel.send(SettingEvent.Load(authToken))
     }
 
+    private fun successEdit(user: UserResponse) {
+        Log.d("SettingsProfileActivity", "successEdit: $user")
+        Toast.makeText(this, "Profile update!", Toast.LENGTH_LONG).show()
+    }
+
     private fun showResult(user: UserResponse) {
-        Log.d("SettingsProfile", "Response: $user")
-        editUsername.setText(user.username)
+        Log.d("SettingsProfileActivity", "Response: $user")
+        editUsername.setText(user.username).toString()
         editFirstName.setText(user.firstName)
         editLastName.setText(user.lastName)
         editEmail.setText(user.email)
         editBio.setText(user.bio)
         editInstagram.setText(user.instagramUsername)
-      }
+    }
 
     private fun showError(error: Throwable) {
         Log.d("SettingsProfile", "showError: $error")

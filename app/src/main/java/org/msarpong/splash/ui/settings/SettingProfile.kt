@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -17,14 +18,20 @@ import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
-import org.msarpong.splash.util.IS_LOGGED
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
-
-class SettingsScreen : AppCompatActivity() {
+class SettingProfile : AppCompatActivity() {
 
     private val prefs: KeyValueStorage by inject()
     private val viewModel: SettingsViewModel by inject()
+
+    private lateinit var editUsername: EditText
+    private lateinit var editFirstName: EditText
+    private lateinit var editLastName: EditText
+    private lateinit var editEmail: EditText
+    private lateinit var editBio: EditText
+    private lateinit var editInstagram: EditText
+    private lateinit var editSaveBtn: Button
 
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
@@ -32,12 +39,11 @@ class SettingsScreen : AppCompatActivity() {
     private lateinit var profileBtn: ImageButton
     private lateinit var settingBtn: ImageButton
 
-    private lateinit var logOutBtn: Button
-    private lateinit var settingProfileBtn: Button
+    private lateinit var authToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.settings_screen)
+        setContentView(R.layout.setting_profile)
         initViews()
         setupViews()
     }
@@ -48,17 +54,25 @@ class SettingsScreen : AppCompatActivity() {
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
-        logOutBtn = findViewById(R.id.logout_btn)
-        settingProfileBtn = findViewById(R.id.setting_profile_btn)
+
+        editUsername = findViewById(R.id.edit_username)
+        editFirstName = findViewById(R.id.edit_first_name)
+        editLastName = findViewById(R.id.edit_last_name)
+        editEmail = findViewById(R.id.edit_email)
+        editBio = findViewById(R.id.edit_bio)
+        editInstagram = findViewById(R.id.edit_instagram)
+        editSaveBtn = findViewById(R.id.edit_save_btn)
+
+        authToken = prefs.getString(ACCESS_TOKEN).toString()
     }
 
     private fun setupViews() {
-
         if (!prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
             settingBtn.visibility = View.VISIBLE
         }
 
         settingBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+
         homeBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
         }
@@ -72,44 +86,34 @@ class SettingsScreen : AppCompatActivity() {
             startActivity(Intent(this, UserScreen::class.java))
         }
 
-        settingProfileBtn.setOnClickListener {
-            startActivity(Intent(this, SettingProfile::class.java))
+        editSaveBtn.setOnClickListener {
+            TODO()
         }
-        logOutBtn.setOnClickListener {
-            prefs.putBoolean(IS_LOGGED, false)
-            prefs.putString(ACCESS_TOKEN, null)
-
-            Log.d("SettingsShowResult", "ACCESS_TOKEN: " + prefs.getString(ACCESS_TOKEN))
-            Log.d("SettingsShowResult", "IS_LOGGED: " + prefs.getBoolean(IS_LOGGED, true))
-
-            cleanApp()
-        }
-
     }
 
     override fun onStart() {
         super.onStart()
-
         viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is SettingState.Error -> showError(state.error)
                 is SettingState.Success -> showResult(state.user)
             }
         })
+        viewModel.send(SettingEvent.Load(authToken))
     }
 
     private fun showResult(user: UserResponse) {
-        Log.d("SettingsShowResult", "Response: $user")
-    }
+        Log.d("SettingsProfile", "Response: $user")
+        editUsername.setText(user.username)
+        editFirstName.setText(user.firstName)
+        editLastName.setText(user.lastName)
+        editEmail.setText(user.email)
+        editBio.setText(user.bio)
+        editInstagram.setText(user.instagramUsername)
+      }
 
     private fun showError(error: Throwable) {
-        Log.d("SettingsScreen", "showError: $error")
-    }
-
-    private fun cleanApp() {
-        val packageName: String = this.packageName
-        val runtime = Runtime.getRuntime()
-        runtime.exec("pm clear $packageName")
+        Log.d("SettingsProfile", "showError: $error")
     }
 
 }

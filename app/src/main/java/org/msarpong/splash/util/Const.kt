@@ -21,3 +21,4 @@ const val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 1
 const val IS_LOGGED = "is_logged"
 const val USERNAME = "username"
 const val ID_USER = "id_user"
+const val LANGUAGE = "language"

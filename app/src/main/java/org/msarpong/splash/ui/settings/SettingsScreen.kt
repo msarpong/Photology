@@ -34,6 +34,9 @@ class SettingsScreen : AppCompatActivity() {
 
     private lateinit var logOutBtn: Button
     private lateinit var settingProfileBtn: Button
+    private lateinit var settingLanguageBtn: Button
+    private lateinit var settingStatsBtn: Button
+    private lateinit var settingAboutBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,9 @@ class SettingsScreen : AppCompatActivity() {
         profileBtn = findViewById(R.id.profile_btn)
         logOutBtn = findViewById(R.id.logout_btn)
         settingProfileBtn = findViewById(R.id.setting_profile_btn)
+        settingLanguageBtn = findViewById(R.id.setting_language_btn)
+        settingStatsBtn = findViewById(R.id.setting_stats_btn)
+        settingAboutBtn = findViewById(R.id.setting_about_btn)
     }
 
     private fun setupViews() {
@@ -77,6 +83,16 @@ class SettingsScreen : AppCompatActivity() {
         settingProfileBtn.setOnClickListener {
             startActivity(Intent(this, SettingProfile::class.java))
         }
+        settingLanguageBtn.setOnClickListener {
+            startActivity(Intent(this, SettingLanguage::class.java))
+        }
+        settingStatsBtn.setOnClickListener {
+            startActivity(Intent(this, SettingStat::class.java))
+        }
+        settingAboutBtn.setOnClickListener {
+            startActivity(Intent(this, SettingAbout::class.java))
+        }
+
         logOutBtn.setOnClickListener {
             prefs.putBoolean(IS_LOGGED, false)
             prefs.putString(ACCESS_TOKEN, null)

@@ -13,7 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.settings.SettingProfile"></activity>
+        <activity android:name=".ui.settings.SettingAbout"></activity>
+        <activity android:name=".ui.settings.SettingStat" />
+        <activity android:name=".ui.settings.SettingLanguage" />
+        <activity android:name=".ui.settings.SettingProfile" />
         <activity android:name=".ui.settings.SettingsScreen" />
         <activity android:name=".ui.user.NoUserScreen" />
         <activity android:name=".ui.following.FollowingScreen" />

@@ -11,6 +11,7 @@ import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
 import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
 import org.msarpong.splash.service.mapping.search.users.SearchUserResponse
+import org.msarpong.splash.service.mapping.stats.StatsResponse
 import org.msarpong.splash.ui.settings.EditUser
 import org.msarpong.splash.util.CLIENT_ID
 import retrofit2.Call
@@ -28,6 +29,7 @@ sealed class ServiceResult {
     data class SuccessResultUser(val search: SearchUserResponse) : ServiceResult()
     data class SuccessResultLikePhoto(val likedPhoto: PhotoResponse) : ServiceResult()
     data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
+    data class SuccessResultStats(val stats: StatsResponse) : ServiceResult()
     data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
@@ -258,7 +260,7 @@ class Service {
     }
 
     fun editCurrentUser(
-        authToken: String,saveData: EditUser,receiver: ServiceReceiver
+        authToken: String, saveData: EditUser, receiver: ServiceReceiver
     ) {
         val key = "Bearer "
         val token = key + authToken
@@ -362,6 +364,26 @@ class Service {
         })
     }
 
+    fun getStats(username: String, receiver: ServiceReceiver) {
+        val stats = service.getStatsUser(username)
+        stats.enqueue(object : Callback<StatsResponse> {
+            override fun onFailure(call: Call<StatsResponse>, t: Throwable) {
+                Log.d("onFailure_getStats", "showError: $t")
+            }
+            override fun onResponse(call: Call<StatsResponse>, response: Response<StatsResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val statsResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultStats(statsResult))
+                    Log.d("onResponse_getStats", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getStats", "showError: $error")
+                }
+            }
+        })
+    }
+
 }
 
 interface SplashServiceApi {
@@ -390,6 +412,12 @@ interface SplashServiceApi {
         @Path("username") detailId: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<PhotoResponse>
+
+    @GET("/users/{username}/statistics")
+    fun getStatsUser(
+        @Path("username") detailId: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<StatsResponse>
 
     @GET("/search/photos")
     fun getSearch(

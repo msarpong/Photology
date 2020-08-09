@@ -38,7 +38,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
 
-
         <TextView
             android:id="@+id/setting_about_text"
             android:layout_width="match_parent"

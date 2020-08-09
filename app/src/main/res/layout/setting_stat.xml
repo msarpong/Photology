@@ -18,11 +18,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@+id/include_header">
+        app:layout_constraintTop_toBottomOf="@+id/include_header"
+        tools:layout_editor_absoluteX="16dp">
 
         <TextView
             android:id="@+id/title_setting"
@@ -37,7 +39,34 @@
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/stats_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#A8A8A8"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="ID: zbOSm_m29Pc" />
+
+        <TextView
+            android:id="@+id/stats_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#A8A8A8"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="USERNAME: msarpong" />
+
+
     </LinearLayout>
+
+    <com.anychart.AnyChartView
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
     <View
         android:id="@+id/drop_shadow"

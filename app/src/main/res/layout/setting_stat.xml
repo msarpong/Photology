@@ -31,40 +31,85 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:drawableStart="@drawable/ic_stats"
             android:drawablePadding="24dp"
-            android:drawableTint="#A8A8A8"
             android:padding="16dp"
             android:text="Statistics"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_stats"
+            app:drawableTint="#A8A8A8" />
 
         <TextView
             android:id="@+id/stats_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#A8A8A8"
+            android:paddingBottom="8dp"
+            android:text="Total"
             android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="ID: zbOSm_m29Pc" />
+            android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/stats_username"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#A8A8A8"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="USERNAME: msarpong" />
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:weightSum="3">
 
+            <TextView
+                android:id="@+id/stats_total_likes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#A8A8A8"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Likes: 34" />
 
+            <TextView
+                android:id="@+id/stats_total_downloads"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#A8A8A8"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Downloads: 5" />
+
+            <TextView
+                android:id="@+id/stats_total_views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:textColor="#A8A8A8"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="Views: 100" />
+        </LinearLayout>
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center|center_horizontal"
+        android:foregroundGravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.anychart.AnyChartView
         android:id="@+id/any_chart_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 

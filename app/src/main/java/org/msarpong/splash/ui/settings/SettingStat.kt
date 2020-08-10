@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -27,7 +29,9 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
 import org.msarpong.splash.ui.user.UserScreen
-import org.msarpong.splash.util.*
+import org.msarpong.splash.util.ACCESS_TOKEN
+import org.msarpong.splash.util.USERNAME
+import org.msarpong.splash.util.forDate
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 class SettingStat : AppCompatActivity() {
@@ -40,6 +44,11 @@ class SettingStat : AppCompatActivity() {
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
     private lateinit var settingBtn: ImageButton
+    private lateinit var progressBar: ProgressBar
+
+    private lateinit var totalLikes: TextView
+    private lateinit var totalDownloads: TextView
+    private lateinit var totalViews: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +58,17 @@ class SettingStat : AppCompatActivity() {
     }
 
     private fun initViews() {
+        progressBar = findViewById(R.id.progressBar)
+
         settingBtn = findViewById(R.id.setting_btn)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
         profileBtn = findViewById(R.id.profile_btn)
+
+        totalLikes = findViewById(R.id.stats_total_likes)
+        totalDownloads = findViewById(R.id.stats_total_downloads)
+        totalViews = findViewById(R.id.stats_total_views)
     }
 
     private fun setupViews() {
@@ -82,8 +97,10 @@ class SettingStat : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         viewModel.state.observe(this, Observer { state ->
             when (state) {
+                is SettingState.InProgress -> showProgress()
                 is SettingState.Error -> showError(state.error)
                 is SettingState.SuccessStats -> showResult(state.stats)
             }
@@ -94,6 +111,10 @@ class SettingStat : AppCompatActivity() {
 
     private fun showResult(stats: StatsResponse) {
 
+        totalLikes.text = "Likes: "+stats.likes.total.toString()
+        totalDownloads.text =  "Downloads: "+stats.downloads.total.toString()
+        totalViews.text =  "Views: "+stats.views.total.toString()
+Log.d("showResultTotal",stats.likes.total.toString())
         val anyChartView = findViewById<AnyChartView>(R.id.any_chart_view)
         val cartesian: Cartesian = AnyChart.line()
 
@@ -217,6 +238,10 @@ class SettingStat : AppCompatActivity() {
         cartesian.legend().padding(0.0, 0.0, 10.0, 0.0)
 
         anyChartView.setChart(cartesian)
+    }
+
+    private fun showProgress() {
+        progressBar.visibility = View.VISIBLE
     }
 
     private fun showError(error: Throwable) {

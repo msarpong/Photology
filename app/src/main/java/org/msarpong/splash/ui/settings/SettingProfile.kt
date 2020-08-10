@@ -113,6 +113,8 @@ class SettingProfile : AppCompatActivity() {
 
             viewModel.send(SettingEvent.Edit(authToken, saveData))
         }
+        Log.d("SettingsProfileActivity", "$ACCESS_TOKEN: $authToken")
+
     }
 
     override fun onStart() {

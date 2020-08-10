@@ -6,6 +6,7 @@ import org.msarpong.splash.service.mapping.auth.user.UserResponse
 import org.msarpong.splash.service.mapping.collection.Collection
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
 import org.msarpong.splash.service.mapping.following.FollowingResponse
+import org.msarpong.splash.service.mapping.like.LikePhotoResponse
 import org.msarpong.splash.service.mapping.photos.PhotoResponse
 import org.msarpong.splash.service.mapping.profile.Profile
 import org.msarpong.splash.service.mapping.search.SearchResponse
@@ -30,6 +31,8 @@ sealed class ServiceResult {
     data class SuccessResultLikePhoto(val likedPhoto: PhotoResponse) : ServiceResult()
     data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
     data class SuccessResultStats(val stats: StatsResponse) : ServiceResult()
+    data class SuccessResultLike(val like: LikePhotoResponse) : ServiceResult()
+    data class SuccessResultUnLike(val like: LikePhotoResponse) : ServiceResult()
     data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
@@ -370,6 +373,7 @@ class Service {
             override fun onFailure(call: Call<StatsResponse>, t: Throwable) {
                 Log.d("onFailure_getStats", "showError: $t")
             }
+
             override fun onResponse(call: Call<StatsResponse>, response: Response<StatsResponse>) {
                 val success = response.body()
                 val error = response.errorBody()
@@ -381,6 +385,60 @@ class Service {
                     Log.d("onResponse_getStats", "showError: $error")
                 }
             }
+        })
+    }
+
+    fun likePhoto(authToken: String, id_photo: String, receiver: ServiceReceiver) {
+        val key = "Bearer "
+        val token = key + authToken
+        Log.d("sendDataLike", "AUTH_TOKEN: $token, PHOTO_ID: $id_photo")
+
+        val like = service.setLikePhoto(authorization = token, photo_id = id_photo)
+        like.enqueue(object : Callback<LikePhotoResponse> {
+            override fun onFailure(call: Call<LikePhotoResponse>, t: Throwable) {
+                Log.d("onFailure_likePhoto", "showError: $t")
+            }
+
+            override fun onResponse(
+                call: Call<LikePhotoResponse>,
+                response: Response<LikePhotoResponse>
+            ) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val likeResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultLike(likeResult))
+                    Log.d("onResponse_likePhoto", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_likePhoto", "showError: $error")
+                }
+            }
+
+        })
+    }
+
+    fun unLikePhoto(id_photo: String, receiver: ServiceReceiver) {
+        val like = service.deleteLikePhoto(photo_id = id_photo)
+        like.enqueue(object : Callback<LikePhotoResponse> {
+            override fun onFailure(call: Call<LikePhotoResponse>, t: Throwable) {
+                Log.d("onFailure_unLikePhoto", "showError: $t")
+            }
+
+            override fun onResponse(
+                call: Call<LikePhotoResponse>,
+                response: Response<LikePhotoResponse>
+            ) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val likeResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultUnLike(likeResult))
+                    Log.d("onResponse_unLikePhoto", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_unLikePhoto", "showError: $error")
+                }
+            }
+
         })
     }
 
@@ -472,5 +530,18 @@ interface SplashServiceApi {
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<Collection>
 
+    @POST("photos/{photo_id}/like")
+    fun setLikePhoto(
+        @Path("photo_id") photo_id: String,
+        @Query("client_id") client_id: String = CLIENT_ID,
+        @Header("Authorization") authorization: String
+
+    ): Call<LikePhotoResponse>
+
+    @DELETE("photos/{photo_id}/like")
+    fun deleteLikePhoto(
+        @Path("photo_id") photo_id: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<LikePhotoResponse>
 
 }

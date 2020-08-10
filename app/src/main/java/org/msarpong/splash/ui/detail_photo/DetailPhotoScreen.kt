@@ -13,20 +13,27 @@ import com.bumptech.glide.Glide
 import org.koin.android.ext.android.inject
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.detail_photo.DetailPhotoResponse
+import org.msarpong.splash.service.mapping.like.LikePhotoResponse
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
+import org.msarpong.splash.ui.user.NoUserScreen
 import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.DownloadPhoto
+import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 private const val BUNDLE_ID: String = "BUNDLE_ID"
 
 class DetailPhotoScreen : AppCompatActivity() {
 
     private val viewModel: DetailPhotoViewModel by inject()
+    private val prefs: KeyValueStorage by inject()
 
     private lateinit var progressBar: ProgressBar
+
+    private lateinit var authToken: String
 
     private lateinit var detailImage: ImageView
     private lateinit var detailId: String
@@ -42,6 +49,7 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var detailInfo: ImageButton
     private lateinit var detailShareBtn: ImageButton
     private lateinit var detailDownloadBtn: ImageButton
+    private lateinit var detailLikeBtn: ImageButton
     private lateinit var detailInfoView: View
 
     private lateinit var infoDate: TextView
@@ -70,6 +78,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         setContentView(R.layout.detail_photo_screen)
         initView()
         setupViews()
+
     }
 
     private fun initView() {
@@ -88,6 +97,7 @@ class DetailPhotoScreen : AppCompatActivity() {
         detailInfoView = findViewById(R.id.view_detail_info)
         detailShareBtn = findViewById(R.id.detail_share_btn)
         detailDownloadBtn = findViewById(R.id.detail_download_btn)
+        detailLikeBtn = findViewById(R.id.detail_like_btn)
         infoDate = findViewById(R.id.info_date)
         infoView = findViewById(R.id.info_view)
         infoDownload = findViewById(R.id.info_download)
@@ -125,6 +135,18 @@ class DetailPhotoScreen : AppCompatActivity() {
             Toast.makeText(this, "detailDownloadBtn", Toast.LENGTH_LONG).show()
         }
 
+        detailLikeBtn.setOnClickListener {
+            if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+                startActivity(Intent(this, NoUserScreen::class.java))
+                finish()
+            } else {
+                authToken = prefs.getString(ACCESS_TOKEN).toString()
+                viewModel.send(DetailEvent.LikePhoto(authToken, detailId))
+                Log.d("detailLikeBtn", "$ACCESS_TOKEN: $authToken, id_photo: $detailId")
+
+            }
+        }
+
         Log.d("setupViews", "detailId: $detailId")
     }
 
@@ -141,10 +163,18 @@ class DetailPhotoScreen : AppCompatActivity() {
                     hideProgress()
                     showPhotos(state.pictureDetail)
                 }
+                is DetailState.SuccessLike -> {
+                    setLike(state.likeResponse)
+                }
             }
         })
         viewModel.send(DetailEvent.Load(detailId))
         Log.d("onStart", detailId)
+    }
+
+    private fun setLike(likeResponse: LikePhotoResponse) {
+        Log.d("DetailPhotoScreen", "setLike:$likeResponse")
+        detailLikeBtn.setImageResource(R.drawable.ic_like)
     }
 
     private fun showPhotos(response: DetailPhotoResponse) {
@@ -159,6 +189,10 @@ class DetailPhotoScreen : AppCompatActivity() {
             .load(response.user.profileImage.medium)
             .fitCenter()
             .into(detailUserImage)
+
+        if (response.likedByUser == true){
+            detailLikeBtn.setImageResource(R.drawable.ic_like)
+        }
 
         detailUser.text = response.user.name
         detailUserName.text = response.user.username

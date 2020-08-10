@@ -20,7 +20,9 @@ import org.msarpong.splash.service.mapping.following.FollowingResponseItem
 import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
+import org.msarpong.splash.ui.settings.SettingsScreen
 import org.msarpong.splash.ui.user.UserScreen
+import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.sharedpreferences.KeyValueStorage
 
 
@@ -38,6 +40,7 @@ class FollowingScreen : AppCompatActivity() {
     private lateinit var profileBtn: ImageButton
     private lateinit var editorialBtn: Button
     private lateinit var followingBtn: Button
+    private lateinit var settingBtn: ImageButton
 
     private lateinit var followingRV: RecyclerView
     private lateinit var followingAdapter: ListAdapter<FollowingResponseItem, FollowingViewHolder>
@@ -61,6 +64,7 @@ class FollowingScreen : AppCompatActivity() {
         username = prefs.getString("username").toString()
 
         progressBar = findViewById(R.id.progressBar)
+        settingBtn = findViewById(R.id.setting_btn)
         homeBtn = findViewById(R.id.home_btn)
         collectionBtn = findViewById(R.id.collection_btn)
         searchBtn = findViewById(R.id.search_btn)
@@ -72,6 +76,9 @@ class FollowingScreen : AppCompatActivity() {
 
     private fun setupViews() {
         homeBtn.setColorFilter(ContextCompat.getColor(this, R.color.active_button))
+        if (!prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            settingBtn.visibility = View.VISIBLE
+        }
         editorialBtn.setCompoundDrawables(null, null, null, null)
         collectionBtn.setOnClickListener {
             startActivity(Intent(this, CollectionScreen::class.java))
@@ -84,6 +91,9 @@ class FollowingScreen : AppCompatActivity() {
         }
         editorialBtn.setOnClickListener {
             startActivity(Intent(this, MainScreen::class.java))
+        }
+        settingBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsScreen::class.java))
         }
     }
 

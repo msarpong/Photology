@@ -33,6 +33,7 @@ sealed class ServiceResult {
     data class SuccessResultStats(val stats: StatsResponse) : ServiceResult()
     data class SuccessResultLike(val like: LikePhotoResponse) : ServiceResult()
     data class SuccessResultCollectionPhoto(val photoCollection: PhotoResponse) : ServiceResult()
+    data class SuccessResultRandomPhoto(val photoRandom: DetailPhotoResponse) : ServiceResult()
     data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
@@ -463,8 +464,30 @@ class Service {
                     val photoResult = response.body()!!
                     receiver.receive(ServiceResult.SuccessResultCollectionPhoto(photoResult))
                     Log.d("onResponse_ColPh", "showSuccess: $success")
-                }else {
+                } else {
                     Log.d("onResponse_ColPh", "showError: $error")
+                }
+            }
+
+        })
+    }
+
+    fun getRandomPhoto(query: String, receiver: ServiceReceiver) {
+        val randomPhoto = service.getRandomPhoto(query)
+        randomPhoto.enqueue(object : Callback<DetailPhotoResponse> {
+            override fun onFailure(call: Call<DetailPhotoResponse>, t: Throwable) {
+                Log.d("onFailure_getRanPhoto", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<DetailPhotoResponse>, response: Response<DetailPhotoResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val photoResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultRandomPhoto(photoResult))
+                    Log.d("onResponse_getRanPhoto", "showSuccess: $success")
+                } else {
+                    Log.d("onResponse_getRanPhoto", "showError: $error")
                 }
             }
 
@@ -580,4 +603,10 @@ interface SplashServiceApi {
         @Header("Authorization") authorization: String
     ): Call<LikePhotoResponse>
 
+    @GET("/photos/random")
+    fun getRandomPhoto(
+        @Query("query") query: String,
+        @Query("orientation") orientation: String = "portrait",
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<DetailPhotoResponse>
 }

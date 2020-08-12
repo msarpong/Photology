@@ -33,24 +33,21 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var progressBar: ProgressBar
 
     private lateinit var authToken: String
+    private lateinit var detailId: String
 
     private lateinit var detailImage: ImageView
-    private lateinit var detailId: String
     private lateinit var detailUserImage: ImageView
     private lateinit var detailUser: TextView
     private lateinit var detailUserName: TextView
-
     private lateinit var homeBtn: ImageButton
     private lateinit var collectionBtn: ImageButton
     private lateinit var searchBtn: ImageButton
     private lateinit var profileBtn: ImageButton
-
     private lateinit var detailInfo: ImageButton
     private lateinit var detailShareBtn: ImageButton
     private lateinit var detailDownloadBtn: ImageButton
     private lateinit var detailLikeBtn: ToggleButton
     private lateinit var detailInfoView: View
-
     private lateinit var infoDate: TextView
     private lateinit var infoView: TextView
     private lateinit var infoDownload: TextView
@@ -61,8 +58,6 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var infoFocalLength: TextView
     private lateinit var infoIso: TextView
     private lateinit var downloadManager: DownloadPhoto
-
-    private var isLiked: Boolean = false
 
     companion object {
         fun openDetailPhoto(startingActivity: Activity, detailId: String) {
@@ -172,7 +167,6 @@ class DetailPhotoScreen : AppCompatActivity() {
         })
         viewModel.send(DetailEvent.Load(authToken, detailId))
         Log.d("getKey_onStart", "authToken: $authToken - detailId: $detailId")
-        Log.d("onStart", detailId)
     }
 
     private fun setLike(likeResponse: LikePhotoResponse) {

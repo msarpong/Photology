@@ -35,8 +35,10 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/detail_image"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_header"
+        app:layout_constraintVertical_bias="0.0"
         tools:visibility="visible" />
 
     <RelativeLayout
@@ -106,17 +108,28 @@
         app:layout_constraintStart_toStartOf="@+id/detail_image"
         app:srcCompat="@drawable/ic_share" />
 
-    <ImageButton
-        android:id="@+id/detail_like_btn"
+    <View
+        android:id="@+id/view3"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/circular_button"
-        android:tint="#FFFFFF"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/circular_button"
         app:layout_constraintBottom_toBottomOf="@+id/detail_image"
         app:layout_constraintEnd_toStartOf="@+id/detail_download_btn"
-        app:layout_constraintStart_toEndOf="@+id/detail_share_btn"
-        app:srcCompat="@drawable/ic_like_empty" />
+        app:layout_constraintStart_toEndOf="@+id/detail_share_btn" />
+
+    <ToggleButton
+        android:id="@+id/detail_like_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/toggle_selector_like"
+        android:backgroundTint="@android:color/white"
+        android:textOff=""
+        android:textOn=""
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <ImageButton
         android:id="@+id/detail_download_btn"

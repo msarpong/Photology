@@ -18,7 +18,6 @@ import org.msarpong.splash.ui.collections.CollectionScreen
 import org.msarpong.splash.ui.main.MainScreen
 import org.msarpong.splash.ui.profile.ProfilePhotoScreen
 import org.msarpong.splash.ui.search.SearchPhotoScreen
-import org.msarpong.splash.ui.user.NoUserScreen
 import org.msarpong.splash.ui.user.UserScreen
 import org.msarpong.splash.util.ACCESS_TOKEN
 import org.msarpong.splash.util.DownloadPhoto
@@ -49,7 +48,7 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var detailInfo: ImageButton
     private lateinit var detailShareBtn: ImageButton
     private lateinit var detailDownloadBtn: ImageButton
-    private lateinit var detailLikeBtn: ImageButton
+    private lateinit var detailLikeBtn: ToggleButton
     private lateinit var detailInfoView: View
 
     private lateinit var infoDate: TextView
@@ -61,8 +60,9 @@ class DetailPhotoScreen : AppCompatActivity() {
     private lateinit var infoAperture: TextView
     private lateinit var infoFocalLength: TextView
     private lateinit var infoIso: TextView
-
     private lateinit var downloadManager: DownloadPhoto
+
+    private var isLiked: Boolean = false
 
     companion object {
         fun openDetailPhoto(startingActivity: Activity, detailId: String) {
@@ -76,6 +76,11 @@ class DetailPhotoScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detail_photo_screen)
+        authToken = if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
+            "null"
+        } else {
+            prefs.getString(ACCESS_TOKEN).toString()
+        }
         initView()
         setupViews()
 
@@ -135,19 +140,13 @@ class DetailPhotoScreen : AppCompatActivity() {
             Toast.makeText(this, "detailDownloadBtn", Toast.LENGTH_LONG).show()
         }
 
-        detailLikeBtn.setOnClickListener {
-            if (prefs.getString(ACCESS_TOKEN).isNullOrEmpty()) {
-                startActivity(Intent(this, NoUserScreen::class.java))
-                finish()
-            } else {
-                authToken = prefs.getString(ACCESS_TOKEN).toString()
+        detailLikeBtn.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
                 viewModel.send(DetailEvent.LikePhoto(authToken, detailId))
-                Log.d("detailLikeBtn", "$ACCESS_TOKEN: $authToken, id_photo: $detailId")
-
+            } else {
+                viewModel.send(DetailEvent.UnLikePhoto(authToken, detailId))
             }
         }
-
-        Log.d("setupViews", "detailId: $detailId")
     }
 
     override fun onStart() {
@@ -166,15 +165,22 @@ class DetailPhotoScreen : AppCompatActivity() {
                 is DetailState.SuccessLike -> {
                     setLike(state.likeResponse)
                 }
+                is DetailState.SuccessUnLike -> {
+                    deleteLike(state.likeResponse)
+                }
             }
         })
-        viewModel.send(DetailEvent.Load(detailId))
+        viewModel.send(DetailEvent.Load(authToken, detailId))
+        Log.d("getKey_onStart", "authToken: $authToken - detailId: $detailId")
         Log.d("onStart", detailId)
     }
 
     private fun setLike(likeResponse: LikePhotoResponse) {
         Log.d("DetailPhotoScreen", "setLike:$likeResponse")
-        detailLikeBtn.setImageResource(R.drawable.ic_like)
+    }
+
+    private fun deleteLike(likeResponse: LikePhotoResponse) {
+        Log.d("DetailPhotoScreen", "deleteLike:$likeResponse")
     }
 
     private fun showPhotos(response: DetailPhotoResponse) {
@@ -190,8 +196,8 @@ class DetailPhotoScreen : AppCompatActivity() {
             .fitCenter()
             .into(detailUserImage)
 
-        if (response.likedByUser == true){
-            detailLikeBtn.setImageResource(R.drawable.ic_like)
+        if (response.likedByUser) {
+            detailLikeBtn.isChecked = true
         }
 
         detailUser.text = response.user.name

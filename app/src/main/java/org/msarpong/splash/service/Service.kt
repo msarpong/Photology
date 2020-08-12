@@ -92,8 +92,12 @@ class Service {
         })
     }
 
-    fun getDetail(detailId: String, receiver: ServiceReceiver) {
-        val detail = service.getDetailPhoto(detailId)
+    fun getDetail(authToken: String, detailId: String, receiver: ServiceReceiver) {
+        val key = "Bearer "
+        val token = key + authToken
+        Log.d("getCurrentUser", "Authorization: $token")
+        Log.d("getKey_getDetail", "authToken: $token - detailId: $detailId")
+        val detail = service.getDetailPhoto(token,detailId)
         detail.enqueue(object : Callback<DetailPhotoResponse> {
             override fun onFailure(call: Call<DetailPhotoResponse>, t: Throwable) {
                 Log.d("onFailure_getDetail", "showError: $t")
@@ -417,8 +421,12 @@ class Service {
         })
     }
 
-    fun unLikePhoto(id_photo: String, receiver: ServiceReceiver) {
-        val like = service.deleteLikePhoto(photo_id = id_photo)
+    fun unLikePhoto(authToken: String, id_photo: String, receiver: ServiceReceiver) {
+        val key = "Bearer "
+        val token = key + authToken
+        Log.d("sendDataUnLike", "AUTH_TOKEN: $token, PHOTO_ID: $id_photo")
+
+        val like = service.deleteLikePhoto(authorization = token, photo_id = id_photo)
         like.enqueue(object : Callback<LikePhotoResponse> {
             override fun onFailure(call: Call<LikePhotoResponse>, t: Throwable) {
                 Log.d("onFailure_unLikePhoto", "showError: $t")
@@ -432,13 +440,12 @@ class Service {
                 val error = response.errorBody()
                 if (success != null) {
                     val likeResult = response.body()!!
-                    receiver.receive(ServiceResult.SuccessResultUnLike(likeResult))
+                    receiver.receive(ServiceResult.SuccessResultLike(likeResult))
                     Log.d("onResponse_unLikePhoto", "showSuccess: $success")
                 } else {
                     Log.d("onResponse_unLikePhoto", "showError: $error")
                 }
             }
-
         })
     }
 
@@ -450,6 +457,7 @@ interface SplashServiceApi {
 
     @GET("/photos/{detailId}/")
     fun getDetailPhoto(
+        @Header("Authorization") authorization: String,
         @Path("detailId") detailId: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<DetailPhotoResponse>
@@ -541,7 +549,8 @@ interface SplashServiceApi {
     @DELETE("photos/{photo_id}/like")
     fun deleteLikePhoto(
         @Path("photo_id") photo_id: String,
-        @Query("client_id") client_id: String = CLIENT_ID
+        @Query("client_id") client_id: String = CLIENT_ID,
+        @Header("Authorization") authorization: String
     ): Call<LikePhotoResponse>
 
 }

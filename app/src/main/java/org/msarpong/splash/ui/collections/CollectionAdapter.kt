@@ -73,6 +73,12 @@ class CollectionAdapter : ListAdapter<CollectionItem, CollectionViewHolder>(Coll
                 picture.previewPhotos[2].id
             )
         }
+
+        holder.collectionContainer.setOnClickListener {
+            CollectionPhotoScreen.openPhotoCollection(
+                holder.collectionContainer.context as Activity, picture.id.toString()
+            )
+        }
     }
 
     private fun showImage(picture: CollectionItem, holder: CollectionViewHolder) {
@@ -102,6 +108,7 @@ class CollectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val collectionBottom: ImageView = itemView.findViewById(R.id.collection_bottom)
     val collectionTitle: TextView = itemView.findViewById(R.id.collection_text_title)
     val collectionTotal: TextView = itemView.findViewById(R.id.collection_text_total)
+    val collectionContainer: View = itemView.findViewById(R.id.collection_container)
 }
 
 class CollectionDiffUtil : DiffUtil.ItemCallback<CollectionItem>() {

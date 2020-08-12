@@ -32,7 +32,7 @@ sealed class ServiceResult {
     data class SuccessResultCollection(val search: SearchCollectionResponse) : ServiceResult()
     data class SuccessResultStats(val stats: StatsResponse) : ServiceResult()
     data class SuccessResultLike(val like: LikePhotoResponse) : ServiceResult()
-    data class SuccessResultUnLike(val like: LikePhotoResponse) : ServiceResult()
+    data class SuccessResultCollectionPhoto(val photoCollection: PhotoResponse) : ServiceResult()
     data class SuccessResultFollowing(val following: FollowingResponse) : ServiceResult()
     data class Detail(val pictureList: DetailPhotoResponse) : ServiceResult()
 }
@@ -97,7 +97,7 @@ class Service {
         val token = key + authToken
         Log.d("getCurrentUser", "Authorization: $token")
         Log.d("getKey_getDetail", "authToken: $token - detailId: $detailId")
-        val detail = service.getDetailPhoto(token,detailId)
+        val detail = service.getDetailPhoto(token, detailId)
         detail.enqueue(object : Callback<DetailPhotoResponse> {
             override fun onFailure(call: Call<DetailPhotoResponse>, t: Throwable) {
                 Log.d("onFailure_getDetail", "showError: $t")
@@ -449,6 +449,27 @@ class Service {
         })
     }
 
+    fun getCollectionPhoto(id_collection: String, receiver: ServiceReceiver) {
+        val photoCollection = service.getPhotoCollection(id_collection)
+        photoCollection.enqueue(object : Callback<PhotoResponse> {
+            override fun onFailure(call: Call<PhotoResponse>, t: Throwable) {
+                Log.d("onFailure_ColPh", "showError: $t")
+            }
+
+            override fun onResponse(call: Call<PhotoResponse>, response: Response<PhotoResponse>) {
+                val success = response.body()
+                val error = response.errorBody()
+                if (success != null) {
+                    val photoResult = response.body()!!
+                    receiver.receive(ServiceResult.SuccessResultCollectionPhoto(photoResult))
+                    Log.d("onResponse_ColPh", "showSuccess: $success")
+                }else {
+                    Log.d("onResponse_ColPh", "showError: $error")
+                }
+            }
+
+        })
+    }
 }
 
 interface SplashServiceApi {
@@ -537,6 +558,12 @@ interface SplashServiceApi {
         @Path("username") username: String,
         @Query("client_id") client_id: String = CLIENT_ID
     ): Call<Collection>
+
+    @GET("/collections/{id_collection}/photos/")
+    fun getPhotoCollection(
+        @Path("id_collection") id_collection: String,
+        @Query("client_id") client_id: String = CLIENT_ID
+    ): Call<PhotoResponse>
 
     @POST("photos/{photo_id}/like")
     fun setLikePhoto(

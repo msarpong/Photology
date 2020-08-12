@@ -7,6 +7,12 @@
     android:background="@android:color/black"
     tools:context=".ui.splash.SplashScreen">
 
+    <ImageView
+        android:id="@+id/splash_img"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
     <TextView
         android:id="@+id/app_name"
         android:layout_width="wrap_content"
@@ -25,7 +31,7 @@
         android:id="@+id/tagline_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:shadowColor="#FFFFFF"
         android:text="Unofficial Unsplash App"
         android:textColor="#CDCDCD"

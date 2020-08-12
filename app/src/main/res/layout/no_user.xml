@@ -16,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:id="@+id/no_login_label"
         android:layout_width="match_parent"
@@ -24,7 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/helvetica"
-        android:text="Effettua il login per caricare foto e seuire i tuoi aminci"
+        android:text="@string/effettua_il_login_per_caricare_foto_e_seuire_i_tuoi_aminci"
         android:textAlignment="center"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/include_menu_bar"
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:background="@drawable/button_round"
-        android:text="Sign in with email"
+        android:text="@string/sign_in_with_email"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -48,17 +47,7 @@
         app:layout_constraintStart_toStartOf="@+id/no_login_label"
         app:layout_constraintTop_toBottomOf="@+id/no_login_label" />
 
-    <View
-        android:id="@+id/drop_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="?actionBarSize"
-        android:background="@drawable/drop_shadow"
-        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <include
+     <include
         android:id="@+id/include_menu_bar"
         layout="@layout/include_menu_bar"
         android:layout_width="match_parent"
@@ -67,19 +56,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center|center_horizontal"
-        android:foregroundGravity="center"
-        android:indeterminate="true"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/user_info" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -58,16 +58,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:id="@+id/drop_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginTop="?actionBarSize"
-        android:background="@drawable/drop_shadow"
-        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <include
         android:id="@+id/include_menu_bar"
         layout="@layout/include_menu_bar"

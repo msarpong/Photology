@@ -25,7 +25,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_header"
-        tools:srcCompat="@drawable/cactus" />
+        tools:srcCompat="@drawable/cactus"
+        android:contentDescription="TODO" />
 
     <include
         android:id="@+id/view_detail_info"
@@ -71,7 +72,8 @@
             android:textColor="@android:color/black"
             android:textSize="14sp"
             android:textStyle="bold"
-            tools:text="TextView" />
+            tools:text="TextView"
+            tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/detail_text_username"
@@ -93,7 +95,8 @@
             android:layout_marginEnd="16dp"
             android:background="@android:color/transparent"
             android:tint="#000000"
-            app:srcCompat="@drawable/ic_info" />
+            app:srcCompat="@drawable/ic_info"
+            android:contentDescription="@string/detail_info_button" />
     </RelativeLayout>
 
     <ImageButton
@@ -106,7 +109,8 @@
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/detail_image"
         app:layout_constraintStart_toStartOf="@+id/detail_image"
-        app:srcCompat="@drawable/ic_share" />
+        app:srcCompat="@drawable/ic_share"
+        android:contentDescription="@string/share_button" />
 
     <View
         android:id="@+id/view3"
@@ -141,7 +145,8 @@
         android:tint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/detail_image"
         app:layout_constraintEnd_toEndOf="@+id/detail_image"
-        app:srcCompat="@drawable/ic_download" />
+        app:srcCompat="@drawable/ic_download"
+        android:contentDescription="@string/download_button" />
 
     <View
         android:id="@+id/drop_shadow"
@@ -173,6 +178,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

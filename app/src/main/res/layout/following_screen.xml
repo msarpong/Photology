@@ -49,15 +49,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <include
-        android:id="@+id/include_menu_bar"
-        layout="@layout/include_menu_bar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_image"
@@ -73,4 +64,15 @@
         app:layout_constraintTop_toBottomOf="@+id/include_top_bar"
         tools:itemCount="3"
         tools:listitem="@layout/recycler_following_user" />
+
+    <include
+        android:id="@+id/include_menu_bar"
+        layout="@layout/include_menu_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

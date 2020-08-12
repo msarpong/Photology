@@ -25,7 +25,7 @@
                 android:background="@android:color/transparent"
                 android:drawableBottom="@drawable/active_button"
                 android:fontFamily="@font/helvetica"
-                android:text="Editorial"
+                android:text="@string/editorial"
                 android:textAllCaps="false"
                 tools:ignore="ButtonStyle" />
 
@@ -37,7 +37,7 @@
                 android:background="@android:color/transparent"
                 android:drawableBottom="@drawable/active_button"
                 android:fontFamily="@font/helvetica"
-                android:text="Following"
+                android:text="@string/following"
                 android:textAllCaps="false"
                 tools:ignore="ButtonStyle" />
         </LinearLayout>

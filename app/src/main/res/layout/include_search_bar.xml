@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingTop="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="8dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -26,10 +26,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica_bold"
-                android:text="Photos"
+                android:text="@string/photos"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/search_bar_user"
@@ -38,10 +39,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica"
-                android:text="User"
+                android:text="@string/user"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/search_bar_collection"
@@ -50,10 +52,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica"
-                android:text="Collections"
+                android:text="@string/collections"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
         <View
@@ -64,6 +67,4 @@
             android:background="?android:attr/listDivider"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 </FrameLayout>

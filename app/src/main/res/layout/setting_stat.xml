@@ -33,7 +33,7 @@
             android:layout_marginBottom="16dp"
             android:drawablePadding="24dp"
             android:padding="16dp"
-            android:text="Statistics"
+            android:text="@string/statistics"
             android:textColor="#000000"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="8dp"
-            android:text="Total"
+            android:text="@string/total"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -112,16 +112,6 @@
         android:padding="8dp"
         app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
-
-    <View
-        android:id="@+id/drop_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="3dp"
-        android:layout_marginTop="?actionBarSize"
-        android:background="@drawable/drop_shadow"
-        app:layout_constraintBottom_toTopOf="@+id/include_menu_bar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/include_menu_bar"

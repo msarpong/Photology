@@ -4,12 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#BA000000"
-    tools:showIn="@layout/detail_photo_screen">
+    tools:showIn="@layout/collection_screen">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"

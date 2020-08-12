@@ -54,9 +54,9 @@ class DownloadPhoto(detailUrl: String) : AppCompatActivity() {
                 AlertDialog.Builder(downloadContext)
                     .setTitle("Permission required")
                     .setMessage("Permission required to save photos from the Web.")
-                    .setPositiveButton("Allow") { dialog, id ->
+                    .setPositiveButton("Allow") { _, _ ->
                         ActivityCompat.requestPermissions(
-                            this,
+                            downloadContext,
                             arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
                             MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
                         )

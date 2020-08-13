@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Splash</string>
+    <string name="app_name">Photology</string>
     <string name="search_label">Search</string>
     <string name="search">Search</string>
     <string name="text_placeholder">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation</string>

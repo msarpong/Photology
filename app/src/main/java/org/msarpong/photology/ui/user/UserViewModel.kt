@@ -1,0 +1,103 @@
+package org.msarpong.photology.ui.user
+
+import android.content.Context
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import org.msarpong.photology.service.Service
+import org.msarpong.photology.service.ServiceReceiver
+import org.msarpong.photology.service.ServiceResult
+import org.msarpong.photology.service.mapping.auth.user.UserResponse
+import org.msarpong.photology.service.mapping.photos.PhotoResponse
+import org.msarpong.photology.service.mapping.profile.Profile
+
+sealed class UserEvent {
+    data class Load(val code: String) : UserEvent()
+    data class LoadProfile(val username: String) : UserEvent()
+    data class LoadPhoto(val username: String) : UserEvent()
+    data class LoadLike(val username: String) : UserEvent()
+    data class LoadCollection(val username: String) : UserEvent()
+}
+
+sealed class UserState {
+    object InProgress : UserState()
+    data class Success(val user: UserResponse) : UserState()
+    data class SuccessProfile(val profile: Profile) : UserState()
+    data class SuccessPhoto(val photoList: PhotoResponse) : UserState()
+    data class Error(val error: Throwable) : UserState()
+}
+
+class UserViewModel(context: Context) : ViewModel() {
+    private val service = Service()
+    var state: MutableLiveData<UserState> = MutableLiveData()
+
+    init {
+        state.value = UserState.InProgress
+    }
+
+    fun send(event: UserEvent) {
+        when (event) {
+            is UserEvent.Load -> loadContent(event.code)
+            is UserEvent.LoadProfile -> loadProfile(event.username)
+            is UserEvent.LoadPhoto -> loadPhoto(event.username)
+        }
+    }
+
+    private fun loadPhoto(username: String) {
+        Log.d("UserViewModel", "loadUserPhotos")
+        try {
+            service.getPhotoUser(username, object : ServiceReceiver {
+                override fun receive(result: ServiceResult) {
+                    when (result) {
+                        is ServiceResult.Success -> state.value =
+                            UserState.SuccessPhoto(
+                                photoList = result.pictureList
+                            )
+
+                        is ServiceResult.Error -> state.value =
+                            UserState.Error(error = result.error)
+                    }
+                }
+            })
+        } catch (exception: Throwable) {
+            state.value = UserState.Error(exception)
+        }
+    }
+
+    private fun loadProfile(username: String) {
+        state.value = UserState.InProgress
+        try {
+            service.getProfile(username, object : ServiceReceiver {
+                override fun receive(result: ServiceResult) {
+                    when (result) {
+                        is ServiceResult.Error -> state.value =
+                            UserState.Error(error = result.error)
+                        is ServiceResult.SuccessProfile -> state.value =
+                            UserState.SuccessProfile(profile = result.profile)
+                    }
+                }
+            })
+        } catch (exception: Throwable) {
+            state.value = UserState.Error(exception)
+        }
+    }
+
+    private fun loadContent(code: String) {
+        Log.d("UserViewModel", "loadContent")
+        try {
+            service.getCurrentUser(code, object : ServiceReceiver {
+                override fun receive(result: ServiceResult) {
+
+                    when (result) {
+                        is ServiceResult.SuccessUser -> state.value =
+                            UserState.Success(user = result.user)
+                        is ServiceResult.Error -> state.value =
+                            UserState.Error(error = result.error)
+                    }
+                }
+            })
+        } catch (exception: Throwable) {
+            state.value = UserState.Error(exception)
+        }
+    }
+}

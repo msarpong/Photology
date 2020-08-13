@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.msarpong.splash">
+    package="org.msarpong.photology">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".util.Application"
+        android:name="org.msarpong.photology.util.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.collections.CollectionPhotoScreen"/>
-        <activity android:name=".ui.settings.SettingAbout" />
-        <activity android:name=".ui.settings.SettingStat" />
-        <activity android:name=".ui.settings.SettingLanguage" />
-        <activity android:name=".ui.settings.SettingProfile" />
-        <activity android:name=".ui.settings.SettingsScreen" />
-        <activity android:name=".ui.user.NoUserScreen" />
-        <activity android:name=".ui.following.FollowingScreen" />
-        <activity android:name=".ui.search.SearchCollectionScreen" />
-        <activity android:name=".ui.search.SearchUserScreen" />
-        <activity android:name=".ui.profile.ProfileCollectionScreen" />
-        <activity android:name=".ui.profile.ProfileLikeScreen" />
-        <activity android:name=".ui.profile.ProfilePhotoScreen" />
-        <activity android:name=".ui.detail_photo.DetailPhotoScreen" />
-        <activity android:name=".ui.search.SearchPhotoScreen" />
-        <activity android:name=".ui.collections.CollectionScreen" />
-        <activity android:name=".ui.user.UserScreen" />
-        <activity android:name=".ui.welcome.WelcomeScreen" />
-        <activity android:name=".ui.splash.SplashScreen">
+        <activity android:name="org.msarpong.photology.ui.collections.CollectionPhotoScreen"/>
+        <activity android:name="org.msarpong.photology.ui.settings.SettingAbout" />
+        <activity android:name="org.msarpong.photology.ui.settings.SettingStat" />
+        <activity android:name="org.msarpong.photology.ui.settings.SettingLanguage" />
+        <activity android:name="org.msarpong.photology.ui.settings.SettingProfile" />
+        <activity android:name="org.msarpong.photology.ui.settings.SettingsScreen" />
+        <activity android:name="org.msarpong.photology.ui.user.NoUserScreen" />
+        <activity android:name="org.msarpong.photology.ui.following.FollowingScreen" />
+        <activity android:name="org.msarpong.photology.ui.search.SearchCollectionScreen" />
+        <activity android:name="org.msarpong.photology.ui.search.SearchUserScreen" />
+        <activity android:name="org.msarpong.photology.ui.profile.ProfileCollectionScreen" />
+        <activity android:name="org.msarpong.photology.ui.profile.ProfileLikeScreen" />
+        <activity android:name="org.msarpong.photology.ui.profile.ProfilePhotoScreen" />
+        <activity android:name="org.msarpong.photology.ui.detail_photo.DetailPhotoScreen" />
+        <activity android:name="org.msarpong.photology.ui.search.SearchPhotoScreen" />
+        <activity android:name="org.msarpong.photology.ui.collections.CollectionScreen" />
+        <activity android:name="org.msarpong.photology.ui.user.UserScreen" />
+        <activity android:name="org.msarpong.photology.ui.welcome.WelcomeScreen" />
+        <activity android:name="org.msarpong.photology.ui.splash.SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.main.MainScreen">
+        <activity android:name="org.msarpong.photology.ui.main.MainScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

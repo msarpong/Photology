@@ -112,7 +112,6 @@
         android:paddingBottom="300dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/drop_shadow"
         app:layout_constraintTop_toBottomOf="@+id/search_result_nr"
         tools:itemCount="3"
         tools:listitem="@layout/recycler_search_grid_photo" />

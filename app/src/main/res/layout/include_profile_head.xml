@@ -18,7 +18,8 @@
             android:weightSum="9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -89,10 +90,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica_bold"
-                android:text="Photos"
+                android:text="@string/photos"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/profile_like"
@@ -101,10 +103,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica"
-                android:text="Like"
+                android:text="@string/like"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/profile_collection"
@@ -113,10 +116,11 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:fontFamily="@font/helvetica"
-                android:text="Collections"
+                android:text="@string/collections"
                 android:textAlignment="center"
                 android:textAllCaps="false"
-                android:textSize="15sp" />
+                android:textSize="15sp"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
         <View

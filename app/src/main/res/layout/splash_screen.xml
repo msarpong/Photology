@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:shadowColor="#FFFFFF"
-        android:text="Unofficial Unsplash App"
+        android:text="@string/unofficial_unsplash_app"
         android:textColor="#CDCDCD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

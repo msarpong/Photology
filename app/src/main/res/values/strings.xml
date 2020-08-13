@@ -9,7 +9,6 @@
     <string name="setting_button">Setting Button</string>
     <string name="photos">Photos</string>
     <string name="user">User</string>
-    <string name="collections">Collections</string>
     <string name="editorial">Editorial</string>
     <string name="following">Following</string>
     <string name="info">Info</string>
@@ -44,4 +43,12 @@
     <string name="sign_in_with_email">Sign in with email</string>
     <string name="unofficial_unsplash_app">Unofficial Unsplash App</string>
     <string name="skip">Skip</string>
+    <string name="image">Image</string>
+    <string name="search_button">Search Button</string>
+    <string name="user_button">User Button</string>
+    <string name="home_button">Home Button</string>
+    <string name="collection_button">Collection Button</string>
+    <string name="like">Like</string>
+    <string name="collections">Collections</string>
+    <string name="unofficial_unsplash_app">Unofficial Unsplash App</string>
 </resources>

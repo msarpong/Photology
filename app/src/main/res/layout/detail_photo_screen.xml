@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.collections.CollectionScreen">
+    tools:context=".ui.detail_photo.DetailPhotoScreen">
 
     <include
         android:id="@+id/include_header"
@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_header"
         tools:srcCompat="@drawable/cactus"
-        android:contentDescription="TODO" />
+        android:contentDescription="@string/image" />
 
     <include
         android:id="@+id/view_detail_info"
@@ -147,15 +147,6 @@
         app:layout_constraintEnd_toEndOf="@+id/detail_image"
         app:srcCompat="@drawable/ic_download"
         android:contentDescription="@string/download_button" />
-
-    <View
-        android:id="@+id/drop_shadow"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/drop_shadow"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/include_menu_bar"

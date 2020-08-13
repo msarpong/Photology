@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import org.msarpong.splash.R
 import org.msarpong.splash.service.mapping.search.collections.SearchCollectionResponse
+import org.msarpong.splash.ui.collections.CollectionPhotoScreen
 import org.msarpong.splash.ui.detail_photo.DetailPhotoScreen
 
 class SearchCollectionAdapter :
@@ -43,7 +44,9 @@ class SearchCollectionAdapter :
     ) {
 
         holder.collectionContainer.setOnClickListener {
-            TODO()
+            CollectionPhotoScreen.openPhotoCollection(
+                holder.collectionContainer.context as Activity, collection.id.toString()
+            )
         }
 
         holder.collectionMain.setOnClickListener {
